@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class Employee {
 
-
 	private int no;					// 직원번호
 	private String password;
 	private String name;
@@ -18,7 +17,7 @@ public class Employee {
 	private Date updatedDate;
 	private Date deletedDate;
 	
-	Employee () {}
+	public Employee () {}
 
 	public int getNo() {
 		return no;
