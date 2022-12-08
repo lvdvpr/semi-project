@@ -4,13 +4,14 @@ import java.util.Date;
 
 public class Employee {
 
-	private int no;
+
+	private int no;					// 직원번호
 	private String password;
 	private String name;
 	private String email;
 	private String phone;
-	private int deptNo;
-	private int positionNo;
+	private int deptNo;				// 소속부서번호
+	private int positionNo;			// 직위번호
 	private String type;
 	private String deleted;
 	private Date createdDate;
@@ -115,5 +116,12 @@ public class Employee {
 		this.deletedDate = deletedDate;
 	}
 	
+	@Override
+	public String toString() {
+		return "Employee [no=" + no + ", password=" + password + ", name=" + name + ", email=" + email + ", phone="
+				+ phone + ", deptNo=" + deptNo + ", positionNo=" + positionNo + ", type=" + type + ", deleted="
+				+ deleted + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate="
+				+ deletedDate + "]";
+	}
 	
 }

@@ -1,12 +1,16 @@
-
+<%@page import="com.community.vo.Employee"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 	<div class="container">
 	<%
-	String menu = request.getParameter("menu");
+
+	 String menu = request.getParameter("menu");
 	
 	 String loginEmployeeName = (String)session.getAttribute("LOGIN_EMPLOYEE_NAME"); 
+	 
+	 Employee employee = new Employee();
+
 	
 	%>
 		<ul class="navbar-nav me-auto">
@@ -28,7 +32,7 @@
 <% 
 	if (loginEmployeeName != null) {
 %>
-		<span class="navbar-text"><strong class="text-white"> 홍길동</strong> 님 환영합니다.</span>
+		<span class="navbar-text"><strong class="text-white"> <%=employee.getName() %></strong> 님 환영합니다.</span>
 <%
 	}
 %>
@@ -41,7 +45,7 @@
 	} else { 
 			
 %>
-			<li class="nav-item"><a class="nav-link" href="/web-community/employee/home.jsp">내정보보기</a></li>
+			<li class="nav-item"><a class="nav-link" href="/web-community/employee/home.jsp?no=<%=employee.getNo() %>">내정보보기</a></li>
 			<li class="nav-item"><a class="nav-link" href="/web-community/employee/logout.jsp">로그아웃</a></li>
 <%
 	}
