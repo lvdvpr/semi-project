@@ -27,7 +27,7 @@
 <%
 	int empNo = Integer.parseInt(request.getParameter("no"));
 
-	EmployeeDao employeeDao = new EmployeeDao();
+	EmployeeDao employeeDao = EmployeeDao.getInstance();
 	EmployeeDto employee = employeeDao.getEmployeeDtoByNo(empNo);
 	
 	PostDao postDao = new PostDao();
