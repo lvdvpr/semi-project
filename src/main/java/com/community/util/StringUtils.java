@@ -7,6 +7,7 @@ import java.util.Date;
 public class StringUtils {
 
 	private static final DecimalFormat decimalFormat = new DecimalFormat("#,###.##");
+
 	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 M월 d일");
 	
 	/**
@@ -32,6 +33,22 @@ public class StringUtils {
 	}
 	
 	
+
+	private static final SimpleDateFormat simpleDateLocaleFormat = new SimpleDateFormat("yyyy년 M월 d일");
+	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	
+	/**
+	 * 텍스트를 전달받아서 null이면 빈 문자열을 반환한다.
+	 * @param text 텍스트
+	 * @return 문자열을 반환한다. null이면 빈 문자열을 반환한다.
+	 */
+	public static String nullToBlank(String text) {
+		if (text == null) {
+			return "";
+		}
+		return text;
+	}
+
 	/**
 	 * 텍스트를 전달받아서 정수로 변환한 다음 반환한다. 정수로 변환이 실패하는 경우 0을 반환한다.
 	 * @param text 숫자로만 구성된 텍스트
@@ -61,6 +78,7 @@ public class StringUtils {
 	
 	/**
 	 * Date를 "2022년 11월 10일" 형식의 문자열로 변환해서 반환한다.
+	 * Date를 "2022-11-10" 형식의 문자열로 변환해서 반환한다.
 	 * @param date 날짜
 	 * @return 년월일 형식의 문자열, 날짜가 null이면 빈 문자열을 반환한다.
 	 */
@@ -69,6 +87,18 @@ public class StringUtils {
 			return "";
 		}
 		return simpleDateFormat.format(date);
+	}	
+	
+	/**
+	 * Date를 "2022년 11월 10일" 형식의 문자열로 변환해서 반환한다.
+	 * @param date 날짜
+	 * @return 년월일 형식의 문자열, 날짜가 null이면 빈 문자열을 반환한다.
+	 */
+	public static String dateToLocaleText(Date date) {
+		if (date == null) {
+			return "";
+		}
+		return simpleDateLocaleFormat.format(date);
 	}	
 	
 	/**

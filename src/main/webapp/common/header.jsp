@@ -4,11 +4,13 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 	<div class="container">
 	<%
+
 	 String menu = request.getParameter("menu");
 	
 	 String loginEmployeeName = (String)session.getAttribute("LOGIN_EMPLOYEE_NAME"); 
 	 
 	 Employee employee = new Employee();
+
 	
 	%>
 		<ul class="navbar-nav me-auto">

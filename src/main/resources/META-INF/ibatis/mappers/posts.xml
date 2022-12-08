@@ -4,7 +4,7 @@
  
 <sqlMap namespace="departments">
 
-	<select id="getAllDepartments" resultClass="com.sample.vo.Department">
+	<!-- <select id="getAllDepartments" resultClass="com.sample.vo.Department">
 		select
 			department_id as id,
 			department_name as name
@@ -15,6 +15,6 @@
 		order by
 			department_id asc
 	</select>
-	
+	 -->
 </sqlMap>
 
