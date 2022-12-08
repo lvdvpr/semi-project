@@ -4,7 +4,7 @@
  
 <sqlMap namespace="employees">
 
-	<select id="getEmployeesByDepartmentId" parameterClass="int" resultClass="com.sample.vo.Employee">
+	<!-- <select id="getEmployeesByDepartmentId" parameterClass="int" resultClass="com.sample.vo.Employee">
 		select
 			employee_id as id,
 			first_name as firstName,
@@ -44,6 +44,6 @@
 			employee_id = #value#
 		order by
 			employee_id asc
-	</select>
+	</select>-->
 </sqlMap>
 
