@@ -13,8 +13,9 @@ public class NoticeDao {
 		return (List<Notice>)SqlMapper.selectList("mypages.getNoticesByReceiveEmpNo", receiveEmpNo);
 	}
 	
-	public int getTotalNoticeRows() {
-		return (Integer)SqlMapper.selectOne("mypages.getTotalNoticeRows");
+	// 직원번호를 전달 받아서 해당 직원에게 올 알람 갯수를 반환한다.
+	public int getTotalNoticeRows(int empNo) {
+		return (Integer)SqlMapper.selectOne("mypages.getTotalNoticeRows", empNo);
 	}
 
 }

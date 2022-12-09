@@ -29,8 +29,7 @@
 	//}
 	
 
-	session.setAttribute("LOGIN_EMPLOYEE_NO", employee.getNo());
-	session.setAttribute("LOGIN_EMPLOYEE_NAME", employee.getName());
+	session.setAttribute("LOGIN_EMPLOYEE", employee);
 	
 	response.sendRedirect("../home.jsp");
 %>

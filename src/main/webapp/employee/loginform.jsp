@@ -41,7 +41,7 @@
 	</div>
 	<div class="row mb-3">
 		<div class="col-sm-6">
-			<form id="form-login" class="border bg-light p-3" action="login.jsp">
+			<form id="form-login" class="border bg-light p-3" method="post" action="login.jsp">
 				<div class="mb-3">
 					<label class="form-label">직원번호</label>
 					<input type="text" class="form-control" name="no"/>

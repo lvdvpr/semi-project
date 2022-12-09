@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -23,8 +24,8 @@
 
 				<div>
 				<%
-				String loginEmployeeName = (String)session.getAttribute("LOGIN_EMPLOYEE_NAME"); 
-				if (loginEmployeeName == null) {
+				Employee loginEmployee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+				if (loginEmployee == null) {
 				%>
 					<a href="employee/loginform.jsp" class="btn btn-primary">로그인</a>
 				<%
