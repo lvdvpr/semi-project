@@ -1,10 +1,10 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.dao.NoticeDao"%>
 <%@page import="com.community.dao.CommentDao"%>
 <%@page import="com.community.vo.Post"%>
 <%@page import="com.community.dao.PostDao"%>
 <%@page import="com.community.dto.EmployeeDto"%>
 <%@page import="com.community.util.StringUtils"%>
-<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.dao.EmployeeDao"%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -21,23 +21,28 @@
 </head>
 <body>
 <jsp:include page="../common/header.jsp">
-	<jsp:param name="menu" value="admin"/>
+	<jsp:param name="menu" value="employee"/>
 </jsp:include>
 <div class="container my-3">
 <%
-	int empNo = Integer.parseInt(request.getParameter("no"));
-
+	
+	Employee loginEmployee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+	if (loginEmployee == null) {
+		response.sendRedirect("/web-community/employee/loginform.jsp?error=deny");
+		return;
+	}
+	
 	EmployeeDao employeeDao = EmployeeDao.getInstance();
-	EmployeeDto employee = employeeDao.getEmployeeDtoByNo(empNo);
+	EmployeeDto employeeDto = employeeDao.getEmployeeDtoByNo(loginEmployee.getNo());
 	
 	PostDao postDao = new PostDao();
-	int totalPostRows = postDao.getTotalPostRows();
+	int totalPostRows = postDao.getTotalPostRows(loginEmployee.getNo());
 	
 	CommentDao commentDao = new CommentDao();
-	int totalcommentRows = commentDao.getTotalCommentRows();
+	int totalcommentRows = commentDao.getTotalCommentRows(loginEmployee.getNo());
 	
 	NoticeDao noticeDao = new NoticeDao();
-	int totalNoticeRows = noticeDao.getTotalNoticeRows();
+	int totalNoticeRows = noticeDao.getTotalNoticeRows(loginEmployee.getNo());
 	
 %>
 	<div class="row mb-3">
@@ -77,19 +82,19 @@
 						</colgroup>
 						<tbody>
 							<tr>
-								<th class="bg-light">직원번호</th><td><%=employee.getEmpNo() %></td>
-								<th class="bg-light">입사일</th><td><%=employee.getCreatedDate() %></td>
+								<th class="bg-light">직원번호</th><td><%=employeeDto.getEmpNo() %></td>
+								<th class="bg-light">입사일</th><td><%=StringUtils.dateToText(employeeDto.getCreatedDate()) %></td>
 							</tr>
 							<tr>
-								<th class="bg-light">소속부서</th><td><%=employee.getDeptName() %></td>
-								<th class="bg-light">직위</th><td><%=employee.getPositionName() %></td>
+								<th class="bg-light">소속부서</th><td><%=employeeDto.getDeptName() %></td>
+								<th class="bg-light">직위</th><td><%=employeeDto.getPositionName() %></td>
 							</tr>
 							<tr>
-								<th class="bg-light">이름</th><td colspan="3"><%=employee.getName() %></td>
+								<th class="bg-light">이름</th><td colspan="3"><%=employeeDto.getName() %></td>
 							</tr>
 							<tr>
-								<th class="bg-light">연락처</th><td><%=employee.getPhone() %></td>
-								<th class="bg-light">이메일</th><td><%=employee.getEmail() %></td>
+								<th class="bg-light">연락처</th><td><%=employeeDto.getPhone() %></td>
+								<th class="bg-light">이메일</th><td><%=employeeDto.getEmail() %></td>
 							</tr>
 						</tbody>
 					</table>
