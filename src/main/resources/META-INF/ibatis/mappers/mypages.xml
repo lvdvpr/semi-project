@@ -3,83 +3,127 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
  
 <sqlMap namespace="mypages">
-	<select id="getNoticesByReceiveEmpNo" parameterClass="int" resultClass="com.community.vo.Notice" >
-		select
-			notice_no					as no,
-			notice_post_no				as postNo,
-			notice_send_emp_no			as sendEmpNo,
-			notice_receive_emp_no		as receiveEmpNo,
-			notice_content				as content,
-			notice_reading_status		as readingStatus,
-			notice_deleted				as deleted,
-			notice_created_date			as createdDate,
-			notice_updated_date			as updatedDate,
-			notice_deleted_date			as deletedDate
+	<select id="getNotices" parameterClass="map" resultClass="com.community.vo.Notice" >
+		select *
 		from
-			comm_post_notices
+			(select
+				row_number() over (order by notice_no asc) row_numbers
+				notice_no					as no,
+				notice_post_no				as postNo,
+				notice_send_emp_no			as sendEmpNo,
+				notice_receive_emp_no		as receiveEmpNo,
+				notice_content				as content,
+				notice_reading_status		as readingStatus,
+				notice_deleted				as deleted,
+				notice_created_date			as createdDate,
+				notice_updated_date			as updatedDate,
+				notice_deleted_date			as deletedDate
+			from
+				comm_post_notices
+			where
+				notice_receive_emp_no = #empNo#)
 		where
-			notice_receive_emp_no = #value#
+			row_numbers between #begin# and #end#
 	</select>
-	<select id="getPostsByWriterNo" parameterClass="int" resultClass="com.community.vo.Post">
-		select
-			post_no						as no,
-			post_board_no				as boardNo,
-			post_title					as title,
-			post_writer_no				as writerNo,
-			post_content				as content,
-			post_important				as important,
-			post_read_count				as readCount,
-			post_suggestion_count		as suggestionCount,
-			post_comment_count			as commentCount,
-			post_deleted				as deleted,
-			post_created_date			as createdDate,
-			post_updated_date			as updatedDate,
-			post_deleted_date			as deletedDate,
-			post_original_no			as originalNo
+	<select id="getPosts" parameterClass="map" resultClass="com.community.dto.MyPostDto">
+		select *
 		from
-			comm_posts
+			(select
+				row_number() over (order by p.post_created_date asc) row_numbers,
+				p.post_no						as no,
+				p.post_board_no					as boardNo,
+				b.board_name					as boardName,
+				p.post_title					as title,
+				p.post_writer_no				as writerNo,
+				p.post_created_date				as createdDate,
+				p.post_read_count				as readCount,
+				p.post_suggestion_count			as suggestionCount,
+				p.post_content					as content,
+				e.emp_name						as writerName
+			from
+				comm_posts p, comm_employees e, comm_boards b
+			where
+				post_writer_no = #empNo# 
+				and p.post_writer_no = e.emp_no 
+				and b.board_no = p.post_board_no
+				and p.post_deleted = 'N'
+			<dynamic>
+				<isNotNull property="opt">
+					<isEqual property="opt" compareValue="title">
+						and p.post_title like '%' || #keyword# || '%'
+					</isEqual>
+					<isEqual property="opt" compareValue="content">
+						and p.post_content like '%' || #keyword# || '%'
+					</isEqual>
+				</isNotNull>
+			</dynamic>
+				)
 		where
-			post_writer_no	= #value#
+			row_numbers between #begin# and #end#
 	</select>
-	<select id="getCommentsByCommentNo" parameterClass="int" resultClass="com.community.vo.Comment">
-		select
-			comment_no				as no,
-			comment_emp_no			as empNo,
-			comment_content			as content,
-			comment_deleted			as deleted,
-			comment_created_date	as createdDate,
-			comment_updated_date	as updatedDate,
-			comment_deleted_date	as deletedDate,
-			comment_post_no			as postNo
+	<select id="getComments" parameterClass="map" resultClass="com.community.vo.Comment">
+		select *
 		from
-			comm_post_comments
+			(select
+				row_number() over (order by comment_created_date asc) row_numbers,
+				comment_no				as no,
+				comment_emp_no			as empNo,
+				comment_content			as content,
+				comment_deleted			as deleted,
+				comment_created_date	as createdDate,
+				comment_updated_date	as updatedDate,
+				comment_deleted_date	as deletedDate,
+				comment_post_no			as postNo
+			from
+				comm_post_comments
+			where
+				comment_emp_no	= #empNo#)
 		where
-			comment_emp_no	= #value#
+			row_numbers between #begin# and #end#
 	</select>
-	<select id="getTotalPostRows" parameterClass="int" resultClass="int">
+	<select id="getTotalPostRows" parameterClass="map" resultClass="int">
 		select
 			count(*)
 		from
 			comm_posts
 		where
-			post_writer_no = #value# and post_deleted = 'N'
+			post_writer_no = #empNo# and post_deleted = 'N'
+		<dynamic>
+			<isNotNull property="opt">
+				<isEqual property="opt" compareValue="title">
+					and post_title like '%' || #keyword# || '%'
+				</isEqual>
+				<isEqual property="opt" compareValue="content">
+					and post_content like '%' || #keyword# || '%'
+				</isEqual>
+			</isNotNull>
+		</dynamic>
 	</select>
+	
 	<select id="getTotalNoticeRows" parameterClass="int" resultClass="int">
 		select
 			count(*)
 		from
 			comm_post_notices
 		where
-			notice_receive_emp_no = #value#
+			notice_receive_emp_no = #empNo#
 		and notice_reading_status = 'N' and notice_deleted = 'N'	
 	</select>
-	<select id="getTotalCommentRows" parameterClass="int" resultClass="int">
+	<select id="getTotalCommentRowsByEmpNo" parameterClass="int" resultClass="int">
 		select
 			count(*)
 		from
 			comm_post_comments
 		where
-			comment_emp_no = #value# and comment_deleted = 'N'
+			comment_emp_no = #empNo# and comment_deleted = 'N'
+	</select>
+	<select id="getTotalPostRowsByEmpNo" parameterClass="int" resultClass="int">
+		select
+			count(*)
+		from
+			comm_posts
+		where
+			post_writer_no = #empNo# and post_deleted = 'N'
 	</select>
 	<select id="getEmployeeDtoByNo" parameterClass="int" resultClass="com.community.dto.EmployeeDto">
 		select

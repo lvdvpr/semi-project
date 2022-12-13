@@ -17,7 +17,7 @@ public class Post {
 	private Date createdDate;
 	private Date updatedDate;
 	private Date deletedDate;
-	private int originalNo;
+	private Integer originalNo;
 	
 	public int getNo() {
 		return no;
@@ -97,10 +97,10 @@ public class Post {
 	public void setDeletedDate(Date deletedDate) {
 		this.deletedDate = deletedDate;
 	}
-	public int getOriginalNo() {
+	public Integer getOriginalNo() {
 		return originalNo;
 	}
-	public void setOriginalNo(int originalNo) {
+	public void setOriginalNo(Integer originalNo) {
 		this.originalNo = originalNo;
 	}
 	
