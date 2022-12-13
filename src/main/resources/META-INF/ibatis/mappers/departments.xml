@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+ 
+<sqlMap>
+	<select id="getAllDepartments" resultClass="com.community.vo.Department">
+		select
+			DEPARTMENT_NO as departmentNo,
+			DEPARTMENT_NAME as departmentName
+		from
+			comm_departments
+		order by
+			department_no asc
+	</select>
+	
+	<update id="updateDepartment" parameterClass="com.community.vo.Department">
+		update
+			comm_departments
+		set
+			department_name = #departmentName#
+		where
+			department_no = #departmentNo#
+			
+	</update>
+	
+	<select id="getDepartmentByNo" parameterClass="int" resultClass="com.community.vo.Department">
+		select
+			DEPARTMENT_NO as departmentNo,
+			DEPARTMENT_NAME	as departmentName
+		from
+			comm_departments
+		where
+			department_no = #value#
+	
+	</select>
+</sqlMap>
+
