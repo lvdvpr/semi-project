@@ -44,7 +44,7 @@
 	} else { 
 			
 %>
-			<li class="nav-item"><a class="nav-link<%="employee".equals(menu) ? "active" : "" %> %>" href="/web-community/employee/home.jsp">내정보보기</a></li>
+			<li class="nav-item"><a class="nav-link <%="employee".equals(menu) ? "active" : "" %> %>" href="/web-community/employee/home.jsp">내정보보기</a></li>
 			<li class="nav-item"><a class="nav-link" href="/web-community/employee/logout.jsp">로그아웃</a></li>
 <%
 	}

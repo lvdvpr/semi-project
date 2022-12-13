@@ -1,3 +1,5 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.dao.NoticeDao"%>
 <%@page import="com.community.dao.CommentDao"%>
@@ -36,10 +38,10 @@
 	EmployeeDto employeeDto = employeeDao.getEmployeeDtoByNo(loginEmployee.getNo());
 	
 	PostDao postDao = new PostDao();
-	int totalPostRows = postDao.getTotalPostRows(loginEmployee.getNo());
+	int totalPostRows = postDao.getTotalPostRowsByEmpNo(loginEmployee.getNo());
 	
 	CommentDao commentDao = new CommentDao();
-	int totalcommentRows = commentDao.getTotalCommentRows(loginEmployee.getNo());
+	int totalcommentRows = commentDao.getTotalCommentRowsByEmpNo(loginEmployee.getNo());
 	
 	NoticeDao noticeDao = new NoticeDao();
 	int totalNoticeRows = noticeDao.getTotalNoticeRows(loginEmployee.getNo());
@@ -57,9 +59,9 @@
 				<div class="card-body">
 					<div class="list-group">
 						<a href="" class="list-group-item list-group-item-action active">내 정보 보기</a>
-						<a href="" class="list-group-item list-group-item-action">내가 작성한 게시글</a>
-						<a href="" class="list-group-item list-group-item-action">내가 작성한 댓글</a>
-						<a href="" class="list-group-item list-group-item-action">나에게 온 알림</a>
+						<a href="mypost.jsp" class="list-group-item list-group-item-action">내가 작성한 게시글</a>
+						<a href="mycomment.jsp" class="list-group-item list-group-item-action">내가 작성한 댓글</a>
+						<a href="mynotice.jsp" class="list-group-item list-group-item-action">나에게 온 알림</a>
 					</div>
 				</div>
 				<div class="card-body">
@@ -125,7 +127,7 @@
 								<div class="col-4">
 									<div class="card">
 										<div class="card-body bg-danger text-white text-bold">
-											<h5>내에게 온 알림</h5>
+											<h5>내게 온 알림</h5>
 											<small>나에게 온 알림은 <strong><%=totalNoticeRows %></strong> 입니다.</small>
 										</div>
 									</div>
