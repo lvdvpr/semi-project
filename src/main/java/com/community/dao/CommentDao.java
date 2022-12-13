@@ -14,7 +14,7 @@ public class CommentDao {
 	}
 	
 	// 작성자 직원번호를 전달 받아서 해당 직원 번호의 사람이 작성한 댓글 갯수를 반환한다.
-	public int getTotalCommentRows(int empNo) {
+	public int getTotalCommentRowsByEmpNo(int empNo) {
 		return(Integer)SqlMapper.selectOne("mypages.getTotalCommentRows", empNo);
 	}
 

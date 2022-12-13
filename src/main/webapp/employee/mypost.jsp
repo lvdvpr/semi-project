@@ -50,6 +50,7 @@
 	
 	// 해당 loginEmployee.getNo() 사람이 작성한 게시글 갯수 조회
 	int totalRows = postDao.getTotalPostRows(param);
+	
 	// Pagination 객체를 생성
 	Pagination pagination = new Pagination(currentPage, totalRows, rows);
 	
