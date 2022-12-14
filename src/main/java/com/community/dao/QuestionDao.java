@@ -2,9 +2,8 @@ package com.community.dao;
 
 import java.util.List;
 import java.util.Map;
-
-import com.commnuity.util.SqlMapper;
 import com.community.dto.QnaDto;
+import com.community.util.SqlMapper;
 import com.community.vo.Question;
 
 public class QuestionDao {

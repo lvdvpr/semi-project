@@ -2,7 +2,7 @@ package com.community.dao;
 
 import java.util.List;
 
-import com.commnuity.util.SqlMapper;
+import com.community.util.SqlMapper;
 import com.community.vo.Gallery;
 
 public class GalleryDao {

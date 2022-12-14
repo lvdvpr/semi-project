@@ -1,4 +1,4 @@
-package com.commnuity.util;
+package com.community.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
