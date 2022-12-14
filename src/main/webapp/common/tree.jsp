@@ -11,7 +11,7 @@
 		<span class="caret"><a href="/web-community/board/file/list.jsp" class="text-decoration-none text-dark"><mark>파일게시판</mark></a></span>
 	</li>
 	<li>
-		<span class="caret"><a href="/web-community/board/gallary/list.jsp" class="text-decoration-none text-dark">갤러리</a></span>
+		<span class="caret"><a href="/web-community/board/gallery/list.jsp" class="text-decoration-none text-dark">갤러리</a></span>
 	</li>
 	<li>
 		<span class="caret caret-down"><a href="/web-community/board/free/list.jsp" class="text-decoration-none text-dark">자유게시판</a></span>

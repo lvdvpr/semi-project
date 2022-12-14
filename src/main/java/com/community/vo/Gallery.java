@@ -2,9 +2,9 @@ package com.community.vo;
 
 import java.util.Date;
 
-public class Question {
-	
-	private int no;
+public class Gallery {
+
+	private int postNo;
 	private int boardNo;
 	private String title;
 	private int writerNo;
@@ -19,14 +19,14 @@ public class Question {
 	private Date deletedDate;
 	private Integer originalNo;
 	
-	public Question() {}
+	public Gallery() {}
 
 	public int getNo() {
-		return no;
+		return postNo;
 	}
 
-	public void setNo(int no) {
-		this.no = no;
+	public void setNo(int postNo) {
+		this.postNo = postNo;
 	}
 
 	public int getBoardNo() {
@@ -125,22 +125,21 @@ public class Question {
 		this.deletedDate = deletedDate;
 	}
 
-	public int getOriginalNo() {
+	public Integer getOriginalNo() {
 		return originalNo;
 	}
 
-	public void setOriginalNo(int originalNo) {
+	public void setOriginalNo(Integer originalNo) {
 		this.originalNo = originalNo;
 	}
 
 	@Override
 	public String toString() {
-		return "Question [no=" + no + ", boardNo=" + boardNo + ", title=" + title + ", writerNo=" + writerNo
+		return "Gallary [postNo=" + postNo + ", boardNo=" + boardNo + ", title=" + title + ", writerNo=" + writerNo
 				+ ", content=" + content + ", important=" + important + ", readCount=" + readCount
 				+ ", suggestionCount=" + suggestionCount + ", commentCount=" + commentCount + ", deleted=" + deleted
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
 				+ ", originalNo=" + originalNo + "]";
-	}
-	
+	};
 	
 }

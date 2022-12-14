@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+ 
+<sqlMap namespace="galleries">
+	<!-- 전체 갤러리 조회 // 구현 완료하고 나중에 필요없는 select항목 지우기 주석 확인후, 지우기-->
+	<select id="getAllGallery" resultClass="com.community.dto.GalleryDto">
+		SELECT
+		    P.POST_NO as postNo,
+		    P.POST_BOARD_NO as boardNo,
+		    P.POST_TITLE as title,
+		    P.POST_WRITER_NO as writerNo,
+		    P.POST_CONTENT as content,
+		    P.POST_IMPORTANT as important,
+		    P.POST_READ_COUNT as readCount,
+		    P.POST_SUGGESTION_COUNT as suggestionCount,
+		    P.POST_COMMENT_COUNT as commentcount,
+		    P.POST_DELETED as delted,
+		    P.POST_CREATED_DATE as createdDate,
+		    P.POST_UPDATED_DATE as updatedDate,
+		    P.POST_DELETED_DATE as deletedDate,
+		    E.EMP_NO as empNo,
+		    E.EMP_NAME as name,
+		    F.FILE_NO as fileNo,
+		    F.FILE_NAME as fileName,
+		    F.FILE_POST_NO as filePostNo,
+		    D.DEPARTMENT_NO as departmentNo,
+		    D.DEPARTMENT_NAME as departmentName,
+		    PO.POSITION_NAME as positionName
+		FROM (SELECT
+		        row_number() over (order by post_no desc) row_number,
+		        P.POST_NO,
+		        P.POST_BOARD_NO,
+		        P.POST_TITLE,
+		        P.POST_WRITER_NO,
+		        P.POST_CONTENT,
+		        P.POST_IMPORTANT,
+		        P.POST_READ_COUNT,
+		        P.POST_SUGGESTION_COUNT,
+		        P.POST_COMMENT_COUNT,
+		        P.POST_DELETED,
+		        P.POST_CREATED_DATE,
+		        P.POST_UPDATED_DATE,
+		        P.POST_DELETED_DATE
+		    FROM
+		        COMM_POSTS P 
+		    WHERE
+		        POST_BOARD_NO = 104
+		        AND POST_DELETED = 'N') P, COMM_POST_FILES F, COMM_DEPARTMENTS D, COMM_POSITIONS PO, COMM_EMPLOYEES E
+		WHERE
+			row_number betwwen #begin# and #end#
+		AND P.POST_NO = F.FILE_POST_NO
+		AND D.DEPARTMENT_NO = E.EMP_DEPT_NO
+		AND PO.POSITION_NO = E.EMP_POSITION_NO;
+	</select>
+
+	<select id="getGallaryByNo" parameterClass="int" resultClass="com.community.vo.Gallery">
+		
+	</select>
+</sqlMap>
