@@ -5,12 +5,11 @@ import java.util.Map;
 
 import com.community.dto.EmployeeDto;
 import com.community.dto.EmplyListDto;
+import com.community.util.SqlMapper;
 import com.community.vo.Employee;
-import com.sample.util.SqlMapper;
 
-public class EmployeeDao {
 	
-  public class EmployeeDao {
+ public class EmployeeDao {
 	public EmployeeDto getEmployeeDtoByNo(int empNo) {
 		return (EmployeeDto)SqlMapper.selectOne("mypages.getEmployeeDtoByNo", empNo);
 	}

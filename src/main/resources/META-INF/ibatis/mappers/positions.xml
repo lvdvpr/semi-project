@@ -5,9 +5,9 @@
 <sqlMap>
 	<select id="getAllPositions" resultClass="com.community.vo.Position">
 		select
-			POSITION_NO as positionNo,
-			POSITION_NAME as positionName,
-			POSITION_SEQ as positionSeq
+			POSITION_NO as no,
+			POSITION_NAME as name,
+			POSITION_SEQ as seq
 		from
 			comm_positions
 		order by
@@ -18,18 +18,18 @@
 		update
 			comm_positions
 		set
-			POSITION_NAME = #positionName#,
-			POSITION_SEQ = #positionSeq#
+			POSITION_NAME = #name#,
+			POSITION_SEQ = #seq#
 		where
-			position_no = #positionNo#
+			position_no = #no#
 	
 	</update>
 	
 	<select id="getPositionByNo" parameterClass="int" resultClass="com.community.vo.Position">
 		select
-			POSITION_NO as positionNo,
-			POSITION_NAME as positionName,
-			POSITION_SEQ as positionSeq
+			POSITION_NO as no,
+			POSITION_NAME as name,
+			POSITION_SEQ as seq
 		from
 			comm_positions
 		where

@@ -1,8 +1,9 @@
 package com.community.dao;
   
 import java.util.List;
-  
-import com.community.vo.Position; import com.sample.util.SqlMapper;
+
+import com.community.util.SqlMapper;
+import com.community.vo.Position; 
   
   public class PositionDao {
   

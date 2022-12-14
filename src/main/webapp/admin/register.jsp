@@ -22,7 +22,7 @@
 	employee.setType(type);
 	
 	// EmployeeDao 객체를 생성하고, 직원정보를 테이블에 저장하는 메소드를 실행시킴
-	EmployeeDao employeeDao = new EmployeeDao();
+	EmployeeDao employeeDao = EmployeeDao.getInstance();
 	employeeDao.insertEmployee(employee);
 	
 	response.sendRedirect("employees.jsp");
