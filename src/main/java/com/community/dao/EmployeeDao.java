@@ -10,6 +10,7 @@ public class EmployeeDao {
 	public static EmployeeDao getInstance() {
 		return instance;
 	}
+	//로그인 시 사용
 	public Employee getEmployeeByNo(int no) {
 		return (Employee)SqlMapper.selectOne("emps.getEmployeeByNo", no);
 	}

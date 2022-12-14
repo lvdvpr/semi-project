@@ -2,53 +2,34 @@ package com.community.vo;
 
 import java.util.Date;
 
-public class Board {
-
-	private int no;
-	private String name;
-	private String description;
-	private int seq;
-	private String readOption;
-	private String writeOption;
+public class Comment {
+	
+	private int no;				// 댓글번호
+	private int empNo;		// 작성자 직원번호
+	private String content;
 	private String deleted;
 	private Date createdDate;
 	private Date updatedDate;
 	private Date deletedDate;
+	private int postNo;			// 게시글 번호
+	
 	public int getNo() {
 		return no;
 	}
 	public void setNo(int no) {
 		this.no = no;
 	}
-	public String getName() {
-		return name;
+	public int getEmpNo() {
+		return empNo;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setEmpNo(int empNo) {
+		this.empNo = empNo;
 	}
-	public String getDescription() {
-		return description;
+	public String getContent() {
+		return content;
 	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public int getSeq() {
-		return seq;
-	}
-	public void setSeq(int seq) {
-		this.seq = seq;
-	}
-	public String getReadOption() {
-		return readOption;
-	}
-	public void setReadOption(String readOption) {
-		this.readOption = readOption;
-	}
-	public String getWriteOption() {
-		return writeOption;
-	}
-	public void setWriteOption(String writeOption) {
-		this.writeOption = writeOption;
+	public void setContent(String content) {
+		this.content = content;
 	}
 	public String getDeleted() {
 		return deleted;
@@ -74,7 +55,17 @@ public class Board {
 	public void setDeletedDate(Date deletedDate) {
 		this.deletedDate = deletedDate;
 	}
-
+	public int getPostNo() {
+		return postNo;
+	}
+	public void setPostNo(int postNo) {
+		this.postNo = postNo;
+	}
 	
-	
+	@Override
+	public String toString() {
+		return "Comment [no=" + no + ", empNo=" + empNo + ", content=" + content + ", deleted=" + deleted
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
+				+ ", postNo=" + postNo + "]";
+	}
 }
