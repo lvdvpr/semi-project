@@ -2,22 +2,25 @@ package com.community.vo;
 
 public class Department {
 
-	private int departmentNo;
-	private String departmentName;
 	
-	public int getDepartmentNo() {
-		return departmentNo;
+	private int no;		// 소속부서번호
+	private String name;
+	
+	public int getNo() {
+		return no;
 	}
-	public void setDepartmentNo(int departmentNo) {
-		this.departmentNo = departmentNo;
+	public void setNo(int no) {
+		this.no = no;
 	}
-	public String getDepartmentName() {
-		return departmentName;
+	public String getName() {
+		return name;
 	}
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
+	public void setName(String name) {
+		this.name = name;
+	}
+	@Override
+	public String toString() {
+		return "Department [no=" + no + ", name=" + name + "]";
 	}
 	
-
-
 }

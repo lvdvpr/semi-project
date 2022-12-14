@@ -16,7 +16,7 @@ public class Employee {
 	private Date createdDate;
 	private Date updatedDate;
 	private Date deletedDate;
-	
+  
 	public int getNo() {
 		return no;
 	}
@@ -86,6 +86,7 @@ public class Employee {
 	public Date getDeletedDate() {
 		return deletedDate;
 	}
+
 	public void setDeletedDate(Date deletedDate) {
 		this.deletedDate = deletedDate;
 	}
@@ -97,8 +98,5 @@ public class Employee {
 				+ deleted + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate="
 				+ deletedDate + "]";
 	}
-	
-	
-	
-	
+
 }

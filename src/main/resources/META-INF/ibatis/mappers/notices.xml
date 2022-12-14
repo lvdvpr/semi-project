@@ -4,7 +4,7 @@
  
 <sqlMap namespace="notices">
 
-	<select id="getFileShareByNo" parameterClass="int" resultClass="com.community.vo.Notice">
+	<!--  <select id="getFileShareByNo" parameterClass="int" resultClass="com.community.vo.Notice">
 		select
 			*
 		from
@@ -13,4 +13,5 @@
 			post_board_no = 100
 			and post_no = #value#
 	</select>
+	-->
 </sqlMap>

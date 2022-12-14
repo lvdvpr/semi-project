@@ -2,18 +2,16 @@ package com.community.vo;
 
 import java.util.Date;
 
-public class Notice {
+public class Comment {
 	
-	private int no;				// 알림번호
-	private int postNo;			// 게시글 번호
-	private int sendEmpNo;		// 송신자 직원번호
-	private int receiveEmpNo;	// 수신자 직원번호
-	private String content;	
-	private String readingStatus;
+	private int no;				// 댓글번호
+	private int empNo;		// 작성자 직원번호
+	private String content;
 	private String deleted;
 	private Date createdDate;
 	private Date updatedDate;
 	private Date deletedDate;
+	private int postNo;			// 게시글 번호
 	
 	public int getNo() {
 		return no;
@@ -21,35 +19,17 @@ public class Notice {
 	public void setNo(int no) {
 		this.no = no;
 	}
-	public int getPostNo() {
-		return postNo;
+	public int getEmpNo() {
+		return empNo;
 	}
-	public void setPostNo(int postNo) {
-		this.postNo = postNo;
-	}
-	public int getSendEmpNo() {
-		return sendEmpNo;
-	}
-	public void setSendEmpNo(int sendEmpNo) {
-		this.sendEmpNo = sendEmpNo;
-	}
-	public int getReceiveEmpNo() {
-		return receiveEmpNo;
-	}
-	public void setReceiveEmpNo(int receiveEmpNo) {
-		this.receiveEmpNo = receiveEmpNo;
+	public void setEmpNo(int empNo) {
+		this.empNo = empNo;
 	}
 	public String getContent() {
 		return content;
 	}
 	public void setContent(String content) {
 		this.content = content;
-	}
-	public String getReadingStatus() {
-		return readingStatus;
-	}
-	public void setReadingStatus(String readingStatus) {
-		this.readingStatus = readingStatus;
 	}
 	public String getDeleted() {
 		return deleted;
@@ -75,13 +55,17 @@ public class Notice {
 	public void setDeletedDate(Date deletedDate) {
 		this.deletedDate = deletedDate;
 	}
+	public int getPostNo() {
+		return postNo;
+	}
+	public void setPostNo(int postNo) {
+		this.postNo = postNo;
+	}
 	
 	@Override
 	public String toString() {
-		return "Notice [no=" + no + ", postNo=" + postNo + ", sendEmpNo=" + sendEmpNo + ", receiveEmpNo=" + receiveEmpNo
-				+ ", content=" + content + ", readingStatus=" + readingStatus + ", deleted=" + deleted
+		return "Comment [no=" + no + ", empNo=" + empNo + ", content=" + content + ", deleted=" + deleted
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
-				+ "]";
+				+ ", postNo=" + postNo + "]";
 	}
-	
 }
