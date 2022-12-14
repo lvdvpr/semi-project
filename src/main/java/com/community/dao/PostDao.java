@@ -25,11 +25,8 @@ public class PostDao {
 		return (Integer)SqlMapper.selectOne("mypages.getTotalPostRows", param);
 	}
 	
+	// 작성자 직원번호를 전달받아서 해당 직원 번호의 사람이 작성한 게시글 갯수를 반환한다.
 	public int getTotalPostRowsByEmpNo(int empNo) {
 		return (Integer)SqlMapper.selectOne("mypages.getTotalPostRowsByEmpNo", empNo);
-	}
-	// 작성자 직원번호를 전달받아서 해당 직원 번호의 사람이 작성한 게시글 갯수를 반환한다.
-	public int getTotalPostRows(int empNo) {
-		return (Integer)SqlMapper.selectOne("mypages.getTotalPostRows", empNo);
 	}
 }
