@@ -3,89 +3,69 @@ package com.community.vo;
 import java.util.Date;
 
 public class Comment {
-
-	private int commentNo;				// comm_posts_comment 테이블
-	private int commentEmpNo;			// comm_posts_comment 테이블
-	private String commentContent;		// comm_posts_comment 테이블
-	private String commentDeleted;		// comm_posts_comment 테이블
-	private Date commentCreatedDate;	// comm_posts_comment 테이블
-	private Date commentUpdatedDate;	// comm_posts_comment 테이블
-	private Date commentDeletedDate;	// comm_posts_comment 테이블
-	private int commentPostNo;
 	
-	public Comment() {}
-
-	public int getCommentNo() {
-		return commentNo;
+	private int no;				// 댓글번호
+	private int empNo;		// 작성자 직원번호
+	private String content;
+	private String deleted;
+	private Date createdDate;
+	private Date updatedDate;
+	private Date deletedDate;
+	private int postNo;			// 게시글 번호
+	
+	public int getNo() {
+		return no;
 	}
-
-	public void setCommentNo(int commentNo) {
-		this.commentNo = commentNo;
+	public void setNo(int no) {
+		this.no = no;
 	}
-
-	public int getCommentEmpNo() {
-		return commentEmpNo;
+	public int getEmpNo() {
+		return empNo;
 	}
-
-	public void setCommentEmpNo(int commentEmpNo) {
-		this.commentEmpNo = commentEmpNo;
+	public void setEmpNo(int empNo) {
+		this.empNo = empNo;
 	}
-
-	public String getCommentContent() {
-		return commentContent;
+	public String getContent() {
+		return content;
 	}
-
-	public void setCommentContent(String commentContent) {
-		this.commentContent = commentContent;
+	public void setContent(String content) {
+		this.content = content;
 	}
-
-	public String getCommentDeleted() {
-		return commentDeleted;
+	public String getDeleted() {
+		return deleted;
 	}
-
-	public void setCommentDeleted(String commentDeleted) {
-		this.commentDeleted = commentDeleted;
+	public void setDeleted(String deleted) {
+		this.deleted = deleted;
 	}
-
-	public Date getCommentCreatedDate() {
-		return commentCreatedDate;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
-
-	public void setCommentCreatedDate(Date commentCreatedDate) {
-		this.commentCreatedDate = commentCreatedDate;
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
-
-	public Date getCommentUpdatedDate() {
-		return commentUpdatedDate;
+	public Date getUpdatedDate() {
+		return updatedDate;
 	}
-
-	public void setCommentUpdatedDate(Date commentUpdatedDate) {
-		this.commentUpdatedDate = commentUpdatedDate;
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
-
-	public Date getCommentDeletedDate() {
-		return commentDeletedDate;
+	public Date getDeletedDate() {
+		return deletedDate;
 	}
-
-	public void setCommentDeletedDate(Date commentDeletedDate) {
-		this.commentDeletedDate = commentDeletedDate;
+	public void setDeletedDate(Date deletedDate) {
+		this.deletedDate = deletedDate;
 	}
-
-	public int getCommentPostNo() {
-		return commentPostNo;
+	public int getPostNo() {
+		return postNo;
 	}
-
-	public void setCommentPostNo(int commentPostNo) {
-		this.commentPostNo = commentPostNo;
+	public void setPostNo(int postNo) {
+		this.postNo = postNo;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "Comment [commentNo=" + commentNo + ", commentEmpNo=" + commentEmpNo + ", commentContent="
-				+ commentContent + ", commentDeleted=" + commentDeleted + ", commentCreatedDate=" + commentCreatedDate
-				+ ", commentUpdatedDate=" + commentUpdatedDate + ", commentDeletedDate=" + commentDeletedDate
-				+ ", commentPostNo=" + commentPostNo + "]";
+		return "Comment [no=" + no + ", empNo=" + empNo + ", content=" + content + ", deleted=" + deleted
+				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
+				+ ", postNo=" + postNo + "]";
 	}
-	
-	
 }
