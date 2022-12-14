@@ -39,18 +39,21 @@
 			select	
 				P.POST_NO as no,
 				P.POST_BOARD_NO as boardNo,
-				P.POST_CREATED_DATE as createdDate ,  
+				P.POST_WRITER_NO as writerNo,
+				P.POST_IMPORTANT as important,  
 				P.POST_TITLE as title,
-				P.POST_SUGGESTION_COUNT as suggestionCount ,
+				P.POST_SUGGESTION_COUNT as suggestionCount,
+				P.POST_READ_COUNT as readCount,
+				P.POST_ORIGINAL_NO as originalNo, 
+				P.POST_COMMENT_COUNT as commentCount,
+				P.POST_CONTENT as postContent,
+				P.POST_DELETED as postDeleted,
+				P.POST_CREATED_DATE as createdDate,
 				E.emp_no as empNo,
 				E.EMP_NAME as name ,
 				D.DEPARTMENT_NAME as departmentName,
-				P.POST_READ_COUNT as readCount,
-				P.POST_SUGGESTION_COUNT as suggestionCount,
-				P.POST_COMMENT_COUNT as commentCount,
-				O.POSITION_NAME as positionName,
-				P.POST_CONTENT as postContent,
-				P.POST_DELETED as postDeleted
+				O.POSITION_NAME as positionName
+				
 			FROM
 				COMM_POSTS P, COMM_EMPLOYEES E, COMM_DEPARTMENTS D, COMM_POSITIONS O
 			WHERE
@@ -99,6 +102,21 @@
 	where
 		post_no = #value#
 	</select>
+	
+	<!-- 답변 게시물 삽입 -->
+	<insert id="insertAnswer" parameterClass="com.community.vo.Post">
+	insert into 
+				comm_posts
+						(post_no,
+			             post_board_no,
+			             post_title,
+			             post_writer_no,
+			             post_content,
+			             post_important,
+			             post_original_no)
+		values
+			(comm_posts_seq.nextval, #boardNo#, #title#, #writerNo#, #content#, #important#, #originalNo#)	
+	</insert>
 	<!-- 게시물 수정-->
 	<update id="updatePost" parameterClass="com.community.vo.Post">
 		update 
@@ -117,6 +135,8 @@
 		where
 				POST_NO = #no#
 	</update>
+	
+	
 	
 	<insert id="insertSuggestion" parameterClass="com.community.vo.Suggestion">
 	insert into COMM_POST_SUGGESTIONS (SUGGESTION_POST_NO, SUGGESTION_EMP_NO)
@@ -137,6 +157,8 @@
 			 a.comment_emp_no = b.emp_no
 			 and a.comment_post_no = #value#
 			 and a.comment_deleted = 'N'
+	    order by 
+	    		a.comment_no desc
 
 	</select>
 	
@@ -177,8 +199,8 @@
 	</update>
 	
 	<insert id="insertNotice" parameterClass="com.community.vo.Notice">
-		insert into comm_post_notices(notice_no, notice_post_no, notice_send_emp_no, notice_receive_emp_no)
-		values (comm_notices_seq.nextval, #postNo#, #sendEmpNo#, #receiveEmpNo# )
+		insert into comm_post_notices(notice_no, notice_post_no, notice_send_emp_no, notice_receive_emp_no, notice_content)
+		values (comm_notices_seq.nextval, #postNo#, #sendEmpNo#, #receiveEmpNo#, #content#)
 	</insert>
 	
 </sqlMap>

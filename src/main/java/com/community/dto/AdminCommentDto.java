@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.community.vo.Comment;
 
-// 관리자 게시물 상세 -  댓글
+// 관리자  댓글
 public class AdminCommentDto {
 	
 	// 댓글번호

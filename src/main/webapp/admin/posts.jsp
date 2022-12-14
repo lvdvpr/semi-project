@@ -217,7 +217,7 @@
 				alert("게시물을 하나만 선택해주세요.");
 				return;
 			}
-			
+			// 클릭한 게시판 번호에 효과주기
 			var boardNo = $("#board-list a.bg-dark").attr("data-board-no")
 			$("#modal-form-move-posts [name=boardNo]").val(boardNo);
 			

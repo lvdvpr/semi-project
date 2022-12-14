@@ -46,14 +46,9 @@
 		<strong>댓글을 작성해주세요.</strong> 
 	</div>
 <%
-	} else if ("notyourcomment".equals(error)) {
+	} 
 %>
-	<div class="alert alert-danger">
-		<strong>다른 사람의 댓글은 삭제할 수 없습니다.</strong> 
-	</div>
-<%
-	}
-%>	
+
 	</div>
 <%
 	
@@ -169,7 +164,7 @@
 	<form class="border p-3 bg-light" method="post" action="reply.jsp">
 		
 		<!-- 게시글의 글 번호을 value에 설정하세요 -->
-		<input type="hidden" name="originalNo" value="<%=detailPost.getOriginalNo()%>"/>
+		<input type="hidden" name="originalNo" value="<%=postNo%>"/>
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">게시글 등록폼</h5>
@@ -179,7 +174,7 @@
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">게시판 이름</label>
 						<div class="col-sm-5">
-							<select name="boardNo" class="form-select form-select-sm">
+							<select class="form-select form-select-sm" name="boardNo" >
 								<option value="101" > 공지사항</option>
 								<option value="102"> 파일게시판</option>
 								<option value="103"> 갤러리</option>
@@ -191,23 +186,23 @@
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">제목</label>
 						<div class="col-sm-10">
-							<input type="text" name="title" class="form-control form-control-sm" placeholder="제목">
+							<input type="text" class="form-control form-control-sm" placeholder="제목" name="title" >
 						</div>
 					</div>
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control form-control-sm" readonly="readonly" value="홍길동"><!-- 세션에서 가져오기 -->
+							<input type="text" class="form-control form-control-sm" readonly="readonly" value="홍길동" name="name"><!--value에 세션에서가져온값지정하기 -->
 						</div>
 					</div>
 					<div class="row mb-2">
 						<div class="col-sm-8 offset-sm-2">
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="important" value="N" <%="N".equals(detailPost.getImportant()) ? "checked" : "" %>>
+								<input class="form-check-input" type="radio" name="important" value="N" checked>
 								<label class="form-check-label">일반</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="important" value="Y" <%="Y".equals(detailPost.getImportant()) ? "checked" : "" %>>
+								<input class="form-check-input" type="radio" name="important" value="Y" >
 								<label class="form-check-label">중요</label>
 							</div>
 						</div>
@@ -215,7 +210,7 @@
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">내용</label>
 						<div class="col-sm-10">
-							<textarea rows="5" class="form-control" name="reply">답변을 등록하세요</textarea>
+							<textarea rows="5" class="form-control" name="content">답변을 등록하세요</textarea>
 						</div>
 					</div>
 			</div>

@@ -42,5 +42,9 @@ public class AdminPostDao {
 		return (Post)SqlMapper.selectOne("posts.getPostByNo", no);
 	}
 	
+	public void insertAnswer(Post post) {
+		SqlMapper.insert("posts.insertAnswer", post);
+	}
+	
 	
 }

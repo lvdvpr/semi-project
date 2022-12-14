@@ -17,10 +17,7 @@
 	AdminCommentDao commentDao = AdminCommentDao.getInstance();
 	AdminCommentDto detailComment = commentDao.getCommentByCno(cno);
 	Comment comment = detailComment.getComment();
-	//if (comment.getEmpNo() != employee) {
-	//	response.sendRedirect("detail.jsp?postNo="+postNo+"&error=notyourcomment")
-	//	return;
-	//}
+	
 	comment.setDeleted("Y");
 	commentDao.updateComment(comment);
 	
@@ -28,6 +25,7 @@
 	AdminPostDto detailPost = postDao.getDetailPostByNo(postNo);
 	Post post = detailPost.getPost();
 	post.setCommentCount(post.getCommentCount()-1);	
+	postDao.updatePost(post);
 	
 	response.sendRedirect("detail.jsp?postNo="+postNo);
 	

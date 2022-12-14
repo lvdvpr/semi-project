@@ -10,6 +10,7 @@ public class AdminPostDto {
 	private int boardNo;
 	private String title;
 	private int empNo;
+	private int writerNo;
 	private String name;	      
 	private String important;
 	private String postContent;
@@ -32,7 +33,7 @@ public class AdminPostDto {
 		Post post = new Post();
 		post.setNo(no);
 		post.setBoardNo(boardNo);
-		post.setWriterNo(empNo);
+		post.setWriterNo(writerNo);
 		post.setTitle(title);
 		post.setContent(postContent);
 		post.setReadCount(readCount);
@@ -103,12 +104,15 @@ public class AdminPostDto {
 	public void setSuggestionCount(int suggestionCount) {
 		this.suggestionCount = suggestionCount;
 	}
-	public int getEmpNo() {
-		return empNo;
+	
+	public int getWriterNo() {
+		return writerNo;
 	}
-	public void setEmpNo(int empNo) {
-		this.empNo = empNo;
+
+	public void setWriterNo(int writerNo) {
+		this.writerNo = writerNo;
 	}
+
 	public String getName() {
 		return name;
 	}
@@ -141,15 +145,27 @@ public class AdminPostDto {
 	public void setOriginalNo(Integer originalNo) {
 		this.originalNo = originalNo;
 	}
+	
+	public int getEmpNo() {
+		return empNo;
+	}
+
+	public void setEmpNo(int empNo) {
+		this.empNo = empNo;
+	}
 
 	@Override
 	public String toString() {
-		return "AdminPostDto [no=" + no + ", boardNo=" + boardNo + ", title=" + title + ", name=" + name
-				+ ", important=" + important + ", postContent=" + postContent + ", readCount=" + readCount
-				+ ", suggestionCount=" + suggestionCount + ", commentCount=" + commentCount + ", departmentName="
-				+ departmentName + ", positionName=" + positionName + ", postDeleted=" + postDeleted + ", createdDate="
-				+ createdDate + ", originalNo=" + originalNo + "]";
+		return "AdminPostDto [no=" + no + ", boardNo=" + boardNo + ", title=" + title + ", empNo=" + empNo
+				+ ", writerNo=" + writerNo + ", name=" + name + ", important=" + important + ", postContent="
+				+ postContent + ", readCount=" + readCount + ", suggestionCount=" + suggestionCount + ", commentCount="
+				+ commentCount + ", departmentName=" + departmentName + ", positionName=" + positionName
+				+ ", postDeleted=" + postDeleted + ", createdDate=" + createdDate + ", originalNo=" + originalNo + "]";
 	}
+
+	
+
+	
 
 	
 
