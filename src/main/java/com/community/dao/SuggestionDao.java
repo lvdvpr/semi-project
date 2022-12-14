@@ -1,6 +1,6 @@
 package com.community.dao;
 
-import com.commnuity.util.SqlMapper;
+import com.community.util.SqlMapper;
 import com.community.vo.Suggestion;
 
 public class SuggestionDao {

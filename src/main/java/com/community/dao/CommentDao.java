@@ -1,9 +1,8 @@
 package com.community.dao;
 
 import java.util.List;
-
-import com.commnuity.util.SqlMapper;
 import com.community.dto.CommentDto;
+import com.community.util.SqlMapper;
 import com.community.vo.Comment;
 
 public class CommentDao {

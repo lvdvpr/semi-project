@@ -1,8 +1,8 @@
+<%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dao.QuestionDao"%>
 <%@page import="com.community.vo.Question"%>
 <%@page import="com.community.dao.CommentDao"%>
 <%@page import="com.community.vo.Comment"%>
-<%@page import="com.commnuity.util.StringUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <!DOCTYPE html>
 
@@ -14,9 +14,9 @@
 	
 	Comment comment = new Comment();
 	
-	comment.setCommentContent(commentContent);
-	comment.setCommentEmpNo(commentEmpNo);
-	comment.setCommentPostNo(no);
+	comment.setContent(commentContent);
+	comment.setEmpNo(commentEmpNo);
+	comment.setPostNo(no);
 	
 	// comment 등록
 	CommentDao commentDao = new CommentDao();	
