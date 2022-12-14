@@ -1,8 +1,8 @@
+<%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dto.CommentDto"%>
 <%@page import="com.community.vo.Comment"%>
 <%@page import="com.community.dao.CommentDao"%>
 <%@page import="com.community.dto.QnaDto"%>
-<%@page import="com.commnuity.util.StringUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="com.community.dao.QuestionDao"%>
 <%@page import="com.community.vo.Question"%>

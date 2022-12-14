@@ -1,8 +1,8 @@
+<%@page import="com.community.util.Pagination"%>
+<%@page import="com.community.util.StringUtils"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="com.community.dto.QnaDto"%>
-<%@page import="com.commnuity.util.Pagination"%>
-<%@page import="com.commnuity.util.StringUtils"%>
 <%@page import="java.util.List"%>
 <%@page import="com.community.dao.QuestionDao"%>
 <%@page import="com.community.vo.Question"%>
