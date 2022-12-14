@@ -14,7 +14,7 @@
 	int positionNo = Integer.parseInt(request.getParameter("positionNo"));
 	
 	// 직원번호로 직원정보를 조회
-	EmployeeDao employeeDao = new EmployeeDao();
+	EmployeeDao employeeDao = EmployeeDao.getInstance();
 	Employee employee = employeeDao.getEmployeeByEmpNo(no);
 	
 	// 데이터베이스에 조회한 직원정보를 수정폼에서 제출한 값으로 변경

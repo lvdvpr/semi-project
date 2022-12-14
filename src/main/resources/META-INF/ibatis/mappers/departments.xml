@@ -5,8 +5,8 @@
 <sqlMap>
 	<select id="getAllDepartments" resultClass="com.community.vo.Department">
 		select
-			DEPARTMENT_NO as departmentNo,
-			DEPARTMENT_NAME as departmentName
+			DEPARTMENT_NO as no,
+			DEPARTMENT_NAME as name
 		from
 			comm_departments
 		order by
@@ -17,16 +17,16 @@
 		update
 			comm_departments
 		set
-			department_name = #departmentName#
+			department_name = #name#
 		where
-			department_no = #departmentNo#
+			department_no = #no#
 			
 	</update>
 	
 	<select id="getDepartmentByNo" parameterClass="int" resultClass="com.community.vo.Department">
 		select
-			DEPARTMENT_NO as departmentNo,
-			DEPARTMENT_NAME	as departmentName
+			DEPARTMENT_NO as no,
+			DEPARTMENT_NAME	as name
 		from
 			comm_departments
 		where

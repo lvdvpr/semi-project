@@ -2,8 +2,8 @@ package com.community.dao;
 
 import java.util.List;
 
+import com.community.util.SqlMapper;
 import com.community.vo.Department; 
-import com.sample.util.SqlMapper;
 
 public class DepartmentDao {
 

@@ -32,7 +32,7 @@
 					int no = Integer.parseInt(request.getParameter("empNo"));
 				
 					// 직원번호에 해당하는 직원정보를 조회
-					EmployeeDao employeeDao = new EmployeeDao();
+					EmployeeDao employeeDao = EmployeeDao.getInstance();
 					Employee employee = employeeDao.getEmployeeByEmpNo(no);
 				%>
 				
