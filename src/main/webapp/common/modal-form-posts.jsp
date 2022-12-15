@@ -13,12 +13,13 @@
 						<label class="col-sm-2 col-form-label col-form-label-sm">게시판 이름</label>
 						<div class="col-sm-5">
 							<select class="form-select form-select-sm">
-								<option value="100"> 공지사항</option>
-								<option value="100"> 파일게시판</option>
-								<option value="100"> 갤러리</option>
-								<option value="100"> 묻고 답하기</option>
-								<option value="100"> 벼룩시장</option>
-								<option value="100"> 사는 얘기</option>
+								<option value="1"> 최근 게시물</option>
+								<option value="2"> 공지사항</option>
+								<option value="3"> 파일게시판</option>
+								<option value="4"> 갤러리</option>
+								<option value="5"> 자유게시판</option>
+								<option value="6"> 묻고 답하기</option>
+								<option value="7"> 임시저장함</option>
 							</select>
 						</div>
 					</div>

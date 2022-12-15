@@ -1,27 +1,29 @@
-package com.community.vo;
+package com.community.dto;
 
 import java.util.Date;
 
-public class Employee {
-
-	private int no;
+public class EmplyListDto {
+	private int empNo;
 	private String password;
-	private String name;
+	private String empName;
 	private String email;
 	private String phone;
-	private int deptNo;
-	private int positionNo;
 	private String type;
 	private String deleted;
 	private Date createdDate;
 	private Date updatedDate;
 	private Date deletedDate;
-  
-	public int getNo() {
-		return no;
+	private int deptNo;
+	private String departmentName;
+	private int positionNo;
+	private String positionName;
+	private int positionSeq;
+	
+	public int getEmpNo() {
+		return empNo;
 	}
-	public void setNo(int no) {
-		this.no = no;
+	public void setEmpNo(int empNo) {
+		this.empNo = empNo;
 	}
 	public String getPassword() {
 		return password;
@@ -29,11 +31,11 @@ public class Employee {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getName() {
-		return name;
+	public String getEmpName() {
+		return empName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 	public String getEmail() {
 		return email;
@@ -46,18 +48,6 @@ public class Employee {
 	}
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-	public int getDeptNo() {
-		return deptNo;
-	}
-	public void setDeptNo(int deptNo) {
-		this.deptNo = deptNo;
-	}
-	public int getPositionNo() {
-		return positionNo;
-	}
-	public void setPositionNo(int positionNo) {
-		this.positionNo = positionNo;
 	}
 	public String getType() {
 		return type;
@@ -86,17 +76,45 @@ public class Employee {
 	public Date getDeletedDate() {
 		return deletedDate;
 	}
-
 	public void setDeletedDate(Date deletedDate) {
 		this.deletedDate = deletedDate;
 	}
-	
-	@Override
-	public String toString() {
-		return "Employee [no=" + no + ", password=" + password + ", name=" + name + ", email=" + email + ", phone="
-				+ phone + ", deptNo=" + deptNo + ", positionNo=" + positionNo + ", type=" + type + ", deleted="
-				+ deleted + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate="
-				+ deletedDate + "]";
+	public int getDeptNo() {
+		return deptNo;
 	}
-
+	public void setDeptNo(int deptNo) {
+		this.deptNo = deptNo;
+	}
+	public String getDepartmentName() {
+		return departmentName;
+	}
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+	public int getPositionNo() {
+		return positionNo;
+	}
+	public void setPositionNo(int positionNo) {
+		this.positionNo = positionNo;
+	}
+	public String getPositionName() {
+		return positionName;
+	}
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
+	}
+	public int getPositionSeq() {
+		return positionSeq;
+	}
+	public void setPositionSeq(int positionSeq) {
+		this.positionSeq = positionSeq;
+	}
+	
+	
+	
 }
+
+
+
+
+

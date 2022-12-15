@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+ 
+<sqlMap>
+	<select id="getAllPositions" resultClass="com.community.vo.Position">
+		select
+			POSITION_NO as no,
+			POSITION_NAME as name,
+			POSITION_SEQ as seq
+		from
+			comm_positions
+		order by
+			position_no asc
+	</select>
+	
+	<update id="updatePosition" parameterClass="com.community.vo.Position">
+		update
+			comm_positions
+		set
+			POSITION_NAME = #name#,
+			POSITION_SEQ = #seq#
+		where
+			position_no = #no#
+	
+	</update>
+	
+	<select id="getPositionByNo" parameterClass="int" resultClass="com.community.vo.Position">
+		select
+			POSITION_NO as no,
+			POSITION_NAME as name,
+			POSITION_SEQ as seq
+		from
+			comm_positions
+		where
+			position_no = #value#
+	
+	</select>
+</sqlMap>
+

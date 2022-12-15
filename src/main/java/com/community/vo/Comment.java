@@ -68,4 +68,6 @@ public class Comment {
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
 				+ ", postNo=" + postNo + "]";
 	}
+
 }
+

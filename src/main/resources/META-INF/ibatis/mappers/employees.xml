@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+ 
+<sqlMap>
+	<!-- <select id="getEmplyListByNo" parameterClass="int" resultClass="com.community.dto.EmplyListDto">
+		select
+			EMP_NO
+			EMP_PASSWORD
+			EMP_NAME
+			EMP_EMAIL
+			EMP_PHONE
+			EMP_DEPT_NO
+			EMP_POSITION_NO
+			EMP_TYPE
+			EMP_DELETED
+			EMP_CREATED_DATE
+			EMP_UPDATED_DATE
+			EMP_DELETED_DATE
+		from
+			comm_employees
+		where
+			emp_no = #value#
+	</select> -->
+
+
+
+
+
+	 <!-- 직원번호, 직원비밀번호, 직원이름, 직원이메일, 직원전화번호 부서번호, 직위번호, 타입 등록 -->
+    <insert id="insertEmployee" parameterClass="com.community.vo.Employee">
+    	insert into comm_employees
+    		(emp_no, emp_password, emp_name, emp_email, emp_phone, emp_dept_no, emp_position_no, emp_type)
+    	values
+    		(comm_employees_seq.nextval, 'zxcv1234', #name#, #email#, #phone#, #deptNo#, #positionNo#, #type#)
+    </insert>
+    
+    <!-- 직원번호, 직원이름, 부서명, 직위명, 직원전화번호, 직원이메일 페이징으로 출력, getAllEmplyList는 조인된 정보를 뜻함 -->
+	<select id="getAllEmplyList" parameterClass="map" resultClass="com.community.dto.EmplyListDto">
+	   select *
+	   
+	   from(select
+	   		row_number() over(order by emp_no desc) rowNumber,
+	   		 E.emp_no     		as empNo,
+	   		 E.emp_name 		as empName,
+	   	   	 D.department_name 	as departmentName,
+	   		 P.position_name 	as positionName,
+	   		 E.emp_phone 		as phone,
+	   		 E.emp_email 		as email
+		from 
+	    	comm_employees E, comm_departments D, comm_positions P
+		where 
+	    	E.emp_dept_no = D.department_no
+		and 
+	    	E.emp_position_no = P.position_no
+	    and
+	    	E.emp_deleted = 'Y'
+	    )
+		
+		where 
+			rowNumber between #begin# and #end#
+
+    </select>
+    
+    <select id="getTotalRows" resultClass="int">
+    	select
+    		count(*)
+    	from
+    		(select
+	    		 E.emp_no     		as empNo,
+		   		 E.emp_name 		as empName,
+		   	   	 D.department_name 	as departmentName,
+		   		 P.position_name 	as positionName,
+		   		 E.emp_phone 		as phone,
+		   		 E.emp_email 		as email
+			from 
+		    	comm_employees E, comm_departments D, comm_positions P
+			where 
+		    	E.emp_dept_no = D.department_no
+			and 
+		    	E.emp_position_no = P.position_no )
+    </select>
+    
+    <delete id="deleteEmployeeByNo" parameterClass="int">
+    	delete from
+    		comm_employees
+    	where
+    		emp_no = #value#
+    </delete>
+    
+    <update id="updateEmployee" parameterClass="com.community.vo.Employee">
+    	update
+    		comm_employees
+    	set
+    		EMP_PASSWORD = #password#,
+			EMP_NAME = #name#,
+			EMP_EMAIL = #email#,
+			EMP_PHONE = #phone#,
+			EMP_DEPT_NO = #deptNo#,
+			EMP_POSITION_NO = #positionNo#,
+			EMP_TYPE = #type#,
+			EMP_DELETED = #deleted#,
+			EMP_UPDATED_DATE = sysdate,
+			EMP_DELETED_DATE = sysdate
+		where
+			emp_no = #no#
+    </update>
+    
+    <select id="getEmployeeByEmpNo" parameterClass="int" resultClass="com.community.vo.Employee">
+    	select
+    		EMP_NO as no,
+			EMP_PASSWORD as password,
+			EMP_NAME as name,
+			EMP_EMAIL as email,
+			EMP_PHONE as phone,
+			EMP_DEPT_NO as deptNo,
+			EMP_POSITION_NO as positionNo,
+			EMP_TYPE as type,
+			EMP_DELETED as deleted,
+			EMP_CREATED_DATE as createdDate,
+			EMP_UPDATED_DATE as updatedDate,
+			EMP_DELETED_DATE as deletedDate
+		from
+			comm_employees
+		where
+			emp_no = #value#
+    
+    </select>
+    
+    
+</sqlMap>
+
