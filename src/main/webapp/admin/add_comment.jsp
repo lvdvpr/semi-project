@@ -29,7 +29,7 @@
 		return;
 	}
 	
-	AdminPostDao postDao = AdminPostDao.getInstance();
+	AdminPostDao postDao = AdminPostDao.getInstance(); 
 	AdminPostDto detailPost = postDao.getDetailPostByNo(postNo);
 	Post post = detailPost.getPost();
 	// 게시물 조회 1 증가

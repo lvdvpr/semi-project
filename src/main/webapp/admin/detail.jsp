@@ -59,7 +59,7 @@
 	// 조회 수 증가시키기
 	post.setReadCount(post.getReadCount()+1);
 	postDao.updatePost(post);
-	// 열람 정보 추가하기
+	// 열람 정보 추가하기 - 미구현
 	AdminReadingDao readingDao = AdminReadingDao.getInstance();
 	Reading reading = new Reading();
 	reading.setEmpNo(1001); // 나중에 로그인 정보로 업데이트 (employee.getNo())
