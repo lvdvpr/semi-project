@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.vo.Question"%>
 <%@page import="com.community.dao.QuestionDao"%>
@@ -10,9 +11,9 @@
 	String content = request.getParameter("content");
 	int originalNo = StringUtils.stringToInt(request.getParameter("originalNo"));
 	String important = request.getParameter("important");
-	//int writerNo = StringUtils.stringToInt(request.getParameter("writerNo"));
 	
-	int writerNo = 1;
+	// writertNo 가져오는 session 객체
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
 	
 	Question question = new Question();
 	
@@ -21,13 +22,13 @@
 	question.setTitle(title);
 	question.setContent(content);
 	question.setImportant(important);
-	question.setWriterNo(writerNo);
+	question.setWriterNo(employee.getNo());
 	
 	QuestionDao questionDao = new QuestionDao();
 	
 	questionDao.insertPost(question);
 	
 	response.sendRedirect("list.jsp");
-	
+		
 %>
 
