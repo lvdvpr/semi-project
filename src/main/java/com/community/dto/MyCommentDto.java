@@ -1,17 +1,19 @@
-package com.community.vo;
+package com.community.dto;
 
 import java.util.Date;
 
-public class Comment {
+public class MyCommentDto {
 	
 	private int no;				// 댓글번호
-	private int empNo;		// 작성자 직원번호
+	private int empNo;			// 댓글 작성자 직원번호
 	private String content;
-	private String deleted;
+	private String deleted;		// 댓글 삭제
 	private Date createdDate;
 	private Date updatedDate;
 	private Date deletedDate;
 	private int postNo;			// 게시글 번호
+	private int boardNo;		// 게시판 번호
+	private String boardName;	// 게시판 이름
 	
 	public int getNo() {
 		return no;
@@ -61,13 +63,24 @@ public class Comment {
 	public void setPostNo(int postNo) {
 		this.postNo = postNo;
 	}
+	public int getBoardNo() {
+		return boardNo;
+	}
+	public void setBoardNo(int boardNo) {
+		this.boardNo = boardNo;
+	}
+	public String getBoardName() {
+		return boardName;
+	}
+	public void setBoardName(String boardName) {
+		this.boardName = boardName;
+	}
 	
 	@Override
 	public String toString() {
-		return "Comment [no=" + no + ", empNo=" + empNo + ", content=" + content + ", deleted=" + deleted
+		return "MyCommentDto [no=" + no + ", empNo=" + empNo + ", content=" + content + ", deleted=" + deleted
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
-				+ ", postNo=" + postNo + "]";
+				+ ", postNo=" + postNo + ", boardNo=" + boardNo + ", boardName=" + boardName + "]";
 	}
-
+	
 }
-

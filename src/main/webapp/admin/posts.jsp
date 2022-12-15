@@ -1,3 +1,13 @@
+<%@page import="com.community.dao.AdminPostDao"%>
+<%@page import="com.community.util.StringUtils"%>
+<%@page import="com.community.vo.Board"%>
+<%@page import="com.community.dao.BoardDao"%>
+<%@page import="com.community.dto.PostListDto"%>
+<%@page import="com.community.vo.Post"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
+<%@page import="com.community.util.Pagination"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -14,6 +24,26 @@
 <jsp:include page="../common/header.jsp">
 	<jsp:param name="menu" value="admin"/>
 </jsp:include>
+<%
+	int boardNo = StringUtils.stringToInt(request.getParameter("boardNo"), 0);
+	int currentPage = StringUtils.stringToInt(request.getParameter("page"), 1);
+	
+	Map<String, Object> param = new HashMap<>();
+	
+	AdminPostDao postDao = AdminPostDao.getInstance();
+	if (boardNo != 0) {
+		param.put("boardNo", boardNo);						
+	}
+	int totalRows = postDao.getTotalRows(param);
+	
+	Pagination pagination = new Pagination(currentPage, totalRows);
+	
+	param.put("begin", pagination.getBegin());
+	param.put("end", pagination.getEnd());
+	
+	List<PostListDto> postList = postDao.getAllPosts(param);
+		
+%>
 <div class="container my-3">
 	<div class="row mb-3">
 		<div class="col">
@@ -28,22 +58,43 @@
 					<div class="row p-3">
 						<div class="col-3 border p-3">
 							<p>전체 게시판목록을 확인하세요.</p>
-							<jsp:include page="../common/tree.jsp"/>
-						</div>
+	
+						<ul class="tree border py-3 text-dark" id="board-list">
+							<li >
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=102" class="text-decoration-none <%=boardNo==102 ? "bg-dark text-white" : "text-dark"%>" data-board-no="102">공지사항</a></span>
+							</li>
+							<li >
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=103" class="text-decoration-none  <%=boardNo==103 ? "bg-dark text-white" : "text-dark"%>" data-board-no="103">파일게시판</a></span>
+							</li>
+							<li >
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=104" class="text-decoration-none  <%=boardNo==104 ? "bg-dark text-white" : "text-dark"%>" data-board-no="104">갤러리</a></span>
+							</li>
+							<li >
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=105" class="text-decoration-none  <%=boardNo==105 ? "bg-dark text-white" : "text-dark"%>" data-board-no="105">자유게시판</a></span>
+							</li>
+							<li >
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=106" class="text-decoration-none  <%=boardNo==106 ? "bg-dark text-white" : "text-dark"%>" data-board-no="106">묻고답하기</a></span>
+							</li>
+							<li >
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=107" class="text-decoration-none  <%=boardNo==107 ? "bg-dark text-white" : "text-dark"%>" data-board-no="107">묻고답하기</a></span>
+							</li>
+						</ul>
+					</div>
+		
 						<div class="col-9">
 							<form class="border p-3" method="get" action="">
-								<table class="table table-sm">
+								<table class="table table-sm" id="table-posts">
 									<colgroup>
 										<col width="5%">
 										<col width="10%">
 										<col width="*">
 										<col width="10%">
 										<col width="10%">
-										<col width="15%">
+										<col width="18%">
 									</colgroup>
 									<thead>
 										<tr>
-											<th><input type="checkbox"></th>
+											<th><input type="checkbox" id="checkbox-all"></th>
 											<th>번호</th>
 											<th>제목</th>
 											<th>상태</th>
@@ -52,113 +103,67 @@
 										</tr>
 									</thead>
 									<tbody>
+									<%
+										if (postList.isEmpty()) {
+									%>
 										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
+											<td colspan="6" class="text-center"> 게시글 정보가 없습니다.</td>
 										</tr>
-										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
+									<%
+										} else {
+									
+										for (PostListDto post : postList) {
+									%>
+										<tr id="post-no-table">
+											<td><input type="checkbox" name="no" data-post-nos="<%=post.getNo()%>" value="<%=post.getNo()%> "/></td>
+											<td><%=post.getNo() %>
+											<td><a href="detail.jsp?postNo=<%=post.getNo() %>"><%=post.getTitle()%></a></td>
+											<td><%="N".equals(post.getDeleted()) ? "미삭제" : "삭제" %></td>
+											<td><%=post.getName()%></td>
+											<td><%=StringUtils.dateToText(post.getCreatedDate()) %></td>
 										</tr>
-										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
-										</tr>
-										<tr>
-											<td><input type="checkbox" name="" value=""/></td>
-											<td>100000</td>
-											<td>[중요] 공지사항 등록</td>
-											<td>미삭제</td>
-											<td>홍길동</td>
-											<td>2022-12-01</td>
-										</tr>
+									<%
+										}
+									}
+									%>
 									</tbody>
 								</table>
+								
+								<%
+									if (!postList.isEmpty()) {
+										int beginPage = pagination.getBeginPage();	
+										int endPage = pagination.getEndPage();		
+										boolean isFirst = pagination.isFirst();		
+										boolean isLast = pagination.isLast();		
+										int prevPage = pagination.getPrevPage();	
+										int nextPage = pagination.getNextPage();	
+								%>
 								<nav>
 									<ul class="pagination pagination-sm justify-content-center">
-										<li class="page-item disabled">
-											<a class="page-link">이전</a>
-										</li>
-										<li class="page-item"><a class="page-link active" href="#">1</a></li>
-										<li class="page-item"><a class="page-link" href="#">2</a></li>
-			 							<li class="page-item"><a class="page-link" href="#">3</a></li>
 										<li class="page-item">
-											<a class="page-link" href="#">다음</a>
+											<a class="page-link <%=isFirst? "disabled" : ""%>" href="posts.jsp?page=<%=prevPage %>&boardNo=<%=boardNo%>">이전</a>
+										</li>
+								<%
+											for (int number = beginPage; number <= endPage; number++) {
+								%>
+										<li class="page-item">
+											<a class="page-link <%=currentPage == number ? "active" : "" %>" href="posts.jsp?page=<%=number %>&boardNo=<%=boardNo %>"><%=number %></a></li>
+								<%
+										}
+								%>
+								
+										<li class="page-item">
+											<a class="page-link <%=isLast? "disabled" : ""%>" href="posts.jsp?page=<%=nextPage %>&boardNo=<%=boardNo%>">다음</a>
 										</li>
 									</ul>
 								</nav>
+								<%
+									}
+								%>
 								<div class="text-end">
-									<button type="button" class="btn btn-outline-dark btn-sm">복구</button>
-									<button type="button" class="btn btn-outline-dark btn-sm">이동</button>
-									<button type="button" class="btn btn-outline-dark btn-sm">삭제</button>
+									<button type="button" id="button-restore" class="btn btn-outline-dark btn-sm">복구</button>
+									<button type="button" id="button-move" class="btn btn-outline-dark btn-sm">이동</button>
+									<button type="button" id="button-delete" class="btn btn-outline-dark btn-sm">삭제</button>
 								</div>
 							</form>
 						</div>
@@ -168,7 +173,72 @@
 		</div>
 	</div>
 </div>
+<!-- 게시물 이동하기 모달창 -->
+
+<div class="modal" tabindex="-1" id="modal-form-move-posts">
+   <div class="modal-dialog">
+      <form class="border p-3 bg-light" action="move.jsp" method="get">
+         <!-- 이동시킬 게시글의 번호를 스크립트로 설정하세요 -->
+         <input type="hidden" name="no" value="" />
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title">게시글 이동하기</h5>
+               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                  <div class="row mb-2">
+                     <label class="form-label">이동할 게시판을 선택하세요.</label>
+                     <select class="form-select form-select-sm" name="boardNo">
+                        <option value="102">공지사항</option>
+                        <option value="103">파일게시판</option>
+                        <option value="104">갤러리</option>
+                        <option value="105">자유 게시판</option>
+                        <option value="106">묻고 답하기</option>
+                        <option value="107">임시 저장함</option>
+                     </select>
+                  </div>
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal">닫기</button>
+               <button type="submit" class="btn btn-primary btn-xs">이동</button>
+            </div>
+         </div>
+      </form>
+   </div>
+</div>
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+	$(function() {
+		var $postMoveModal = new bootstrap.Modal("#modal-form-move-posts");
+
+		$("#button-move").click(function() {
+			var $checkedCheckboxes = $(":checkbox[name=no]:checked");
+			if ($checkedCheckboxes.length === 0 || $checkedCheckboxes.length > 1) {
+				alert("게시물을 하나만 선택해주세요.");
+				return;
+			}
+			// 클릭한 게시판 번호에 효과주기
+			var boardNo = $("#board-list a.bg-dark").attr("data-board-no")
+			$("#modal-form-move-posts [name=boardNo]").val(boardNo);
+			
+			var no = $checkedCheckboxes.attr("data-post-nos");
+			$("#modal-form-move-posts [name=no]").val(no);
+				
+			$postMoveModal.show();			
+				
+		})
+		
+		// 이동 성공시 -> alert("게시판 이동이 완료되었습니다.");
+		// 같은 게시판으로 이동하는 거 막기
+		
+
+	})
+	
+
+</script>
 </body>
 </html>

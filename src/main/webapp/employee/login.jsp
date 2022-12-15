@@ -18,15 +18,13 @@
 		response.sendRedirect("loginform.jsp?error=fail");
 		return;
 	}
-	// 추후 삭제된 사용자면 로그인 거절하는 코드 추가하기
-
-	// 관리자 회원관리 페이지 완성후 처리예정
-	//String salt = employee.getId() + employee.getEmail();
-	//String secretPassword = DigestUtils.sha256Hex(salt + password);
-	//if (!employee.getPassword().equals(secretPassword)) {
-	//	response.sendRedirect("loginform.jsp?error=fail");
-	//	return;
-	//}
+	
+	// 비밀번호 불일치 - loginform.jsp?error="fail"로 응답
+	if (!password.equals(employee.getPassword())) { 
+		response.sendRedirect("loginform.jsp?error=fail");
+		return;
+	}
+	
 	
 
 	session.setAttribute("LOGIN_EMPLOYEE", employee);

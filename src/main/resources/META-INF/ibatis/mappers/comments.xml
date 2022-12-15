@@ -9,7 +9,7 @@
 		insert into comm_post_comments
 			(comment_no, comment_emp_no, comment_content, comment_post_no)
 		values
-			(comm_comments_seq.nextval, #empNo#, #content#, #postNo#)	
+			(comm_comments_seq.nextval, #no#, #content#, #postNo#)	
 	</insert>
 	
 	<!-- 해당 게시글의 맞는 답글 조회 -->
@@ -60,7 +60,7 @@
 			comment_deleted = #deleted#,
 			comment_created_date = #createdDate#,
 			comment_updated_date = #updatedDate#,
-			comment_deleted_date = sysdate,
+			comment_updated_date = sysdate
 			comment_post_no = #postNo#	
 		where
 			comment_no = #no#

@@ -64,14 +64,13 @@
 	$(function() {
 		
 		$("#form-login").submit(function(event) {
-			
-			var savedNo= $(":input[name=no]").val();
-			if (savedNo === '') {
-				alert("아이디는 필수입력값입니다.");
+			let no= $(":input[name=no]").val();
+			if (no === '') {
+				alert("직원번호는 필수입력값입니다.");
 				return false;
 			}
-			var savedPassword = $(":input[name=password]").val();
-			if (savedPassword === '') {
+			let userPassword  = $(":input[name=password]").val();
+			if (userPassword  === '') {
 				alert("비밀번호는 필수입력값입니다.");
 				return false;
 			}

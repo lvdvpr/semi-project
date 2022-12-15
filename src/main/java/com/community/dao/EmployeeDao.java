@@ -19,7 +19,7 @@ import com.community.vo.Employee;
 	public static EmployeeDao getInstance() {
 		return instance;
 	}
-  
+
 	public Employee getEmployeeByNo(int no) {
 		return (Employee)SqlMapper.selectOne("emps.getEmployeeByNo", no);
 	}
