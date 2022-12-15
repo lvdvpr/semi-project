@@ -9,7 +9,7 @@
 		insert into comm_post_comments
 			(comment_no, comment_emp_no, comment_content, comment_post_no)
 		values
-			(comm_comments_seq.nextval, #commentEmpNo#, #commentContent#, #commentPostNo#)	
+			(comm_comments_seq.nextval, #no#, #content#, #postNo#)	
 	</insert>
 	
 	<!-- 해당 게시글의 맞는 답글 조회 -->
@@ -36,14 +36,14 @@
 	<!-- 상세정보-댓글 삭제시 value에 해당하는 댓글 반환 -->
 	<select id="commentNo" parameterClass="int" resultClass="com.community.vo.Comment">
 		select
-			comment_no as commentNo,
-			comment_emp_no as commentEmpNo,
-			comment_content as commentContent,
-			comment_deleted as commentDeleted,
-			comment_created_date as commentCreatedDate,
-			comment_updated_date as commentUpdatedDate,
-			comment_deleted_date as commentDeletedDate,
-			comment_post_no as commentPostNo
+			comment_no as no,
+			comment_emp_no as empNo,
+			comment_content as content,
+			comment_deleted as deleted,
+			comment_created_date as createdDate,
+			comment_updated_date as updatedDate,
+			comment_deleted_date as deletedDate,
+			comment_post_no as postNo
 		from
 			comm_post_comments
 		where
@@ -55,15 +55,13 @@
 		update
 			comm_post_comments
 		set
-			comment_emp_no = #commentEmpNo#,
-			comment_content = #commentContent#,
-			comment_deleted = #commentDeleted#,
-			comment_created_date = #commentCreatedDate#,
-			comment_updated_date = #commentUpdatedDate#,
-			comment_deleted_date = sysdate,
-			comment_post_no = #commentPostNo#	
+			comment_emp_no = #empNo#,
+			comment_content = #content#,
+			comment_deleted = #deleted#,
+			comment_updated_date = sysdate
+			comment_post_no = #postNo#	
 		where
-			comment_no = #commentNo#
+			comment_no = #no#
 	</update>
 </sqlMap>
 

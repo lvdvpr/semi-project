@@ -61,19 +61,22 @@
 	
 						<ul class="tree border py-3 text-dark" id="board-list">
 							<li >
-								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=101" class="text-decoration-none <%=boardNo==101 ? "bg-dark text-white" : "text-dark"%>" data-board-no="101">공지사항</a></span>
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=102" class="text-decoration-none <%=boardNo==102 ? "bg-dark text-white" : "text-dark"%>" data-board-no="102">공지사항</a></span>
 							</li>
 							<li >
-								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=102" class="text-decoration-none  <%=boardNo==102 ? "bg-dark text-white" : "text-dark"%>" data-board-no="102">파일게시판</a></span>
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=103" class="text-decoration-none  <%=boardNo==103 ? "bg-dark text-white" : "text-dark"%>" data-board-no="103">파일게시판</a></span>
 							</li>
 							<li >
-								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=103" class="text-decoration-none  <%=boardNo==103 ? "bg-dark text-white" : "text-dark"%>" data-board-no="103">갤러리</a></span>
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=104" class="text-decoration-none  <%=boardNo==104 ? "bg-dark text-white" : "text-dark"%>" data-board-no="104">갤러리</a></span>
 							</li>
 							<li >
-								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=104" class="text-decoration-none  <%=boardNo==104 ? "bg-dark text-white" : "text-dark"%>" data-board-no="104">자유게시판</a></span>
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=105" class="text-decoration-none  <%=boardNo==105 ? "bg-dark text-white" : "text-dark"%>" data-board-no="105">자유게시판</a></span>
 							</li>
 							<li >
-								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=105" class="text-decoration-none  <%=boardNo==105 ? "bg-dark text-white" : "text-dark"%>" data-board-no="105">묻고답하기</a></span>
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=106" class="text-decoration-none  <%=boardNo==106 ? "bg-dark text-white" : "text-dark"%>" data-board-no="106">묻고답하기</a></span>
+							</li>
+							<li >
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=107" class="text-decoration-none  <%=boardNo==107 ? "bg-dark text-white" : "text-dark"%>" data-board-no="107">묻고답하기</a></span>
 							</li>
 						</ul>
 					</div>
@@ -186,11 +189,12 @@
                   <div class="row mb-2">
                      <label class="form-label">이동할 게시판을 선택하세요.</label>
                      <select class="form-select form-select-sm" name="boardNo">
-                        <option value="101">공지사항</option>
-                        <option value="102">파일게시판</option>
-                        <option value="103">갤러리</option>
-                        <option value="104">자유 게시판</option>
-                        <option value="105">묻고 답하기</option>
+                        <option value="102">공지사항</option>
+                        <option value="103">파일게시판</option>
+                        <option value="104">갤러리</option>
+                        <option value="105">자유 게시판</option>
+                        <option value="106">묻고 답하기</option>
+                        <option value="107">임시 저장함</option>
                      </select>
                   </div>
             </div>

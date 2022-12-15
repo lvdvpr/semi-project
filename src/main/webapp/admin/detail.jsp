@@ -175,11 +175,16 @@
 						<label class="col-sm-2 col-form-label col-form-label-sm">게시판 이름</label>
 						<div class="col-sm-5">
 							<select class="form-select form-select-sm" name="boardNo" >
-								<option value="101" > 공지사항</option>
-								<option value="102"> 파일게시판</option>
-								<option value="103"> 갤러리</option>
-								<option value="104"> 자유게시판 </option>
-								<option value="105" > 묻고 답하기</option>
+<%
+	// comm_boards에서 모든 게시판 이름 조회
+	
+%>
+								<option value="102" > 공지사항</option>
+								<option value="103"> 파일게시판</option>
+								<option value="104"> 갤러리</option>
+								<option value="105"> 자유게시판 </option>
+								<option value="106" > 묻고 답하기</option>
+								<option value="107" > 임시저장함</option>
 							</select>
 						</div>
 					</div>
