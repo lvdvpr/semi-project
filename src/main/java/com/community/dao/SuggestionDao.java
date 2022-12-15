@@ -5,7 +5,7 @@ import com.community.vo.Suggestion;
 
 public class SuggestionDao {
 
-	public void updateSuggestion(Suggestion suggestion) {
-		SqlMapper.update("suggestions.updateSuggestion", suggestion);
+	public void insertSuggestion(Suggestion suggestion) {
+		SqlMapper.update("suggestions.insertSuggestion", suggestion);
 	}
 }

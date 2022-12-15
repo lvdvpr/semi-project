@@ -58,6 +58,8 @@
 			comment_emp_no = #empNo#,
 			comment_content = #content#,
 			comment_deleted = #deleted#,
+			comment_created_date = #createdDate#,
+			comment_updated_date = #updatedDate#,
 			comment_updated_date = sysdate
 			comment_post_no = #postNo#	
 		where

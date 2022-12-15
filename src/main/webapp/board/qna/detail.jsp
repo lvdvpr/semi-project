@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dto.CommentDto"%>
 <%@page import="com.community.vo.Comment"%>
@@ -140,7 +141,6 @@
 <div class="modal" tabindex="-1" id="modal-form-posts">
 	<div class="modal-dialog modal-lg">
 	<form class="border p-3 bg-light" method="post" action="modifyform.jsp">
-		<!-- 게시글의 글 번호을 value에 설정하세요 -->
 		<input type="hidden" name="postNo" value="<%=postNo %>"/>
 	<div class="modal-content">
 			<div class="modal-header">

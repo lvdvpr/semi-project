@@ -17,15 +17,8 @@ public class CommentDto {
 	private int empNo;					
 	private int empPassword;
 	private String empName;
-	private String empEmail;
-	private String empPhone;
 	private int empDeptNo;
 	private int empPositionNo;
-	private String empType;
-	private String empDeleted;
-	private Date empCreatedDate;
-	private Date empUpdatedDate;
-	private Date empDeletedDate;
 	
 	public CommentDto () {}
 
@@ -117,22 +110,6 @@ public class CommentDto {
 		this.empName = empName;
 	}
 
-	public String getEmpEmail() {
-		return empEmail;
-	}
-
-	public void setEmpEmail(String empEmail) {
-		this.empEmail = empEmail;
-	}
-
-	public String getEmpPhone() {
-		return empPhone;
-	}
-
-	public void setEmpPhone(String empPhone) {
-		this.empPhone = empPhone;
-	}
-
 	public int getEmpDeptNo() {
 		return empDeptNo;
 	}
@@ -149,57 +126,13 @@ public class CommentDto {
 		this.empPositionNo = empPositionNo;
 	}
 
-	public String getEmpType() {
-		return empType;
-	}
-
-	public void setEmpType(String empType) {
-		this.empType = empType;
-	}
-
-	public String getEmpDeleted() {
-		return empDeleted;
-	}
-
-	public void setEmpDeleted(String empDeleted) {
-		this.empDeleted = empDeleted;
-	}
-
-	public Date getEmpCreatedDate() {
-		return empCreatedDate;
-	}
-
-	public void setEmpCreatedDate(Date empCreatedDate) {
-		this.empCreatedDate = empCreatedDate;
-	}
-
-	public Date getEmpUpdatedDate() {
-		return empUpdatedDate;
-	}
-
-	public void setEmpUpdatedDate(Date empUpdatedDate) {
-		this.empUpdatedDate = empUpdatedDate;
-	}
-
-	public Date getEmpDeletedDate() {
-		return empDeletedDate;
-	}
-
-	public void setEmpDeletedDate(Date empDeletedDate) {
-		this.empDeletedDate = empDeletedDate;
-	}
-
 	@Override
 	public String toString() {
 		return "CommentDto [commentNo=" + commentNo + ", commentEmpNo=" + commentEmpNo + ", commentContent="
 				+ commentContent + ", commentDeleted=" + commentDeleted + ", commentCreatedDate=" + commentCreatedDate
 				+ ", commentUpdatedDate=" + commentUpdatedDate + ", commentDeletedDate=" + commentDeletedDate
 				+ ", commentPostNo=" + commentPostNo + ", empNo=" + empNo + ", empPassword=" + empPassword
-				+ ", empName=" + empName + ", empEmail=" + empEmail + ", empPhone=" + empPhone + ", empDeptNo="
-				+ empDeptNo + ", empPositionNo=" + empPositionNo + ", empType=" + empType + ", empDeleted=" + empDeleted
-				+ ", empCreatedDate=" + empCreatedDate + ", empUpdatedDate=" + empUpdatedDate + ", empDeletedDate="
-				+ empDeletedDate + "]";
+				+ ", empName=" + empName + ", empDeptNo=" + empDeptNo + ", empPositionNo=" + empPositionNo + "]";
 	}
-	
 	
 }
