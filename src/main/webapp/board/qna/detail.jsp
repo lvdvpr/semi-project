@@ -1,3 +1,5 @@
+<%@page import="com.community.dao.PostReadingsDao"%>
+<%@page import="com.community.vo.PostReadings"%>
 <%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dto.CommentDto"%>
@@ -42,14 +44,30 @@
 <%
 	int postNo = StringUtils.stringToInt(request.getParameter("no"));
 	
-
+	// postNo로 조회한 게시물 상세정보 반환
 	QuestionDao questionDao = new QuestionDao();
 	QnaDto qnaDto = questionDao.getPostByNo(postNo);
 	
+	// 게시물 readCount +1 증가
 	Question question = qnaDto.getQuestion();
 	question.setReadCount(question.getReadCount() +1);
 	
 	questionDao.updatePost(question);
+	
+	// 게시글 열람 정보에 필요한 empNo를 위한 로그인 session객체
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+	
+	// 게시글 열람 정보
+	/*
+	PostReadings postReadings = new PostReadings();
+	PostReadingsDao postReadingDao = PostReadingsDao.getInstance();
+	
+	postReadings.setReadingPostNo(question.getNo());
+	postReadings.setReadingEmpNo(employee.getNo());
+	
+	postReadingDao.updatePostReadings(postReadings);
+	*/
+	
 %>				
 				<tbody>
 					<tr>
@@ -100,7 +118,6 @@
 			<form method="post" action="comment-insert.jsp">
 				<!-- 게시글의 글 번호을 value에 설정하세요 -->
 				<input type="hidden" name="postNo" value="<%=qnaDto.getNo() %>"/>
-				<input type="hidden" name="empNo" value="<%=qnaDto.getEmpNo() %>">
 				<div class="row mb-3">
 					<div class="col-sm-11">
 						<input type="text" class="form-control form-control-sm" name="content" placeholder="댓글을 남겨주세요">
@@ -168,7 +185,6 @@
 						</div>
 					</div>
 					<div class="row mb-2">
-					<!-- 로그인 구현하면 변경 로그인 session.setAttribute로 가져오기-->
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10" >
 							<input type="text" class="form-control form-control-sm" readonly="readonly" value="<%=qnaDto.getName() %>" name="name">

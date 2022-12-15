@@ -5,6 +5,7 @@ import java.util.Map;
 import com.community.dto.MyCommentDto;
 import com.community.dto.CommentDto;
 import com.community.util.SqlMapper;
+import com.community.vo.Comment;
 
 public class CommentDao {
 	

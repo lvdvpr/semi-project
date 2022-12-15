@@ -26,7 +26,7 @@
 <div class="container my-3">
 	<div class="row mb-3">
 		<div class="col">
-			<h1 class="heading">묻고 답하기</h1>
+			<h1 class="heading">묻고 답하기</h1>	
 		</div>
 	</div>
 	<div class="row mb-3">
@@ -66,7 +66,11 @@
 	param.put("end", pagination.getEnd());
 
 	List<QnaDto> questionList = questionDao.getAllPost(param);
-
+	
+	// 여기
+	// writerNo를 가져오기 위한 session객체
+//	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+//	int writerNo = employee.getNo();
 %>				
 				<div class="card-body">
 				<!-- 여기 아이디 주기 -->
@@ -112,7 +116,7 @@
 							</thead>
 <%
 	for (QnaDto questions : questionList) {
-		
+
 		int postNo = questions.getNo();
 		int postOriginNo = questions.getOriginalNo();
 		
@@ -193,10 +197,6 @@
 		</div>
 	</div>
 </div>
-<%
-	// 로그인 writerNo 가져오기
-	Employee employee = (Employee) session.getAttribute("LOGIN-EMPLOYEE");
-%>
 <!-- 게시글 등록 모달창 -->
 <div class="modal" tabindex="-1" id="modal-form-posts">
 	<div class="modal-dialog modal-lg">
@@ -227,8 +227,6 @@
 						</div>
 					</div>					
 					<div class="row mb-2">
-					<!-- 로그인 완료되면 추가해야함 value에 employee.getNo() 넣으면 등록버튼 사라짐-->
-						<input type="hidden" name="writerNo" value="">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control form-control-sm" readonly="readonly" value="홍길동" name="emp-name">
@@ -254,7 +252,7 @@
 					</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal">닫기</button>
-				<button type="submit" class="btn btn-primary btn-xs">등록</button>
+				<button type="submit" class="btn btn-primary btn-xs" id="insert-post">등록</button>
 			</div>
 				</form>
 			</div>
@@ -293,8 +291,6 @@
 						</div>
 					</div>
 					<div class="row mb-2">
-					<!-- 로그인 완료되면 추가해야함 -->
-						<input type="hidden" name="writerNo" value="">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control form-control-sm" readonly="readonly" value="홍길동" name="emp-name">
@@ -327,7 +323,6 @@
 		</div>
 	</div>
 </div>
-
 <form id="form-delete" method="get" action="delete.jsp"></form>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -386,8 +381,6 @@ $(function() {
 			$("#all-checkbox").prop("checked", false);
 			
 		}
-				// if문 대신 사용하던데 코드 해석이 안된다.
-				// $("#all-checkbox").prop("checked", checkboxNumber == checkboxCheckedNumber)
 		})
 	
 	// 게시글 일반/중요 구현
@@ -433,12 +426,17 @@ $(function() {
 		for (var index = 0; index < $deletedCheckboxs.length; index++) {
 			var el = $deletedCheckboxs[index];
 			var postNo = $(el).val();
-			var input = "<input type='hidden' name='postNo' value='"+postNo+"'>";
-			$form.append(input);
+			var inputPostNo = "<input type='hidden' name='postNo' value='"+postNo+"'>";
+			
+			// 여기
+			//var inputWriterNo = "<input type='hidden' name='writerNo' value='"+writerNo+"'>";
+			
+			$form.append(inputPostNo);
+			//$form.append(inputWriterNo);
 		}
 		$form.trigger('submit');
 	})
-		
+
 })
 </script>
 </body>
