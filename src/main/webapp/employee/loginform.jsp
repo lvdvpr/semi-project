@@ -62,11 +62,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
 	$(function() {
-		
-		$("#form-login").submit(function(event) {
-			
-			var savedNo= $(":input[name=no]").val();
-			if (savedNo === '') {
+		$("#form-login").submit(function() {
+			let no= $(":input[name=no]").val();
+			if (no === '') {
 				alert("아이디는 필수입력값입니다.");
 				return false;
 			}

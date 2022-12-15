@@ -3,28 +3,26 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
  
 <sqlMap namespace="mypages">
-	<select id="getNotices" parameterClass="map" resultClass="com.community.vo.Notice" >
-		select *
-		from
-			(select
-				row_number() over (order by notice_no asc) row_numbers
-				notice_no					as no,
-				notice_post_no				as postNo,
-				notice_send_emp_no			as sendEmpNo,
-				notice_receive_emp_no		as receiveEmpNo,
-				notice_content				as content,
-				notice_reading_status		as readingStatus,
-				notice_deleted				as deleted,
-				notice_created_date			as createdDate,
-				notice_updated_date			as updatedDate,
-				notice_deleted_date			as deletedDate
-			from
-				comm_post_notices
-			where
-				notice_receive_emp_no = #empNo#)
+
+	<update id="deletePostByPostNo" parameterClass="int">
+		update
+			comm_posts
+		set
+			post_deleted = 'Y',
+			post_deleted_date = sysdate
 		where
-			row_numbers between #begin# and #end#
-	</select>
+			post_no = #value#
+	</update>
+	<update id="deleteCommentByCommentNo" parameterClass="int">
+		update
+			comm_post_comments
+		set
+			comment_deleted = 'Y',
+			comment_deleted_date = sysdate
+		where
+			comment_no = #value#
+	</update>
+	
 	<select id="getPosts" parameterClass="map" resultClass="com.community.dto.MyPostDto">
 		select *
 		from
@@ -61,26 +59,61 @@
 		where
 			row_numbers between #begin# and #end#
 	</select>
-	<select id="getComments" parameterClass="map" resultClass="com.community.vo.Comment">
+	<select id="getComments" parameterClass="map" resultClass="com.community.dto.MyCommentDto">
 		select *
 		from
 			(select
-				row_number() over (order by comment_created_date asc) row_numbers,
-				comment_no				as no,
-				comment_emp_no			as empNo,
-				comment_content			as content,
-				comment_deleted			as deleted,
-				comment_created_date	as createdDate,
-				comment_updated_date	as updatedDate,
-				comment_deleted_date	as deletedDate,
-				comment_post_no			as postNo
+				row_number() over (order by c.comment_created_date asc) row_numbers,
+				c.comment_no				as no,
+				c.comment_emp_no			as empNo,
+				c.comment_content			as content,
+				c.comment_deleted			as deleted,
+				c.comment_created_date		as createdDate,
+				c.comment_updated_date		as updatedDate,
+				c.comment_deleted_date		as deletedDate,
+				c.comment_post_no			as postNo,
+				p.post_board_no				as boardNo,
+				b.board_name				as boardName
 			from
-				comm_post_comments
+				comm_post_comments c, comm_posts p, comm_boards b
 			where
-				comment_emp_no	= #empNo#)
+				c.comment_emp_no = #empNo# 
+				and c.comment_post_no = p.post_no
+				and p.post_board_no = b.board_no
+				and c.comment_deleted = 'N')
 		where
 			row_numbers between #begin# and #end#
 	</select>
+	<select id="getNotices" parameterClass="map" resultClass="com.community.dto.MyNoticeDto">
+		select *
+		from
+			(select
+				row_number() over (order by n.notice_created_date asc) row_numbers,
+				n.notice_no					as no,
+				n.notice_post_no			as postNo,
+				n.notice_send_emp_no		as sendEmpNo,
+				e.emp_name					as sendEmpName,
+				n.notice_receive_emp_no		as receiveEmpNo,
+				n.notice_content			as content,
+				n.notice_reading_status		as readingStatus,
+				n.notice_deleted			as deleted,
+				n.notice_created_date		as createdDate,
+				n.notice_updated_date		as updatedDate,
+				n.notice_deleted_date		as deletedDate,
+				p.post_board_no				as boardNo,
+				b.board_name				as boardName
+			from
+				comm_post_notices n, comm_employees e, comm_posts p, comm_boards b
+			where
+				n.notice_send_emp_no = e.emp_no
+				and p.post_no = n.notice_post_no
+				and p.post_board_no = b.board_no
+				and n.notice_receive_emp_no = #empNo#
+				and n.notice_deleted = 'N')
+		where
+			row_numbers between #begin# and #end#
+	</select>
+	
 	<select id="getTotalPostRows" parameterClass="map" resultClass="int">
 		select
 			count(*)
@@ -100,14 +133,13 @@
 		</dynamic>
 	</select>
 	
-	<select id="getTotalNoticeRows" parameterClass="int" resultClass="int">
+	<select id="getTotalPostRowsByEmpNo" parameterClass="int" resultClass="int">
 		select
 			count(*)
 		from
-			comm_post_notices
+			comm_posts
 		where
-			notice_receive_emp_no = #empNo#
-		and notice_reading_status = 'N' and notice_deleted = 'N'	
+			post_writer_no = #value# and post_deleted = 'N'
 	</select>
 	<select id="getTotalCommentRowsByEmpNo" parameterClass="int" resultClass="int">
 		select
@@ -115,7 +147,16 @@
 		from
 			comm_post_comments
 		where
-			comment_emp_no = #empNo# and comment_deleted = 'N'
+			comment_emp_no = #value# and comment_deleted = 'N' 
+	</select>
+	<select id="getTotalNoticeRows" parameterClass="int" resultClass="int">
+		select
+			count(*)
+		from
+			comm_post_notices
+		where
+			notice_receive_emp_no = #value#
+		and notice_reading_status = 'N' and notice_deleted = 'N'	
 	</select>
 	<select id="getEmployeeDtoByNo" parameterClass="int" resultClass="com.community.dto.EmployeeDto">
 		select
