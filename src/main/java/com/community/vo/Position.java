@@ -30,3 +30,4 @@ public class Position {
 		return "Position [no=" + no + ", name=" + name + ", seq=" + seq + "]";
 	}
 }
+

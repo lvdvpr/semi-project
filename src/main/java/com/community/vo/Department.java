@@ -1,6 +1,7 @@
 package com.community.vo;
 
 public class Department {
+
 	
 	private int no;		// 소속부서번호
 	private String name;
