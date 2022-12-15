@@ -33,7 +33,7 @@
 		*/
 	
 	// comm_post_suggestion 테이블에 등록 - if문 안으로 들어가기
-	suggestionDao.updateSuggestion(suggestion);
+	suggestionDao.insertSuggestion(suggestion);
 
 	// 추천 누르면 +1 되게 구현 - if문 안으로 들어가기
 	Question qeustion = new Question();

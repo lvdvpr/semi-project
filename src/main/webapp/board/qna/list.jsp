@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.Pagination"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="java.util.Map"%>
@@ -44,7 +45,6 @@
 			<div class="card">
 				<div class="card-header">묻고 답하기 게시판</div>
 <%
-	
 	// 현재 페이지
 	int currentPage = StringUtils.stringToInt(request.getParameter("page"), 1);
 	int rows = StringUtils.stringToInt(request.getParameter("rows"), 10);
@@ -75,14 +75,12 @@
 						<div class="mb-2 d-flex justify-content-between">
 							<div>
 								<select class="form-select form-select-xs" name="rows" >
-								<!-- 마저 구현하기 -->
 									<option value="10" <%=rows == 10 ? "selected" : "" %> > 10</option>
 									<option value="15" <%=rows == 15 ? "selected" : "" %> > 15</option>
 									<option value="20" <%=rows == 20 ? "selected" : ""%> > 20</option>
 								</select>
 							</div>
 							<div>
-								<small><input type="checkbox"> 안읽은 게시글</small>
 								<select class="form-select form-select-xs" name="opt">
 									<option value="title" <%="title".equals(opt) ? "selected" : "" %> id="title" > 제목</option>
 									<option value="empName" <%="empName".equals(opt) ? "selected" : "" %> id="empName" > 작성자</option>
@@ -195,6 +193,10 @@
 		</div>
 	</div>
 </div>
+<%
+	// 로그인 writerNo 가져오기
+	Employee employee = (Employee) session.getAttribute("LOGIN-EMPLOYEE");
+%>
 <!-- 게시글 등록 모달창 -->
 <div class="modal" tabindex="-1" id="modal-form-posts">
 	<div class="modal-dialog modal-lg">
@@ -223,9 +225,9 @@
 						<div class="col-sm-10">
 							<input type="text" class="form-control form-control-sm" placeholder="제목" name="title">
 						</div>
-					</div>
+					</div>					
 					<div class="row mb-2">
-					<!-- 로그인 완료되면 추가해야함 -->
+					<!-- 로그인 완료되면 추가해야함 value에 employee.getNo() 넣으면 등록버튼 사라짐-->
 						<input type="hidden" name="writerNo" value="">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
@@ -342,8 +344,8 @@ $(function() {
 	
 	// 10, 15, 20선택시 페이지 네이션 값 전해주기
 	$(".pagination a").click(function(event) {
-		event.preventDefault(); // 얘 때문인 거 같음 - 없애면 2페이지로 넘어갈 때 유지가 안되고, 있으면 1페이지에서 움직이지 않음
-								// a태그를 버튼으로 바꾸고 href로 전해주는 값을 form 태그를 지정해 전해준다...?? 이게 맞는지
+		event.preventDefault(); 
+								
 		var pageNo = $(this).attr("data-posts-no");
 		
 		$(":input[name=page]").val(pageNo);

@@ -5,7 +5,7 @@ import java.util.Date;
 public class GalleryDto {
 
 	// COMM_POSTS, COMM_EMPLOYEES, COMM_DEPARTMENTS, COMM_POSTS_FILE 테이블 dto.
-	private int postNo;					// no
+	private int no;					// no
 	private int boardNo;
 	private String title;
 	private int writerNo;
@@ -20,7 +20,7 @@ public class GalleryDto {
 	private Date deletedDate;
 	private int originalNo;
 	private int empNo;					// comm_employees 테이블	
-	private String empName;				// comm_employees 테이블 // name
+	private String name;				// comm_employees 테이블 // name
 	private int deptNo;					// comm_employees 테이블
 	private int fileNo;					// comm_posts_file 테이블
 	private String fileName;			// comm_posts_file 테이블
@@ -32,12 +32,12 @@ public class GalleryDto {
 	
 	public GalleryDto() {}
 
-	public void setPostNo(int postNo) {
-		this.postNo = postNo;
+	public void setNo(int no) {
+		this.no = no;
 	}
 	
-	public int getPostNo() {
-		return postNo;
+	public int getNo() {
+		return no;
 	}
 
 	public int getBoardNo() {
@@ -152,12 +152,12 @@ public class GalleryDto {
 		this.empNo = empNo;
 	}
 
-	public void setEmpName(String empName) {
-		this.empName = empName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public String getEmpName() {
-		return empName;
+	public String getName() {
+		return name;
 	}
 
 	public int getFileNo() {
@@ -226,11 +226,11 @@ public class GalleryDto {
 
 	@Override
 	public String toString() {
-		return "GallaryDto [postNo=" + postNo + ", boardNo=" + boardNo + ", title=" + title + ", writerNo=" + writerNo
+		return "GallaryDto [no=" + no + ", boardNo=" + boardNo + ", title=" + title + ", writerNo=" + writerNo
 				+ ", content=" + content + ", important=" + important + ", readCount=" + readCount
 				+ ", suggestionCount=" + suggestionCount + ", commentCount=" + commentCount + ", deleted=" + deleted
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
-				+ ", originalNo=" + originalNo + ", empNo=" + empNo + ", empName=" + empName + ", fileNo=" + fileNo
+				+ ", originalNo=" + originalNo + ", empNo=" + empNo + ", name=" + name + ", fileNo=" + fileNo
 				+ ", fileName=" + fileName + ", filePostNo=" + filePostNo + ", deptNo=" + deptNo + ", departmentNo="
 				+ departmentNo + ", departmentName=" + departmentName + ", positionNo=" + positionNo + ", positionName="
 				+ positionName + "]";

@@ -140,6 +140,6 @@ public class Gallery {
 				+ ", suggestionCount=" + suggestionCount + ", commentCount=" + commentCount + ", deleted=" + deleted
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
 				+ ", originalNo=" + originalNo + "]";
-	};
-	
+	}
+
 }
