@@ -88,7 +88,7 @@ public class Gallery {
 	public int getCommentCount() {
 		return commentCount;
 	}
-
+	
 	public void setCommentCount(int commentCount) {
 		this.commentCount = commentCount;
 	}

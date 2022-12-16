@@ -26,7 +26,18 @@ public class GalleryDao {
 		return (int) SqlMapper.selectOne("galleries.getTotalRows");
 	}
 	
+	// 게시물 등록
 	public void insertGalleryPost(Gallery gallery) {
 		SqlMapper.insert("galleries.insertGalleryPost", gallery);
+	}
+	
+	// postNo로 조회되는 게시물 반환
+	public Gallery getPostByNo(int postNo) {
+		return (Gallery) SqlMapper.selectOne("galleries.getPostByNo", postNo);
+	}
+	
+	// 게시물 삭제
+	public void deletedPost(Gallery gallery) {
+		SqlMapper.update("galleries.deletedPost", gallery);
 	}
 }

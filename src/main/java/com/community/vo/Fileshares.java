@@ -1,12 +1,12 @@
 package com.community.vo;
 
-public class File {
+public class Fileshares {
 	
 	private int fileNo;
 	private String fileName;
 	private int filePostNo;
 	
-	public File() {}
+	public Fileshares() {}
 
 	public int getFileNo() {
 		return fileNo;
@@ -36,6 +36,5 @@ public class File {
 	public String toString() {
 		return "File [fileNo=" + fileNo + ", fileName=" + fileName + ", filePostNo=" + filePostNo + "]";
 	}
-	
-	
+
 }

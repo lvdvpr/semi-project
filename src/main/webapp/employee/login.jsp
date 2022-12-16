@@ -20,10 +20,10 @@
 	}
 	
 	// 비밀번호 불일치 - loginform.jsp?error="fail"로 응답
-//	if (!password.equals(employee.getPassword())) { 
-//		response.sendRedirect("loginform.jsp?error=fail");
-//		return;
-//	}
+	if (!password.equals(employee.getPassword())) { 
+		response.sendRedirect("loginform.jsp?error=fail");
+		return;
+	}
 	
 	
 
