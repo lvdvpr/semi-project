@@ -26,6 +26,7 @@
 	<sqlMap resource="META-INF/ibatis/mappers/employees.xml" />		
 	<sqlMap resource="META-INF/ibatis/mappers/emps.xml" />	
 	<sqlMap resource="META-INF/ibatis/mappers/fileshares.xml" />
+	<sqlMap resource="META-INF/ibatis/mappers/freeboards.xml" />
 	<sqlMap resource="META-INF/ibatis/mappers/galleries.xml" />
 	<sqlMap resource="META-INF/ibatis/mappers/mypages.xml" />
 	<sqlMap resource="META-INF/ibatis/mappers/notices.xml" />
