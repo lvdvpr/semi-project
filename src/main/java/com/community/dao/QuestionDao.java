@@ -8,7 +8,7 @@ import com.community.vo.Question;
 
 public class QuestionDao {
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") 
 	public List<QnaDto> getAllPost(Map<String, Object> param) {
 		return (List<QnaDto>) SqlMapper.selectList("questions.getAllPosts", param);
 	}

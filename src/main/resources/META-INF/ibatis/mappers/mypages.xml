@@ -22,6 +22,25 @@
 		where
 			comment_no = #value#
 	</update>
+	<update id="deleteNoticeByNoticeNo" parameterClass="int">
+		update
+			comm_post_notices
+		set
+			notice_deleted = 'Y',
+			notice_deleted_date = sysdate
+		where
+			notice_no = #value#
+	</update>
+	<update id="updateNoticeByNoticeNo" parameterClass="int">
+		update
+			comm_post_notices
+		set
+			notice_reading_status = 'Y',
+			notice_updated_date = sysdate
+		where
+			notice_no = #value#
+	</update>
+	
 	
 	<select id="getPosts" parameterClass="map" resultClass="com.community.dto.MyPostDto">
 		select *

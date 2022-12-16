@@ -127,8 +127,8 @@
 									<td class="border-bottom-0"><%=myDto.getReadingStatus().equals("Y") ? "읽음" : "안읽음" %></td>
 									<td class="border-bottom-0"><%=StringUtils.dateToText(myDto.getUpdatedDate()) %></td>
 									<td class="border-bottom-0 pt-2">
-										<a href="" class="btn btn-outline-secondary btn-xs">확인</a> 
-										<a href="" class="btn btn-outline-secondary btn-xs">삭제</a>
+										<a id="btn-check" href="noticecheck.jsp?noticeNo=<%=myDto.getNo() %>" class="btn btn-outline-secondary btn-xs">확인</a> 
+										<a href="noticedelete.jsp?noticeNo=<%=myDto.getNo() %>" class="btn btn-outline-secondary btn-xs">삭제</a>
 									</td>
 								</tr>
 								<tr>
@@ -185,12 +185,13 @@ $("select[name=rows]").change(function(){
 	$("#form-notice").trigger("submit")
 });
 
-$(".pagination a").click(function(){
+$(".pagination a").click(function(event){
 	event.preventDefault();
-	val pageNo = $(this).attr("data-page-no");
+	var pageNo = $(this).attr("data-page-no");
 	$("[name=page]").val(pageNo)
 	$("#form-notice").trigger("submit")
 });
+
 </script>
 </body>
 </html>
