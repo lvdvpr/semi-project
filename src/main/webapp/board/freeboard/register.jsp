@@ -4,7 +4,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 
 <%
-	int empNo = 1000;
+	int empNo = 1002;
 
 	int boardNo = StringUtils.stringToInt(request.getParameter("boardNo"));
 	String title = request.getParameter("title");
