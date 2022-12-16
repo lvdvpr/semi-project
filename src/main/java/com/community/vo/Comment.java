@@ -4,14 +4,16 @@ import java.util.Date;
 
 public class Comment {
 	
-	private int no;				// 댓글번호
-	private int empNo;		// 작성자 직원번호
+	private int no;
+	private int empNo;
 	private String content;
 	private String deleted;
 	private Date createdDate;
 	private Date updatedDate;
 	private Date deletedDate;
-	private int postNo;			// 게시글 번호
+	private int postNo;
+	
+	public Comment() {}
 	
 	public int getNo() {
 		return no;
@@ -60,13 +62,6 @@ public class Comment {
 	}
 	public void setPostNo(int postNo) {
 		this.postNo = postNo;
-	}
-	
-	@Override
-	public String toString() {
-		return "Comment [no=" + no + ", empNo=" + empNo + ", content=" + content + ", deleted=" + deleted
-				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
-				+ ", postNo=" + postNo + "]";
 	}
 
 }

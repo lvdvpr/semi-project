@@ -15,10 +15,17 @@ public class CommentDao {
 		SqlMapper.insert("comments.insertComent", comment);
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	public List<CommentDto> getCommentsByPostNo(int postNo) {
 		return (List<CommentDto>) SqlMapper.selectList("comments.getCommentsByPostNo", postNo);
+	}
+	
+	public Comment getCommentByCno(int commentNo) {
+		return (Comment) SqlMapper.selectOne("comments.commentNo", commentNo);
+	}
+	
+	public void deleteComment(int commentNo) {
+		SqlMapper.delete("comments.deleteComment", commentNo);
 	}
 	
 	// 상세정보 댓글 삭제시 필요한 comment번호 반환
@@ -49,6 +56,5 @@ public class CommentDao {
 	public void deleteCommentByCommentNo(int commentNo) {
 		SqlMapper.update("mypages.deleteCommentByCommentNo", commentNo);
 	}
-
 
 }

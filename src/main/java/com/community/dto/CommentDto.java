@@ -3,6 +3,7 @@ package com.community.dto;
 import java.util.Date;
 
 public class CommentDto {
+
 	
 	// comm_posts_comment 테이블
 	private int commentNo;				
@@ -86,6 +87,7 @@ public class CommentDto {
 		this.commentPostNo = commentPostNo;
 	}
 
+
 	public int getEmpNo() {
 		return empNo;
 	}
@@ -106,9 +108,10 @@ public class CommentDto {
 		return empName;
 	}
 
-	public void setEmpNamae(String empName) {
+	public void setEmpName(String empName) {
 		this.empName = empName;
 	}
+
 
 	public int getEmpDeptNo() {
 		return empDeptNo;
@@ -126,13 +129,6 @@ public class CommentDto {
 		this.empPositionNo = empPositionNo;
 	}
 
-	@Override
-	public String toString() {
-		return "CommentDto [commentNo=" + commentNo + ", commentEmpNo=" + commentEmpNo + ", commentContent="
-				+ commentContent + ", commentDeleted=" + commentDeleted + ", commentCreatedDate=" + commentCreatedDate
-				+ ", commentUpdatedDate=" + commentUpdatedDate + ", commentDeletedDate=" + commentDeletedDate
-				+ ", commentPostNo=" + commentPostNo + ", empNo=" + empNo + ", empPassword=" + empPassword
-				+ ", empName=" + empName + ", empDeptNo=" + empDeptNo + ", empPositionNo=" + empPositionNo + "]";
-	}
+
 	
 }

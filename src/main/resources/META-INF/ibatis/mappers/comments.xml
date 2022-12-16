@@ -3,6 +3,7 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
  
 <sqlMap namespace="comments">
+
 	
 	<!-- 답글 등록 -->
 	<insert id="insertComent" parameterClass="com.community.vo.Comment">
@@ -23,15 +24,20 @@
 			c.comment_updated_date as commentUpdatedDate,
 			c.comment_deleted_date as commentDeletedDate,
 			c.comment_post_no as commentPostNo,
-            e.emp_name as empName
-		from
+
+			e.emp_name as empName
+		from 
 			comm_post_comments c, comm_employees e
 		where
-            c.comment_emp_no = e.emp_no
-        	and comment_deleted = 'N'
-			and c.comment_post_no = #value#
-			
+			c.comment_emp_no = e.emp_no	
+		and
+			c.comment_deleted = 'N'
+		and 
+			c.comment_post_no = #value#	
+		order by
+			c.comment_no asc			
 	</select>
+
 	
 	<!-- 상세정보-댓글 삭제시 value에 해당하는 댓글 반환 -->
 	<select id="commentNo" parameterClass="int" resultClass="com.community.vo.Comment">
@@ -44,25 +50,35 @@
 			comment_updated_date as updatedDate,
 			comment_deleted_date as deletedDate,
 			comment_post_no as postNo
-		from
+
+		from 
 			comm_post_comments
 		where
-			comment_no = #value#	
+			comment_deleted = 'N'	
+		and
+			comment_no = #value#		 
 	</select>
 	
-	<!-- 상세정보 - 댓글 삭제 -->
+	<delete id="deleteComment" parameterClass="int">
+		delete from
+			comm_post_comments
+		where	
+			comment_no = #value#
+	</delete>
+	
 	<update id="updateComment" parameterClass="com.community.vo.Comment">
 		update
 			comm_post_comments
-		set
+		set	
 			comment_emp_no = #empNo#,
 			comment_content = #content#,
 			comment_deleted = #deleted#,
-			comment_created_date = #createdDate#,
 			comment_updated_date = sysdate,
+			comment_deleted_date = #deletedDate#,
 			comment_post_no = #postNo#	
-		where
+		where	
 			comment_no = #no#
 	</update>
+
 </sqlMap>
 
