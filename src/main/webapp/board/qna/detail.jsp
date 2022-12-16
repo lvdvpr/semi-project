@@ -1,3 +1,6 @@
+<%@page import="com.community.dao.ReadingsDao"%>
+<%@page import="com.community.vo.Reading"%>
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dto.CommentDto"%>
 <%@page import="com.community.vo.Comment"%>
@@ -27,6 +30,19 @@
 	<div class="row mb-3">
 		<div class="col">
 			<h1 class="heading">게시글 상세정보</h1>
+<%
+	// 중복 추천 알림창
+	String errorCode = request.getParameter("error");
+	
+	if("deny".equals(errorCode)) {
+%>
+	<div class="alter alert-danger">
+		<strong>추천 실패</strong> 이미 추천하셨습니다
+	</div>
+<%
+	}
+%>
+
 		</div>
 	</div>
 	<div class="row mb-3">
@@ -38,17 +54,34 @@
 					<col width="15%">
 					<col width="35%">
 				</colgroup>
-<%
+
+<%	
 	int postNo = StringUtils.stringToInt(request.getParameter("no"));
 	
-
+	// postNo로 조회한 게시물 상세정보 반환
 	QuestionDao questionDao = new QuestionDao();
 	QnaDto qnaDto = questionDao.getPostByNo(postNo);
 	
+	// 게시물 readCount +1 증가
 	Question question = qnaDto.getQuestion();
 	question.setReadCount(question.getReadCount() +1);
 	
 	questionDao.updatePost(question);
+	
+	// 게시글 열람 정보에 필요한 empNo를 위한 로그인 session객체
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+	
+	// 게시글 열람 정보
+	/*
+	Reading reading = new Reading();
+	ReadingsDao readingsDao = ReadingsDao.getInstance();
+
+	reading.setPostNo(question.getNo());
+	reading.setEmpNo(employee.getNo());
+	
+	readingsDao.insertPostReadings(reading);
+	*/
+	
 %>				
 				<tbody>
 					<tr>
@@ -82,7 +115,7 @@
 					</tr>
 				</tbody>					
 			</table>
-			<div class="d-flex justify-content-between">
+			<div class="d-flex justify-content-between">		
 				<span>
 					<a href="delete.jsp?postNo=<%=postNo %>" class="btn btn-danger btn-xs">삭제</a>
 					<a href="modifyform.jsp?postNo=<%=postNo %>" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">수정</a>
@@ -99,7 +132,6 @@
 			<form method="post" action="comment-insert.jsp">
 				<!-- 게시글의 글 번호을 value에 설정하세요 -->
 				<input type="hidden" name="postNo" value="<%=qnaDto.getNo() %>"/>
-				<input type="hidden" name="empNo" value="<%=qnaDto.getEmpNo() %>">
 				<div class="row mb-3">
 					<div class="col-sm-11">
 						<input type="text" class="form-control form-control-sm" name="content" placeholder="댓글을 남겨주세요">
@@ -123,8 +155,8 @@
 					<div class="mb-1 d-flex justify-content-between text-muted">
 				<span><%=comment.getEmpName()%></span>
 						<span><span class="me-4"><%=StringUtils.dateToText(comment.getCommentCreatedDate()) %></span> 
-						<a href="delete-comment.jsp?no=<%=postNo %>&cno=<%=comment.getCommentNo() %>" class="text-danger">
-						<i class="bi bi-trash-fill"></i></a></span>
+						<a href="delete-comment.jsp?no=<%=postNo %>&cno=<%=comment.getCommentNo() %>" class="text-danger">						
+						<i class="bi bi-trash-fill"></i></a></span>						
 					</div>
 					<p class="card-text"><%=comment.getCommentContent() %></p>
 				</div>
@@ -140,7 +172,6 @@
 <div class="modal" tabindex="-1" id="modal-form-posts">
 	<div class="modal-dialog modal-lg">
 	<form class="border p-3 bg-light" method="post" action="modifyform.jsp">
-		<!-- 게시글의 글 번호을 value에 설정하세요 -->
 		<input type="hidden" name="postNo" value="<%=postNo %>"/>
 	<div class="modal-content">
 			<div class="modal-header">
@@ -168,7 +199,6 @@
 						</div>
 					</div>
 					<div class="row mb-2">
-					<!-- 로그인 구현하면 변경 로그인 session.setAttribute로 가져오기-->
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10" >
 							<input type="text" class="form-control form-control-sm" readonly="readonly" value="<%=qnaDto.getName() %>" name="name">

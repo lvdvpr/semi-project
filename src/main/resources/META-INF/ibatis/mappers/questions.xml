@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
- 
+
 <sqlMap namespace="questions">
 	<!-- 묻고 답하기 게시글 리스트 조회 / 상세정보 답글 조회 -->
 	<select id="getAllPosts" parameterClass="map" resultClass="com.community.dto.QnaDto">           

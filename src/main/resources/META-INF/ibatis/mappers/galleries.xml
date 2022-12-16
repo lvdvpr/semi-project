@@ -4,9 +4,9 @@
  
 <sqlMap namespace="galleries">
 	<!-- 전체 갤러리 조회 // 구현 완료하고 나중에 필요없는 select항목 지우기 주석 확인후, 지우기-->
-	<select id="getAllGallery" resultClass="com.community.dto.GalleryDto">
+	<select id="getAllGallery" parameterClass="map" resultClass="com.community.dto.GalleryDto">			
 		SELECT
-		    P.POST_NO as postNo,
+		    P.POST_NO as no,
 		    P.POST_BOARD_NO as boardNo,
 		    P.POST_TITLE as title,
 		    P.POST_WRITER_NO as writerNo,
@@ -15,18 +15,12 @@
 		    P.POST_READ_COUNT as readCount,
 		    P.POST_SUGGESTION_COUNT as suggestionCount,
 		    P.POST_COMMENT_COUNT as commentcount,
-		    P.POST_DELETED as delted,
+		    P.POST_DELETED as deleted,
 		    P.POST_CREATED_DATE as createdDate,
 		    P.POST_UPDATED_DATE as updatedDate,
 		    P.POST_DELETED_DATE as deletedDate,
 		    E.EMP_NO as empNo,
-		    E.EMP_NAME as name,
-		    F.FILE_NO as fileNo,
-		    F.FILE_NAME as fileName,
-		    F.FILE_POST_NO as filePostNo,
-		    D.DEPARTMENT_NO as departmentNo,
-		    D.DEPARTMENT_NAME as departmentName,
-		    PO.POSITION_NAME as positionName
+		    E.EMP_NAME as name
 		FROM (SELECT
 		        row_number() over (order by post_no desc) row_number,
 		        P.POST_NO,
@@ -41,20 +35,106 @@
 		        P.POST_DELETED,
 		        P.POST_CREATED_DATE,
 		        P.POST_UPDATED_DATE,
-		        P.POST_DELETED_DATE
+		        P.POST_DELETED_DATE,
+		        E.EMP_NO,
+		   		E.EMP_NAME
 		    FROM
-		        COMM_POSTS P 
+		        COMM_POSTS P, COMM_EMPLOYEES E
 		    WHERE
-		        POST_BOARD_NO = 104
-		        AND POST_DELETED = 'N') P, COMM_POST_FILES F, COMM_DEPARTMENTS D, COMM_POSITIONS PO, COMM_EMPLOYEES E
+		    	POST_DELETED = 'N'
+		        <dynamic>
+		        	<isNotNull property="opt">
+		        		<isEqual property="opt" compareValue="title">
+		        		AND P.POST_TITLE like '%' || #keyword# || '%'
+		        		</isEqual>
+		        		<isEqual property="opt" compareValue="empName">
+		        		AND E.EMP_NAME like '%' || #keyword# || '%'
+		        		</isEqual>
+		        	</isNotNull>
+		        </dynamic>
+		        
+		        AND 
+		        	POST_BOARD_NO = 104
+		        AND 
+		        	p.post_writer_no = e.emp_no) P, COMM_EMPLOYEES E
 		WHERE
-			row_number betwwen #begin# and #end#
-		AND P.POST_NO = F.FILE_POST_NO
-		AND D.DEPARTMENT_NO = E.EMP_DEPT_NO
-		AND PO.POSITION_NO = E.EMP_POSITION_NO;
+			row_number between #begin# and #end#
+        AND 
+        	p.post_writer_no = e.emp_no
+		ORDER BY
+			P.POST_NO DESC
 	</select>
 
-	<select id="getGallaryByNo" parameterClass="int" resultClass="com.community.vo.Gallery">
-		
+	<select id="getTotalRows" resultClass="int">
+		SELECT
+		 	count(*)
+		FROM
+			comm_posts
+		WHERE
+			post_board_no = 104
+			AND post_deleted = 'N'
 	</select>
+	
+	<insert id="insertGalleryPost" parameterClass="com.community.vo.Gallery">
+		INSERT INTO COMM_POSTS
+   			 (POST_NO, POST_BOARD_NO, POST_TITLE, POST_WRITER_NO, POST_CONTENT, POST_IMPORTANT)
+		VALUES
+  			 (#no#, #boardNo#, #title#, #writerNo#, #content#, #important#)
+	</insert>
+	
+	<!-- postNo를 받아서 게시글 조회 -->
+	<select id="getPostByNo" parameterClass="int" resultClass="com.community.vo.Gallery">
+		SELECT
+		    POST_NO as no,
+		    POST_BOARD_NO as boardNo,
+		    POST_TITLE as title,
+		    POST_WRITER_NO as writerNo,
+		    POST_CONTENT as content,
+		    POST_IMPORTANT as important,
+		    POST_READ_COUNT as readCount,
+		    POST_SUGGESTION_COUNT as suggestionCount,
+		    POST_COMMENT_COUNT as commentcount,
+		    POST_DELETED as deleted,
+		    POST_CREATED_DATE as createdDate,
+		    POST_UPDATED_DATE as updatedDate,
+		    POST_DELETED_DATE as deletedDate
+		FROM 
+			COMM_POSTS
+		WHERE
+			POST_NO = #postNo#
+	</select>
+	
+	<!-- post 수정 -->
+	<update id="updatedPost" parameterClass="com.community.vo.Gallery">
+		UPDATE
+			COMM_POSTS
+		SET
+			POST_NO = #no#,
+		    POST_BOARD_NO = #boardNo#,
+		    POST_TITLE = #title#,
+		    POST_WRITER_NO = #writerNo#,
+		    POST_CONTENT = #content#,
+		    POST_IMPORTANT = #important#,
+		    POST_READ_COUNT = #readCount#,
+		    POST_SUGGESTION_COUNT = #suggestionCount#,
+		    POST_COMMENT_COUNT = #commentCount#,
+		    POST_DELETED = #deleted#,
+		    POST_CREATED_DATE = #createdDate#,
+		    POST_UPDATED_DATE = sysdate,
+		    POST_DELETED_DATE = #deletedDate#
+		WHERE
+			POST_NO = #postNo#       
+	</update>
+	
+	<!-- post deleted -->
+	<update id="deletedPost" parameterClass="com.community.vo.Gallery">
+		UPDATE
+			COMM_POSTS
+		SET
+			POST_DELETED = #deleted#,
+			POST_UPDATED_DATE = sysdate,
+		    POST_DELETED_DATE = sysdate
+		WHERE
+			POST_NO = #postNo#    
+	</update>
 </sqlMap>

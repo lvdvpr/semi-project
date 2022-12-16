@@ -49,5 +49,5 @@ import com.community.vo.Employee;
 	public Employee getEmployeeByEmpNo(int no) {                           // by admin
 		return (Employee) SqlMapper.selectOne("getEmployeeByEmpNo", no);
 	}
-  
+
 }

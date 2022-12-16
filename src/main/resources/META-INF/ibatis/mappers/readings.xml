@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+ 
+<sqlMap namespace="postReadings">
+	<insert id="insertPostReadings" parameterClass="com.community.vo.Reading">
+		INSERT INTO COMM_POST_READINGS
+			(READING_POST_NO, READING_EMP_NO)
+		VALUES
+			(#readingPostNo#, #readingEmpNo)
+	</insert>
+</sqlMap>

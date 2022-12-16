@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dao.QuestionDao"%>
 <%@page import="com.community.vo.Question"%>
@@ -10,18 +11,21 @@
 	// 게시글 번호, 내용, 직원번호
 	int no = StringUtils.stringToInt(request.getParameter("postNo"));
 	String commentContent = request.getParameter("content");
-	int commentEmpNo = StringUtils.stringToInt(request.getParameter("empNo"));
+	
+	// empNo를 가지고 오는 session객체
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
 	
 	Comment comment = new Comment();
 	
 	comment.setContent(commentContent);
-	comment.setEmpNo(commentEmpNo);
+	comment.setEmpNo(employee.getNo());
 	comment.setPostNo(no);
 	
 	// comment 등록
 	CommentDao commentDao = new CommentDao();	
 	commentDao.insertComment(comment);
-	 
+	
+	// 게시물 추천수 +1 증가
 	QuestionDao questionDao = new QuestionDao();
 	Question question = questionDao.getNoPost(no);
 	

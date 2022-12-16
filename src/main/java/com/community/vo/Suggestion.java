@@ -1,9 +1,19 @@
 package com.community.vo;
 
 public class Suggestion {
-	
-	private int suggestionPostNo;
+
+	private int postNo;
+  private int suggestionPostNo;
 	private int empNo;
+
+	public int getPostNo() {
+		return postNo;
+	}
+
+	public void setPostNo(int postNo) {
+		this.postNo = postNo;
+	}
+
 	
 	public Suggestion() {};
 	
@@ -20,10 +30,7 @@ public class Suggestion {
 		this.empNo = empNo;
 	}
 
-	@Override
-	public String toString() {
-		return "Suggestion [suggestionPostNo=" + suggestionPostNo + ", empNo=" + empNo + "]";
-	}
+
 	
 }
 

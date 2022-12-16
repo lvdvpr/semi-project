@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.Pagination"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="java.util.Map"%>
@@ -25,7 +26,7 @@
 <div class="container my-3">
 	<div class="row mb-3">
 		<div class="col">
-			<h1 class="heading">묻고 답하기</h1>
+			<h1 class="heading">묻고 답하기</h1>	
 		</div>
 	</div>
 	<div class="row mb-3">
@@ -44,7 +45,8 @@
 			<div class="card">
 				<div class="card-header">묻고 답하기 게시판</div>
 <%
-	
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+
 	// 현재 페이지
 	int currentPage = StringUtils.stringToInt(request.getParameter("page"), 1);
 	int rows = StringUtils.stringToInt(request.getParameter("rows"), 10);
@@ -75,14 +77,12 @@
 						<div class="mb-2 d-flex justify-content-between">
 							<div>
 								<select class="form-select form-select-xs" name="rows" >
-								<!-- 마저 구현하기 -->
 									<option value="10" <%=rows == 10 ? "selected" : "" %> > 10</option>
 									<option value="15" <%=rows == 15 ? "selected" : "" %> > 15</option>
 									<option value="20" <%=rows == 20 ? "selected" : ""%> > 20</option>
 								</select>
 							</div>
 							<div>
-								<small><input type="checkbox"> 안읽은 게시글</small>
 								<select class="form-select form-select-xs" name="opt">
 									<option value="title" <%="title".equals(opt) ? "selected" : "" %> id="title" > 제목</option>
 									<option value="empName" <%="empName".equals(opt) ? "selected" : "" %> id="empName" > 작성자</option>
@@ -114,14 +114,26 @@
 							</thead>
 <%
 	for (QnaDto questions : questionList) {
-		
+
 		int postNo = questions.getNo();
 		int postOriginNo = questions.getOriginalNo();
 		
 	if (postNo != postOriginNo) {
 %>								<!-- 질문글 -->
 								<tr>
-									<td><input type="checkbox" name="postNo" value="<%=questions.getNo() %>"/></td>
+									<td>
+<%
+	if (employee != null && employee.getNo() == questions.getWriterNo()) {
+%>
+										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" />
+<%
+	} else {
+%>
+										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" disabled="disabled"/>
+<%
+	}
+%>
+									</td>
 									<td><%=questions.getNo() %></td>
 									<td class="ps-4"><a href="detail.jsp?no=<%=questions.getNo() %>" class="text-decoration-none text-dark"><i class="bi bi-arrow-return-right"></i><%=questions.getTitle() %></a></td>
 									<td><%=questions.getName() %></td>
@@ -135,7 +147,19 @@
 								<!-- 답글 -->
 							<tbody>							
 								<tr>
-									<td><input type="checkbox" name="postNo" value="<%=questions.getNo() %>"/></td>
+									<td>
+<%
+		if (employee != null && employee.getNo() == questions.getWriterNo()) {
+%>
+										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" />
+<%
+		} else {
+%>
+										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" disabled="disabled"/>
+<%
+		}
+%>
+									</td>
 									<td><%=questions.getNo() %></td>
 									<td><a href="detail.jsp?no=<%=questions.getNo() %>" class="text-decoration-none text-dark">
 										<i class="bi bi-question-circle-fill"></i><%=questions.getTitle() %></a></td>
@@ -223,10 +247,8 @@
 						<div class="col-sm-10">
 							<input type="text" class="form-control form-control-sm" placeholder="제목" name="title">
 						</div>
-					</div>
+					</div>					
 					<div class="row mb-2">
-					<!-- 로그인 완료되면 추가해야함 -->
-						<input type="hidden" name="writerNo" value="">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control form-control-sm" readonly="readonly" value="홍길동" name="emp-name">
@@ -252,7 +274,7 @@
 					</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal">닫기</button>
-				<button type="submit" class="btn btn-primary btn-xs">등록</button>
+				<button type="submit" class="btn btn-primary btn-xs" id="insert-post">등록</button>
 			</div>
 				</form>
 			</div>
@@ -291,8 +313,6 @@
 						</div>
 					</div>
 					<div class="row mb-2">
-					<!-- 로그인 완료되면 추가해야함 -->
-						<input type="hidden" name="writerNo" value="">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control form-control-sm" readonly="readonly" value="홍길동" name="emp-name">
@@ -325,7 +345,6 @@
 		</div>
 	</div>
 </div>
-
 <form id="form-delete" method="get" action="delete.jsp"></form>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -342,8 +361,8 @@ $(function() {
 	
 	// 10, 15, 20선택시 페이지 네이션 값 전해주기
 	$(".pagination a").click(function(event) {
-		event.preventDefault(); // 얘 때문인 거 같음 - 없애면 2페이지로 넘어갈 때 유지가 안되고, 있으면 1페이지에서 움직이지 않음
-								// a태그를 버튼으로 바꾸고 href로 전해주는 값을 form 태그를 지정해 전해준다...?? 이게 맞는지
+		event.preventDefault(); 
+								
 		var pageNo = $(this).attr("data-posts-no");
 		
 		$(":input[name=page]").val(pageNo);
@@ -384,8 +403,6 @@ $(function() {
 			$("#all-checkbox").prop("checked", false);
 			
 		}
-				// if문 대신 사용하던데 코드 해석이 안된다.
-				// $("#all-checkbox").prop("checked", checkboxNumber == checkboxCheckedNumber)
 		})
 	
 	// 게시글 일반/중요 구현
@@ -431,12 +448,17 @@ $(function() {
 		for (var index = 0; index < $deletedCheckboxs.length; index++) {
 			var el = $deletedCheckboxs[index];
 			var postNo = $(el).val();
-			var input = "<input type='hidden' name='postNo' value='"+postNo+"'>";
-			$form.append(input);
+			var inputPostNo = "<input type='hidden' name='postNo' value='"+postNo+"'>";
+			
+			// 여기
+			//var inputWriterNo = "<input type='hidden' name='writerNo' value='"+writerNo+"'>";
+			
+			$form.append(inputPostNo);
+			//$form.append(inputWriterNo);
 		}
 		$form.trigger('submit');
 	})
-		
+
 })
 </script>
 </body>

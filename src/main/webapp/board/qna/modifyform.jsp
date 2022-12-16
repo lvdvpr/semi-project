@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dao.QuestionDao"%>
 <%@page import="com.community.vo.Question"%>
@@ -8,9 +9,10 @@
 	int boardNo = StringUtils.stringToInt(request.getParameter("boardNo"));
 	String title = request.getParameter("title");
 	String content = request.getParameter("content");
-	// 로그인 session.setAttribute로 가져오기
-	int wirterNo = 1;
 	String important = request.getParameter("important");
+	
+	// 로그인 session.getAttribute로 가져오기
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
 	
 	QuestionDao questionDao = new QuestionDao();
 	Question question = questionDao.getNoPost(no);
@@ -20,6 +22,7 @@
 	question.setTitle(title);
 	question.setContent(content);
 	question.setImportant(important);
+	question.setWriterNo(employee.getNo());
 	
 	questionDao.updatePost(question);
 	

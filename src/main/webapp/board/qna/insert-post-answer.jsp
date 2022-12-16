@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dao.QuestionDao"%>
 <%@page import="com.community.vo.Question"%>
@@ -10,8 +11,8 @@
 	int originalNo = StringUtils.stringToInt(request.getParameter("originalNo"));
 	String important = request.getParameter("important");
 	
-	// 로그인 추가 시 바꿔야함, emp_name도 추가해야함
-	int writerNo = 1;
+	// writerNo 가져오는 session객체
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
 	
 	Question question = new Question();
 	
@@ -20,8 +21,7 @@
 	question.setContent(content);
 	question.setOriginalNo(originalNo);
 	question.setImportant(important);
-	// 로그인 추가 시 바꿔야함
-	question.setWriterNo(writerNo);
+	question.setWriterNo(employee.getNo());
 	
 	QuestionDao questionDao = new QuestionDao();
 	
