@@ -3,20 +3,25 @@ package com.community.dto;
 import java.util.Date;
 
 public class CommentDto {
+
 	
-	private int commentNo;
-	private int commentEmpNo;
-	private String commentContent;
-	private String commentDeleted;
-	private Date commentCreatedDate;
-	private Date commentUpdatedDate;
-	private Date commentDeletedDate;
-	private int commentPostNo;
+	// comm_posts_comment 테이블
+	private int commentNo;				
+	private int commentEmpNo;			
+	private String commentContent;		
+	private String commentDeleted;		
+	private Date commentCreatedDate;	
+	private Date commentUpdatedDate;	
+	private Date commentDeletedDate;	
+	private int commentPostNo;			
+	// comm_employees 테이블
+	private int empNo;					
+	private int empPassword;
 	private String empName;
+	private int empDeptNo;
+	private int empPositionNo;
 	
-	public CommentDto () {
-		
-	}
+	public CommentDto () {}
 
 	public int getCommentNo() {
 		return commentNo;
@@ -82,6 +87,23 @@ public class CommentDto {
 		this.commentPostNo = commentPostNo;
 	}
 
+
+	public int getEmpNo() {
+		return empNo;
+	}
+
+	public void setEmpNo(int empNo) {
+		this.empNo = empNo;
+	}
+
+	public int getEmpPassword() {
+		return empPassword;
+	}
+
+	public void setEmpPassword(int empPassword) {
+		this.empPassword = empPassword;
+	}
+
 	public String getEmpName() {
 		return empName;
 	}
@@ -90,12 +112,23 @@ public class CommentDto {
 		this.empName = empName;
 	}
 
-	@Override
-	public String toString() {
-		return "CommentDto [commentNo=" + commentNo + ", commentEmpNo=" + commentEmpNo + ", commentContent="
-				+ commentContent + ", commentDeleted=" + commentDeleted + ", commentCreatedDate=" + commentCreatedDate
-				+ ", commentUpdatedDate=" + commentUpdatedDate + ", commentDeletedDate=" + commentDeletedDate
-				+ ", commentPostNo=" + commentPostNo + ", empName=" + empName + "]";
+
+	public int getEmpDeptNo() {
+		return empDeptNo;
 	}
+
+	public void setEmpDeptNo(int empDeptNo) {
+		this.empDeptNo = empDeptNo;
+	}
+
+	public int getEmpPositionNo() {
+		return empPositionNo;
+	}
+
+	public void setEmpPositionNo(int empPositionNo) {
+		this.empPositionNo = empPositionNo;
+	}
+
+
 	
 }

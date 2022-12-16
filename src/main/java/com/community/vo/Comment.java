@@ -63,11 +63,6 @@ public class Comment {
 	public void setPostNo(int postNo) {
 		this.postNo = postNo;
 	}
-	@Override
-	public String toString() {
-		return "Comment [no=" + no + ", empNo=" + empNo + ", content=" + content + ", deleted=" + deleted
-				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
-				+ ", postNo=" + postNo + "]";
-	}
-	
+
 }
+

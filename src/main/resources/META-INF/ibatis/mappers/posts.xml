@@ -2,19 +2,206 @@
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
  
-<sqlMap namespace="departments">
+<sqlMap namespace="posts">
+	<!-- posts.jsp 관리자 전체 게시물 조회 -->
+	<select id="getAllPosts" parameterClass="map" resultClass="com.community.dto.PostListDto">
+			select
+				 POST_NO as no,
+				 POST_TITLE as title,
+				 POST_DELETED as deleted,
+				 EMP_NAME as name,
+				 POST_CREATED_DATE as createdDate
 
-	<select id="getAllDepartments" resultClass="com.sample.vo.Department">
-		select
-			department_id as id,
-			department_name as name
-		from
-			departments
-		where
-			manager_id is not null
-		order by
-			department_id asc
+			from
+				(select
+						ROW_NUMBER() OVER(ORDER BY POST_NO DESC) AS row_numbers,
+						A.POST_NO,
+						A.POST_TITLE,
+						A.POST_DELETED,
+						B.EMP_NAME,
+						A.POST_CREATED_DATE
+				from
+					comm_posts A, comm_employees B
+				where
+					a.post_deleted in ('D','N')
+					and   a.post_writer_no = b.emp_no
+				<dynamic>
+					<isNotNull property="boardNo">
+						and A.post_board_no = #boardNo#
+					</isNotNull>
+				</dynamic> 
+			)
+			where
+				row_numbers between #begin# and #end#
+		</select>
+		<!-- 관리자 게시물 상세 조회 -->
+		<select id="getDetailPostByNo" parameterClass="int" resultClass="com.community.dto.AdminPostDto">
+			select	
+				P.POST_NO as no,
+				P.POST_BOARD_NO as boardNo,
+				P.POST_WRITER_NO as writerNo,
+				P.POST_IMPORTANT as important,  
+				P.POST_TITLE as title,
+				P.POST_SUGGESTION_COUNT as suggestionCount,
+				P.POST_READ_COUNT as readCount,
+				P.POST_ORIGINAL_NO as originalNo, 
+				P.POST_COMMENT_COUNT as commentCount,
+				P.POST_CONTENT as postContent,
+				P.POST_DELETED as postDeleted,
+				P.POST_CREATED_DATE as createdDate,
+				E.emp_no as empNo,
+				E.EMP_NAME as name ,
+				D.DEPARTMENT_NAME as departmentName,
+				O.POSITION_NAME as positionName
+				
+			FROM
+				COMM_POSTS P, COMM_EMPLOYEES E, COMM_DEPARTMENTS D, COMM_POSITIONS O
+			WHERE
+				 P.POST_WRITER_NO = E.EMP_NO
+			AND 
+				 D.DEPARTMENT_NO = E.EMP_DEPT_NO
+		    AND 
+		    	e.emp_position_no = o.position_no
+	    	AND
+	    		P.POST_NO = #value#
+		</select>
+	
+	<!-- 관리자 게시물 리스트 전체 행 조회 - 페이징 용도 -->
+	<select id="getTotalRows" parameterClass="map" resultClass="int">
+		select 
+		      count(*)
+        from 
+        		comm_posts a, comm_employees B
+        where 
+        		 a.post_writer_no = b.emp_no
+        		 and a.post_deleted in ('D','N')
+   		 <dynamic>
+				<isNotNull property="boardNo">
+						and A.post_board_no = #boardNo#
+				</isNotNull>
+		</dynamic> 
 	</select>
+	
+	<!-- 관리자 게시물 조회 -->
+	<select id="getPostByNo" parameterClass="int" resultClass="com.community.vo.Post">
+	select 
+		POST_TITLE as title,
+		POST_BOARD_NO as boardNo,
+		POST_WRITER_NO as writerNo,
+		POST_CONTENT as content,
+		POST_IMPORTANT as important,
+		POST_READ_COUNT as readCount,
+		POST_SUGGESTION_COUNT as suggestionCount,
+		POST_COMMENT_COUNT as commentCount,
+		POST_DELETED as deleted,
+		POST_UPDATED_DATE as updatedDate,
+		POST_DELETED_DATE as deletedDate,
+		POST_ORIGINAL_NO as originalNo
+	from
+		comm_posts
+	where
+		post_no = #value#
+	</select>
+	
+	<!-- 답변 게시물 삽입 -->
+	<insert id="insertAnswer" parameterClass="com.community.vo.Post">
+	insert into 
+				comm_posts
+						(post_no,
+			             post_board_no,
+			             post_title,
+			             post_writer_no,
+			             post_content,
+			             post_important,
+			             post_original_no)
+		values
+			(comm_posts_seq.nextval, #boardNo#, #title#, #writerNo#, #content#, #important#, #originalNo#)	
+	</insert>
+	<!-- 게시물 수정-->
+	<update id="updatePost" parameterClass="com.community.vo.Post">
+		update 
+			comm_posts	
+		set
+				POST_TITLE = #title#,
+				POST_BOARD_NO = #boardNo#,
+				POST_CONTENT = #content#,
+				POST_IMPORTANT = #important#,
+				POST_READ_COUNT = #readCount#,
+				POST_SUGGESTION_COUNT = #suggestionCount#,
+				POST_COMMENT_COUNT = #commentCount#,
+				POST_DELETED = #deleted#,
+				POST_UPDATED_DATE = sysdate,
+				POST_ORIGINAL_NO = #originalNo#
+		where
+				POST_NO = #no#
+	</update>
+	
+	
+	
+	<insert id="insertSuggestion" parameterClass="com.community.vo.Suggestion">
+	insert into COMM_POST_SUGGESTIONS (SUGGESTION_POST_NO, SUGGESTION_EMP_NO)
+	values (#suggestionPostNo#, #empNo#)
+	</insert>
+	
+	<insert id="insertReading" parameterClass="com.community.vo.Reading">
+	insert into COMM_POST_READINGS (READING_POST_NO, READING_EMP_NO)
+	values (#postNo#, #empNo#)
+	</insert>
+	
+	<select id="getCommentsByPostNo" parameterClass="int" resultClass="com.community.dto.AdminCommentDto">
+		select 
+			a.comment_no as cno, b.emp_name as name, a.comment_created_date as createdDate, a.comment_content as content		
+		from
+			 comm_post_comments a, comm_employees b
+		where 
+			 a.comment_emp_no = b.emp_no
+			 and a.comment_post_no = #value#
+			 and a.comment_deleted = 'N'
+	    order by 
+	    		a.comment_no desc
+
+	</select>
+	
+	<insert id="insertComment" parameterClass="com.community.vo.Comment">
+		insert into COMM_POST_COMMENTS (COMMENT_NO, COMMENT_EMP_NO, COMMENT_CONTENT, COMMENT_POST_NO)
+		values (COMM_COMMENTS_SEQ.NEXTVAL, #empNo#, #content#, #postNo#)
+	</insert>
+	
+	<select id="getCommentByCno" parameterClass="int" resultClass="com.community.dto.AdminCommentDto">
+		select 
+			a.comment_no as cno,
+			a.comment_emp_no as empNo,
+			a.comment_content as content,
+			a.comment_deleted as deleted,
+			b.emp_name as name,
+			a.comment_created_date as createdDate,
+			a.comment_post_no as postNo
+		from
+			comm_post_comments a, comm_employees b
+		where
+			a.comment_emp_no = b.emp_no and
+			a.comment_no = #value#
+	</select>
+	
+	<update id="updateComment" parameterClass="com.community.vo.Comment">
+		update
+			comm_post_comments
+		set
+			comment_emp_no = #empNo#,
+			comment_content = #content#,
+			comment_deleted = #deleted#,
+			comment_created_date = #createdDate#,
+			comment_updated_date = #updatedDate#,
+			comment_deleted_date = #deletedDate#,
+			comment_post_no = #postNo#
+		where
+			comment_no = #no#
+	</update>
+	
+	<insert id="insertNotice" parameterClass="com.community.vo.Notice">
+		insert into comm_post_notices(notice_no, notice_post_no, notice_send_emp_no, notice_receive_emp_no, notice_content)
+		values (comm_notices_seq.nextval, #postNo#, #sendEmpNo#, #receiveEmpNo#, #content#)
+	</insert>
 	
 </sqlMap>
 

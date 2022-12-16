@@ -16,9 +16,8 @@ public class Employee {
 	private Date createdDate;
 	private Date updatedDate;
 	private Date deletedDate;
-	
 	public Employee() {}
-	
+  
 	public int getNo() {
 		return no;
 	}
@@ -88,9 +87,12 @@ public class Employee {
 	public Date getDeletedDate() {
 		return deletedDate;
 	}
+
+
 	public void setDeletedDate(Date deletedDate) {
 		this.deletedDate = deletedDate;
 	}
+	
 	@Override
 	public String toString() {
 		return "Employee [no=" + no + ", password=" + password + ", name=" + name + ", email=" + email + ", phone="

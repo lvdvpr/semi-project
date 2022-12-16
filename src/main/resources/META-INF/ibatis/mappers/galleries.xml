@@ -2,15 +2,83 @@
 <!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
  
-<sqlMap namespace="gallaries">
-
-	<select id="getGallaryByNo" parameterClass="int" resultClass="com.community.vo.Gallary">
-		select
-			*
-		from
-			semi_community_posts
-		where
-			post_board_no = 300
-			and post_no = #value#
+<sqlMap namespace="galleries">
+	<!-- 전체 갤러리 조회 // 구현 완료하고 나중에 필요없는 select항목 지우기 주석 확인후, 지우기-->
+	<select id="getAllGallery" parameterClass="map" resultClass="com.community.dto.GalleryDto">			
+		SELECT
+		    P.POST_NO as no,
+		    P.POST_BOARD_NO as boardNo,
+		    P.POST_TITLE as title,
+		    P.POST_WRITER_NO as writerNo,
+		    P.POST_CONTENT as content,
+		    P.POST_IMPORTANT as important,
+		    P.POST_READ_COUNT as readCount,
+		    P.POST_SUGGESTION_COUNT as suggestionCount,
+		    P.POST_COMMENT_COUNT as commentcount,
+		    P.POST_DELETED as delted,
+		    P.POST_CREATED_DATE as createdDate,
+		    P.POST_UPDATED_DATE as updatedDate,
+		    P.POST_DELETED_DATE as deletedDate,
+		    E.EMP_NO as empNo,
+		    E.EMP_NAME as name
+		FROM (SELECT
+		        row_number() over (order by post_no desc) row_number,
+		        P.POST_NO,
+		        P.POST_BOARD_NO,
+		        P.POST_TITLE,
+		        P.POST_WRITER_NO,
+		        P.POST_CONTENT,
+		        P.POST_IMPORTANT,
+		        P.POST_READ_COUNT,
+		        P.POST_SUGGESTION_COUNT,
+		        P.POST_COMMENT_COUNT,
+		        P.POST_DELETED,
+		        P.POST_CREATED_DATE,
+		        P.POST_UPDATED_DATE,
+		        P.POST_DELETED_DATE,
+		        E.EMP_NO,
+		   		E.EMP_NAME
+		    FROM
+		        COMM_POSTS P, COMM_EMPLOYEES E
+		    WHERE
+		    	POST_DELETED = 'N'
+		        <dynamic>
+		        	<isNotNull property="opt">
+		        		<isEqual property="opt" compareValue="title">
+		        		AND P.POST_TITLE like '%' || #keyword# || '%'
+		        		</isEqual>
+		        		<isEqual property="opt" compareValue="empName">
+		        		AND E.EMP_NAME like '%' || #keyword# || '%'
+		        		</isEqual>
+		        	</isNotNull>
+		        </dynamic>
+		        
+		        AND 
+		        	POST_BOARD_NO = 104
+		        AND 
+		        	p.post_writer_no = e.emp_no) P, COMM_EMPLOYEES E
+		WHERE
+			row_number between #begin# and #end#
+        AND 
+        	p.post_writer_no = e.emp_no
+		ORDER BY
+			P.POST_NO DESC
 	</select>
+
+	<select id="getTotalRows" resultClass="int">
+		SELECT
+		 	count(*)
+		FROM
+			comm_posts
+		WHERE
+			post_board_no = 104
+			AND post_deleted = 'N'
+	</select>
+	
+	<insert id="insertGalleryPost" parameterClass="com.community.vo.Gallery">
+		INSERT INTO COMM_POSTS
+   			 (POST_NO, POST_BOARD_NO, POST_TITLE, POST_WRITER_NO, POST_CONTENT, POST_IMPORTANT)
+		VALUES
+  			 (COMM_POSTS_SEQ.nextval, #boardNo#, #title#, #writerNo#, #content#, #important#)
+	</insert>
 </sqlMap>
