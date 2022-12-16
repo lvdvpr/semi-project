@@ -30,7 +30,7 @@
 	<sqlMap resource="META-INF/ibatis/mappers/galleries.xml" />
 	<sqlMap resource="META-INF/ibatis/mappers/mypages.xml" />
 	<sqlMap resource="META-INF/ibatis/mappers/notices.xml" />
-<!-- <sqlMap resource="META-INF/ibatis/mappers/postreadings.xml" />  -->
+<!-- <sqlMap resource="META-INF/ibatis/mappers/readings.xml" />  -->
 	<sqlMap resource="META-INF/ibatis/mappers/positions.xml" />
 	<sqlMap resource="META-INF/ibatis/mappers/posts.xml" />
 	<sqlMap resource="META-INF/ibatis/mappers/questions.xml" />

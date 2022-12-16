@@ -15,7 +15,7 @@
 		    P.POST_READ_COUNT as readCount,
 		    P.POST_SUGGESTION_COUNT as suggestionCount,
 		    P.POST_COMMENT_COUNT as commentcount,
-		    P.POST_DELETED as delted,
+		    P.POST_DELETED as deleted,
 		    P.POST_CREATED_DATE as createdDate,
 		    P.POST_UPDATED_DATE as updatedDate,
 		    P.POST_DELETED_DATE as deletedDate,
@@ -79,6 +79,62 @@
 		INSERT INTO COMM_POSTS
    			 (POST_NO, POST_BOARD_NO, POST_TITLE, POST_WRITER_NO, POST_CONTENT, POST_IMPORTANT)
 		VALUES
-  			 (COMM_POSTS_SEQ.nextval, #boardNo#, #title#, #writerNo#, #content#, #important#)
+  			 (#no#, #boardNo#, #title#, #writerNo#, #content#, #important#)
 	</insert>
+	
+	<!-- postNo를 받아서 게시글 조회 -->
+	<select id="getPostByNo" parameterClass="int" resultClass="com.community.vo.Gallery">
+		SELECT
+		    POST_NO as no,
+		    POST_BOARD_NO as boardNo,
+		    POST_TITLE as title,
+		    POST_WRITER_NO as writerNo,
+		    POST_CONTENT as content,
+		    POST_IMPORTANT as important,
+		    POST_READ_COUNT as readCount,
+		    POST_SUGGESTION_COUNT as suggestionCount,
+		    POST_COMMENT_COUNT as commentcount,
+		    POST_DELETED as deleted,
+		    POST_CREATED_DATE as createdDate,
+		    POST_UPDATED_DATE as updatedDate,
+		    POST_DELETED_DATE as deletedDate
+		FROM 
+			COMM_POSTS
+		WHERE
+			POST_NO = #postNo#
+	</select>
+	
+	<!-- post 수정 -->
+	<update id="updatedPost" parameterClass="com.community.vo.Gallery">
+		UPDATE
+			COMM_POSTS
+		SET
+			POST_NO = #no#,
+		    POST_BOARD_NO = #boardNo#,
+		    POST_TITLE = #title#,
+		    POST_WRITER_NO = #writerNo#,
+		    POST_CONTENT = #content#,
+		    POST_IMPORTANT = #important#,
+		    POST_READ_COUNT = #readCount#,
+		    POST_SUGGESTION_COUNT = #suggestionCount#,
+		    POST_COMMENT_COUNT = #commentCount#,
+		    POST_DELETED = #deleted#,
+		    POST_CREATED_DATE = #createdDate#,
+		    POST_UPDATED_DATE = sysdate,
+		    POST_DELETED_DATE = #deletedDate#
+		WHERE
+			POST_NO = #postNo#       
+	</update>
+	
+	<!-- post deleted -->
+	<update id="deletedPost" parameterClass="com.community.vo.Gallery">
+		UPDATE
+			COMM_POSTS
+		SET
+			POST_DELETED = #deleted#,
+			POST_UPDATED_DATE = sysdate,
+		    POST_DELETED_DATE = sysdate
+		WHERE
+			POST_NO = #postNo#    
+	</update>
 </sqlMap>

@@ -3,7 +3,7 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
  
 <sqlMap namespace="postReadings">
-	<insert id="updatePostReadings" parameterClass="com.community.vo.PostReadings">
+	<insert id="insertPostReadings" parameterClass="com.community.vo.Reading">
 		INSERT INTO COMM_POST_READINGS
 			(READING_POST_NO, READING_EMP_NO)
 		VALUES

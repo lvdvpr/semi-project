@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="com.community.util.Pagination"%>
 <%@page import="java.util.Map"%>
@@ -44,6 +45,8 @@
 	param.put("end", pagination.getEnd());
 	
 	List<GalleryDto> galleryList = galleryDao.getAllGallery(param);
+	
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
 %>			
 		</div>
 	</div>
@@ -107,12 +110,24 @@
 							<tbody>
 <%
 	for (GalleryDto galleryDto : galleryList) {
+		
+		if (employee != null && employee.getNo() == galleryDto.getEmpNo()) {
 %>							
 								<tr>
-									<td><input type="checkbox" name="checkbox" value=""/></td>
+									<td><input type="checkbox" name="postCheckbox" value="<%=galleryDto.getNo() %>" />
+								</td>
+<%
+		} else {
+%>								
+								<tr>
+									<td><input type="checkbox" name="postCheckbox" value="<%=galleryDto.getNo() %>" disabled="disabled"/>
+								</td>
+<%
+		}
+%>								
 									<td><%=galleryDto.getNo() %></td>
 									<td><a href="download"><i class="bi bi-paperclip"></i></a></td>
-									<td><a href="detail.jsp" class="text-decoration-none text-dark"><%=galleryDto.getTitle() %></a></td>
+									<td><a href="detail.jsp?no<%=galleryDto.getNo() %>" class="text-decoration-none text-dark"><%=galleryDto.getTitle() %></a></td>
 									<td><%=galleryDto.getName() %></td>
 									<td><%=StringUtils.dateToText(galleryDto.getCreatedDate()) %></td>
 									<td><%=galleryDto.getReadCount() %></td>
@@ -158,7 +173,7 @@
 %>					
 					<div class="text-end">
 						<button class="btn btn-dark btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">등록</button>
-						<button class="btn btn-outline-dark btn-xs">삭제</button>
+						<button id="delete-button" class="btn btn-outline-dark btn-xs">삭제</button>
 					</div>
 				</div>
 			</div>
@@ -195,8 +210,6 @@
 						</div>
 					</div>
 					<div class="row mb-2">
-					<!-- 로그인 구현시 writerNo 바꾸기  -->
-					<input type="hidden" name="writerNo" value="">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
 							<input type="text" class="form-control form-control-sm" name="empName" readonly="readonly" value="홍길동">
@@ -247,6 +260,10 @@
 		</div>
 	</div>
 </div>
+<!-- (여기) checkboxCheck하면 postNo넘어가게 구현 -->
+<form id="form-tag" method="get" action="delete.jsp">
+	<input type="hidden" name="postNo">
+</form>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -282,17 +299,20 @@ $(function() {
 	
 	// all-check 구현
 	$("#all-checkbox").change(function() {
+		let $allCheck = $(this).prop('checked');
 		
-		$(":input[name=checkbox]").prop("checked", "checked");
+		$(":input[name=postCheckbox]").prop("checked", $allCheck);
 		
 	})
 	
-	let $CheckboxChecked = $(":input[name=checkbox]:checked").length;
-	let $CheckboxNotChecked = $(":input[name=checkbox]").length;
-	$(":input[name=checkbox]").change(function() {
+	$(":input[name=postCheckbox]").change(function() {
+	let $CheckboxChecked = $(":input[name=postCheckbox]:checked").length;
+	let $CheckboxNotChecked = $(":input[name=postCheckbox]").length;
 		
-		if($CheckboxChecked != $CheckboxNotChecked) {
-			$("#all-checkbox").prop("checked", "");
+		if($CheckboxChecked == $CheckboxNotChecked) {
+			$("#all-checkbox").prop("checked", true);
+		} else {
+			$("#all-checkbox").prop("checked", false);
 		}
 	})
 	
@@ -302,6 +322,29 @@ $(function() {
 		var $checkImportant = $(this).val();
 		
 		$(":input[name=important]").val($checkImportant);
+	})
+	
+	// 삭제하기 구현
+	$("#delete-button").click(function() {
+		
+		let $deletedCheckboxs = $(":input[name=postCheckbox]:checked").val();
+		if($deletedCheckboxs.lengh == 0) {
+			alert("지정된 게시글이 없습니다");
+			return;
+		}
+		
+		let postNo = $deletedCheckboxs.val();
+		let $form = ("#form-tag");
+		for (var indect = 0; index <$deletedCheckboxs.length; index++) {
+			var el = $deletedCheckboxs[index];
+			var postNo = $(el).val();
+			var inputPostNo = "<input type='hidden' name='postNo' value='"+postNo+"'>";
+			
+			$form.append(inputPostNo);
+		}
+		
+		$form.trigger('submit');
+		
 	})
 	
 })

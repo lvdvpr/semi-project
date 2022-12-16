@@ -1,3 +1,5 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.Map"%>
 <%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dao.SuggestionDao"%>
@@ -8,34 +10,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <!DOCTYPE html>
 <%
-	
-	int no = StringUtils.stringToInt(request.getParameter("postNo"));
+	int postNo = StringUtils.stringToInt(request.getParameter("postNo"));
 
 	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
 	
-	// 추천수 구현
-	Suggestion suggestion = new Suggestion();
+	Map<String, Integer> param = new HashMap<>();
+	param.put("postNo", postNo);
+	param.put("empNo", employee.getNo());
 	
 	SuggestionDao suggestionDao = new SuggestionDao();
-	suggestion.setSuggestionPostNo(no);
-	suggestion.setEmpNo(employee.getNo());
+	Suggestion suggestions = suggestionDao.selectSuggestion(param);
 	
-		/*
-		if (로그인에서 가져오는 사용자 번호 setAttribute name (ex. longedUser) 넣기 != null) {
-		
-		}
-		*/
-
-	// 추천수 증가를 위한 postNo에 맞는 게시글 조회
+	if (suggestions != null) {
+		response.sendRedirect("detail.jsp?no=" + postNo + "error=invalid");
+		return;
+	}
+	
+	
 	QuestionDao questionDao = new QuestionDao();
-	Question question = questionDao.getNoPost(no);
-	
+
 	// comm_post_suggestion 테이블에 등록
+	Suggestion suggestion = new Suggestion();
+	suggestion.setSuggestionPostNo(postNo);
+	suggestion.setEmpNo(employee.getNo());
 	suggestionDao.insertSuggestion(suggestion);
 
-	Question qeustion = new Question();
+	// 추천수 구현
+	// 추천수 증가를 위한 postNo에 맞는 게시글 조회
+	Question question = questionDao.getNoPost(postNo);
 	question.setSuggestionCount(question.getSuggestionCount() + 1);
 	questionDao.updatePost(question);
+
+	response.sendRedirect("detail.jsp?no=" + postNo);
 	
-	response.sendRedirect("detail.jsp?no=" + no);
+	
+	
 %>

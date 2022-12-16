@@ -45,6 +45,8 @@
 			<div class="card">
 				<div class="card-header">묻고 답하기 게시판</div>
 <%
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+
 	// 현재 페이지
 	int currentPage = StringUtils.stringToInt(request.getParameter("page"), 1);
 	int rows = StringUtils.stringToInt(request.getParameter("rows"), 10);
@@ -66,11 +68,7 @@
 	param.put("end", pagination.getEnd());
 
 	List<QnaDto> questionList = questionDao.getAllPost(param);
-	
-	// 여기
-	// writerNo를 가져오기 위한 session객체
-//	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
-//	int writerNo = employee.getNo();
+
 %>				
 				<div class="card-body">
 				<!-- 여기 아이디 주기 -->
@@ -123,7 +121,19 @@
 	if (postNo != postOriginNo) {
 %>								<!-- 질문글 -->
 								<tr>
-									<td><input type="checkbox" name="postNo" value="<%=questions.getNo() %>"/></td>
+									<td>
+<%
+	if (employee != null && employee.getNo() == questions.getWriterNo()) {
+%>
+										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" />
+<%
+	} else {
+%>
+										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" disabled="disabled"/>
+<%
+	}
+%>
+									</td>
 									<td><%=questions.getNo() %></td>
 									<td class="ps-4"><a href="detail.jsp?no=<%=questions.getNo() %>" class="text-decoration-none text-dark"><i class="bi bi-arrow-return-right"></i><%=questions.getTitle() %></a></td>
 									<td><%=questions.getName() %></td>
@@ -137,7 +147,19 @@
 								<!-- 답글 -->
 							<tbody>							
 								<tr>
-									<td><input type="checkbox" name="postNo" value="<%=questions.getNo() %>"/></td>
+									<td>
+<%
+		if (employee != null && employee.getNo() == questions.getWriterNo()) {
+%>
+										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" />
+<%
+		} else {
+%>
+										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" disabled="disabled"/>
+<%
+		}
+%>
+									</td>
 									<td><%=questions.getNo() %></td>
 									<td><a href="detail.jsp?no=<%=questions.getNo() %>" class="text-decoration-none text-dark">
 										<i class="bi bi-question-circle-fill"></i><%=questions.getTitle() %></a></td>

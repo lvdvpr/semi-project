@@ -9,4 +9,15 @@
 		VALUES
 			(#suggestionPostNo#, #empNo#)	
 	</insert>
+	
+	<select id="selectSuggestion" parameterClass="map" resultClass="com.community.vo.Suggestion">
+		SELECT
+		    SUGGESTION_POST_NO as suggestionPostNo,
+		    SUGGESTION_EMP_NO as empNo
+		FROM
+		    COMM_POST_SUGGESTIONS
+		WHERE
+		    SUGGESTION_POST_NO = #postNo#
+		AND SUGGESTION_EMP_NO = #empNo#
+	</select>
 </sqlMap>

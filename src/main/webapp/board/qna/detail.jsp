@@ -1,5 +1,5 @@
-<%@page import="com.community.dao.PostReadingsDao"%>
-<%@page import="com.community.vo.PostReadings"%>
+<%@page import="com.community.dao.ReadingsDao"%>
+<%@page import="com.community.vo.Reading"%>
 <%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dto.CommentDto"%>
@@ -30,6 +30,19 @@
 	<div class="row mb-3">
 		<div class="col">
 			<h1 class="heading">게시글 상세정보</h1>
+<%
+	// 중복 추천 알림창
+	String errorCode = request.getParameter("error");
+	
+	if("deny".equals(errorCode)) {
+%>
+	<div class="alter alert-danger">
+		<strong>추천 실패</strong> 이미 추천하셨습니다
+	</div>
+<%
+	}
+%>
+
 		</div>
 	</div>
 	<div class="row mb-3">
@@ -41,7 +54,8 @@
 					<col width="15%">
 					<col width="35%">
 				</colgroup>
-<%
+
+<%	
 	int postNo = StringUtils.stringToInt(request.getParameter("no"));
 	
 	// postNo로 조회한 게시물 상세정보 반환
@@ -59,13 +73,13 @@
 	
 	// 게시글 열람 정보
 	/*
-	PostReadings postReadings = new PostReadings();
-	PostReadingsDao postReadingDao = PostReadingsDao.getInstance();
+	Reading reading = new Reading();
+	ReadingsDao readingsDao = ReadingsDao.getInstance();
+
+	reading.setPostNo(question.getNo());
+	reading.setEmpNo(employee.getNo());
 	
-	postReadings.setReadingPostNo(question.getNo());
-	postReadings.setReadingEmpNo(employee.getNo());
-	
-	postReadingDao.updatePostReadings(postReadings);
+	readingsDao.insertPostReadings(reading);
 	*/
 	
 %>				
@@ -101,7 +115,7 @@
 					</tr>
 				</tbody>					
 			</table>
-			<div class="d-flex justify-content-between">
+			<div class="d-flex justify-content-between">		
 				<span>
 					<a href="delete.jsp?postNo=<%=postNo %>" class="btn btn-danger btn-xs">삭제</a>
 					<a href="modifyform.jsp?postNo=<%=postNo %>" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">수정</a>
@@ -141,8 +155,8 @@
 					<div class="mb-1 d-flex justify-content-between text-muted">
 				<span><%=comment.getEmpName()%></span>
 						<span><span class="me-4"><%=StringUtils.dateToText(comment.getCommentCreatedDate()) %></span> 
-						<a href="delete-comment.jsp?no=<%=postNo %>&cno=<%=comment.getCommentNo() %>" class="text-danger">
-						<i class="bi bi-trash-fill"></i></a></span>
+						<a href="delete-comment.jsp?no=<%=postNo %>&cno=<%=comment.getCommentNo() %>" class="text-danger">						
+						<i class="bi bi-trash-fill"></i></a></span>						
 					</div>
 					<p class="card-text"><%=comment.getCommentContent() %></p>
 				</div>
