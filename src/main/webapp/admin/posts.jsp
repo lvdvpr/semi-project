@@ -1,4 +1,4 @@
-<%@page import="com.community.dao.AdminPostDao"%>
+<%@page import="com.community.dao.AdminPostDao"%> 
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.vo.Board"%>
 <%@page import="com.community.dao.BoardDao"%>

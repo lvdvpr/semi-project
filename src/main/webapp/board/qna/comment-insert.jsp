@@ -21,7 +21,7 @@
 	// comment 등록
 	CommentDao commentDao = new CommentDao();	
 	commentDao.insertComment(comment);
-	
+	 
 	QuestionDao questionDao = new QuestionDao();
 	Question question = questionDao.getNoPost(no);
 	
