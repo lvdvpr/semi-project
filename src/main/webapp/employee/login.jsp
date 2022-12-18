@@ -15,16 +15,18 @@
 	Employee employee = employeeDao.getEmployeeByNo(no);
 	// employee가 null이면 loginform.jsp?error="fail"로 응답
 	if (employee == null) {
-		response.sendRedirect("loginform.jsp?error=id");
+		response.sendRedirect("loginform.jsp?error=fail");
 		return;
 	}
 	
 	// 비밀번호 불일치 - loginform.jsp?error="fail"로 응답
-	if (!employee.getPassword().equals(password)) { 
-		response.sendRedirect("loginform.jsp?error=password");
+	if (!password.equals(employee.getPassword())) { 
+		response.sendRedirect("loginform.jsp?error=fail");
 		return;
 	}
 	
+	
+
 	session.setAttribute("LOGIN_EMPLOYEE", employee);
 	
 	response.sendRedirect("../home.jsp");
