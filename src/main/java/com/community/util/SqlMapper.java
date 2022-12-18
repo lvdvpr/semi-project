@@ -1,6 +1,6 @@
 package com.community.util;
 
-import java.io.Reader;
+import java.io.Reader; 
 import java.sql.SQLException;
 import java.util.List;
 
@@ -165,7 +165,7 @@ public class SqlMapper {
 			throw new RuntimeException(ex);
 		}
 	}
-
+	
 	
 	
 }

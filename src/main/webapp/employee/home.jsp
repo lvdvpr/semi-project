@@ -33,18 +33,19 @@
 		response.sendRedirect("/web-community/employee/loginform.jsp?error=deny");
 		return;
 	}
+	int empNo = loginEmployee.getNo();
 	
 	EmployeeDao employeeDao = EmployeeDao.getInstance();
-	EmployeeDto employeeDto = employeeDao.getEmployeeDtoByNo(loginEmployee.getNo());
+	EmployeeDto employeeDto = employeeDao.getEmployeeDtoByNo(empNo);
 	
 	PostDao postDao = new PostDao();
-	int totalPostRows = postDao.getTotalPostRowsByEmpNo(loginEmployee.getNo());
+	int totalPostRows = postDao.getTotalPostRowsByEmpNo(empNo);
 	
 	CommentDao commentDao = new CommentDao();
-	int totalcommentRows = commentDao.getTotalCommentRowsByEmpNo(loginEmployee.getNo());
+	int totalcommentRows = commentDao.getTotalCommentRowsByEmpNo(empNo);
 	
 	NoticeDao noticeDao = new NoticeDao();
-	int totalNoticeRows = noticeDao.getTotalNoticeRows(loginEmployee.getNo());
+	int totalNoticeRows = noticeDao.getTotalNoticeRows(empNo);
 	
 %>
 	<div class="row mb-3">

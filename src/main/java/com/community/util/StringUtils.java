@@ -7,7 +7,7 @@ import java.util.Date;
 public class StringUtils {
 
 	private static final DecimalFormat decimalFormat = new DecimalFormat("#,###.##");
-	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 M월 d일");
+	private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
 	/**
 	 * 텍스트를 전달받아서, 그 값이 null이면 defaultValue로 지정된 값을 반환한다.

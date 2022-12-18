@@ -88,7 +88,7 @@ public class Gallery {
 	public int getCommentCount() {
 		return commentCount;
 	}
-
+	
 	public void setCommentCount(int commentCount) {
 		this.commentCount = commentCount;
 	}
@@ -140,6 +140,6 @@ public class Gallery {
 				+ ", suggestionCount=" + suggestionCount + ", commentCount=" + commentCount + ", deleted=" + deleted
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
 				+ ", originalNo=" + originalNo + "]";
-	};
-	
+	}
+
 }

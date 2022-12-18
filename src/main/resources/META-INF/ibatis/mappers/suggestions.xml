@@ -3,10 +3,21 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
  
 <sqlMap namespace="suggestions">
-	<update id="updateSuggestion" parameterClass="com.community.vo.Suggestion">
+	<insert id="insertSuggestion" parameterClass="com.community.vo.Suggestion">
 		INSERT INTO COMM_POST_SUGGESTIONS
 			(SUGGESTION_POST_NO, SUGGESTION_EMP_NO)
 		VALUES
 			(#suggestionPostNo#, #empNo#)	
-	</update>
+	</insert>
+	
+	<select id="selectSuggestion" parameterClass="map" resultClass="com.community.vo.Suggestion">
+		SELECT
+		    SUGGESTION_POST_NO as suggestionPostNo,
+		    SUGGESTION_EMP_NO as empNo
+		FROM
+		    COMM_POST_SUGGESTIONS
+		WHERE
+		    SUGGESTION_POST_NO = #postNo#
+		AND SUGGESTION_EMP_NO = #empNo#
+	</select>
 </sqlMap>

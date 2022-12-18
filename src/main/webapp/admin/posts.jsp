@@ -1,9 +1,12 @@
+
 <%@page import="com.community.vo.Employee"%>
+
+<%@page import="com.community.dto.PostListDto"%>
+
 <%@page import="com.community.dao.AdminPostDao"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.vo.Board"%>
 <%@page import="com.community.dao.BoardDao"%>
-<%@page import="com.community.dto.PostListDto"%>
 <%@page import="com.community.vo.Post"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.HashMap"%>

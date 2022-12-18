@@ -70,7 +70,6 @@
 	$(function() {
 		
 		$("#form-login").submit(function(event) {
-			
 			let no= $(":input[name=no]").val();
 			if (no === '') {
 				alert("직원번호는 필수입력값입니다.");

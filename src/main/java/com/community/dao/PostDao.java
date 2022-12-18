@@ -29,4 +29,9 @@ public class PostDao {
 	public int getTotalPostRowsByEmpNo(int empNo) {
 		return (Integer)SqlMapper.selectOne("mypages.getTotalPostRowsByEmpNo", empNo);
 	}
+	
+	// 게시글 번호를 전달받아서 해당 게시글을 삭제한다.
+	public void deletePostByPostNo(int postNo) {
+		SqlMapper.update("mypages.deletePostByPostNo", postNo);
+	}
 }

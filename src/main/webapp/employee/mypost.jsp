@@ -86,7 +86,7 @@
 		</div>
 		<div class="col-9">
 			<div class="card">
-				<div class="card-header">내가 작성한 게시글</div>
+				<div class="card-header">내가 작성한 게시글을 확인하세요</div>
 				<div class="card-body">
 					<form id="form-post" class="mb-3" method="get" action="mypost.jsp">
 						<div class="mb-2 d-flex justify-content-between">
@@ -143,14 +143,40 @@
 %>
 								<tr>
 									<td><%=myDto.getNo() %></td>
-									<td><%=myDto.getBoardName() %></td>
-									<td><a href="../board/detail.jsp?no=<%=myDto.getNo() %>" class="text-decoration-none text-dark"><%=myDto.getTitle() %></a></td>
+<%
+		if(myDto.getBoardName().equals("notice")){
+%>
+									<td><%=myDto.getBoardName().equals("notice") ? "공지사항" : "" %></td>
+<%
+		} else if(myDto.getBoardName().equals("file")){
+%>
+									<td><%=myDto.getBoardName().equals("file") ? "파일게시판" : "" %></td>
+<%
+		} else if(myDto.getBoardName().equals("gallery")){
+%>
+									<td><%=myDto.getBoardName().equals("gallery") ? "갤러리" : "" %></td>
+<%
+		} else if(myDto.getBoardName().equals("free")){
+%>
+									<td><%=myDto.getBoardName().equals("free") ? "자유게시판" : "" %></td>
+<%
+		} else if(myDto.getBoardName().equals("qna")){
+%>
+									<td><%=myDto.getBoardName().equals("qna") ? "질문게시판" : "" %></td>
+<%
+		} else if(myDto.getBoardName().equals("temp")){
+%>
+									<td><%=myDto.getBoardName().equals("temp") ? "임시게시판" : "" %></td>
+<%
+		}
+%>
+									<td><a href="../board/<%=myDto.getBoardName() %>/detail.jsp?no=<%=myDto.getNo() %>" class="text-decoration-none text-dark"><%=myDto.getTitle() %></a></td>
 									<td><%=myDto.getWriterName() %></td>
 									<td><%=StringUtils.dateToText(myDto.getCreatedDate()) %></td>
 									<td><%=myDto.getReadCount() %></td>
 									<td><%=myDto.getSuggestionCount() %></td>
 									<td>
-										<a href="" class="btn btn-outline-secondary btn-xs">삭제</a>
+										<a id="btn-delete" href="postdelete.jsp?postNo=<%=myDto.getNo() %>" class="btn btn-outline-secondary btn-xs">삭제</a>
 									</td>
 								</tr>
 <%
@@ -203,6 +229,13 @@ $("select[name=rows]").change(function(){
 });
 
 $(".pagination a").click(function(event) {
+	event.preventDefault();
+	var pageNo = $(this).attr("data-page-no");
+	$("[name=page]").val(pageNo)
+	$("#form-post").trigger("submit")
+});
+
+$("#btn-delete").click(function(event){
 	event.preventDefault();
 	var pageNo = $(this).attr("data-page-no");
 	$("[name=page]").val(pageNo)
