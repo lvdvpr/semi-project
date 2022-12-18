@@ -3,36 +3,29 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
  
 <sqlMap namespace="posts">
-	<!-- posts.jsp 관리자 전체 게시물 조회 -->
-	<select id="getAllPosts" parameterClass="map" resultClass="com.community.dto.PostListDto">
-			select
-				 POST_NO as no,
-				 POST_TITLE as title,
-				 POST_DELETED as deleted,
-				 EMP_NAME as name,
-				 POST_CREATED_DATE as createdDate
-
-			from
-				(select
-						ROW_NUMBER() OVER(ORDER BY POST_NO DESC) AS row_numbers,
-						A.POST_NO,
-						A.POST_TITLE,
-						A.POST_DELETED,
-						B.EMP_NAME,
-						A.POST_CREATED_DATE
+		<!-- posts.jsp 관리자 전체 게시물 조회 -->
+<select resultClass="com.community.dto.PostListDto" parameterClass="map" id="getAllPosts">
+		select
+			POST_NO as no,
+			POST_TITLE as title,
+			POST_DELETED as deleted,
+			EMP_NAME as name,
+			POST_CREATED_DATE as createdDate
+		from
+			(select
+				ROW_NUMBER() OVER(ORDER BY POST_NO DESC) AS row_numbers,
+				A.POST_NO, A.POST_TITLE, A.POST_DELETED,
+				B.EMP_NAME,
+				A.POST_CREATED_DATE
 				from
 					comm_posts A, comm_employees B
-				where
-					a.post_deleted in ('D','N')
-					and   a.post_writer_no = b.emp_no
-				<dynamic>
-					<isNotNull property="boardNo">
-						and A.post_board_no = #boardNo#
-					</isNotNull>
-				</dynamic> 
+			where a.post_deleted in ('D','N')and a.post_writer_no = b.emp_no 
+		
+	<dynamic>
+	<isNotNull property="boardNo">and A.post_board_no = #boardNo# </isNotNull>
+	</dynamic>
 			)
-			where
-				row_numbers between #begin# and #end#
+			where row_numbers between #begin# and #end# 
 		</select>
 		<!-- 관리자 게시물 상세 조회 -->
 		<select id="getDetailPostByNo" parameterClass="int" resultClass="com.community.dto.AdminPostDto">
@@ -148,9 +141,22 @@
 	values (#postNo#, #empNo#)
 	</insert>
 	
+	<insert id="insertNotice" parameterClass="com.community.vo.Notice">
+		insert into comm_post_notices(notice_no, notice_post_no, notice_send_emp_no, notice_receive_emp_no, notice_content)
+		values (comm_notices_seq.nextval, #postNo#, #sendEmpNo#, #receiveEmpNo#, #content#)
+	</insert>
+
 	<select id="getCommentsByPostNo" parameterClass="int" resultClass="com.community.dto.AdminCommentDto">
 		select 
-			a.comment_no as cno, b.emp_name as name, a.comment_created_date as createdDate, a.comment_content as content		
+			a.comment_no as cno, 
+			a.comment_emp_no as empNo, 
+			a.comment_content as content,	
+			a.comment_deleted as deleted,	
+			a.comment_created_date as createdDate, 
+			a.comment_updated_date as updatedDate, 
+			a.comment_deleted_date as deletedDate ,
+			a.comment_post_no as postNo,
+			b.emp_name as name 
 		from
 			 comm_post_comments a, comm_employees b
 		where 
@@ -162,9 +168,13 @@
 
 	</select>
 	
+
 	<insert id="insertComment" parameterClass="com.community.vo.Comment">
-		insert into COMM_POST_COMMENTS (COMMENT_NO, COMMENT_EMP_NO, COMMENT_CONTENT, COMMENT_POST_NO)
-		values (COMM_COMMENTS_SEQ.NEXTVAL, #empNo#, #content#, #postNo#)
+		insert into
+		 	COMM_POST_COMMENTS 
+		 		(COMMENT_NO, COMMENT_EMP_NO, COMMENT_CONTENT, COMMENT_POST_NO)
+		values 				
+				(COMM_COMMENTS_SEQ.NEXTVAL, #empNo#, #content#, #postNo#)
 	</insert>
 	
 	<select id="getCommentByCno" parameterClass="int" resultClass="com.community.dto.AdminCommentDto">
@@ -190,18 +200,12 @@
 			comment_emp_no = #empNo#,
 			comment_content = #content#,
 			comment_deleted = #deleted#,
-			comment_created_date = #createdDate#,
-			comment_updated_date = #updatedDate#,
-			comment_deleted_date = #deletedDate#,
+			comment_deleted_date = sysdate,
 			comment_post_no = #postNo#
 		where
 			comment_no = #no#
 	</update>
 	
-	<insert id="insertNotice" parameterClass="com.community.vo.Notice">
-		insert into comm_post_notices(notice_no, notice_post_no, notice_send_emp_no, notice_receive_emp_no, notice_content)
-		values (comm_notices_seq.nextval, #postNo#, #sendEmpNo#, #receiveEmpNo#, #content#)
-	</insert>
 	
 </sqlMap>
 
