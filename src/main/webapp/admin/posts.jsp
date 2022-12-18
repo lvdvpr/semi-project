@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.dao.AdminPostDao"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.vo.Board"%>
@@ -25,6 +26,17 @@
 	<jsp:param name="menu" value="admin"/>
 </jsp:include>
 <%
+	Employee loginEmployee = (Employee)session.getAttribute("LOGIN_EMPLOYEE");
+	if (loginEmployee==null) {
+		response.sendRedirect("/web-community/employee/loginform.jsp?error=admin");
+		return;
+	}
+//  관리자 외  페이지 접근 불가능
+	if ("사용자".equals(loginEmployee.getType())) {
+		response.sendRedirect("/web-community/employee/loginform.jsp?error=admin");
+		return;
+	}
+
 	int boardNo = StringUtils.stringToInt(request.getParameter("boardNo"), 0);
 	int currentPage = StringUtils.stringToInt(request.getParameter("page"), 1);
 	
@@ -44,6 +56,8 @@
 	List<PostListDto> postList = postDao.getAllPosts(param);
 		
 %>
+
+
 <div class="container my-3">
 	<div class="row mb-3">
 		<div class="col">
@@ -76,13 +90,13 @@
 								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=106" class="text-decoration-none  <%=boardNo==106 ? "bg-dark text-white" : "text-dark"%>" data-board-no="106">묻고답하기</a></span>
 							</li>
 							<li >
-								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=107" class="text-decoration-none  <%=boardNo==107 ? "bg-dark text-white" : "text-dark"%>" data-board-no="107">묻고답하기</a></span>
+								<span class="caret"><a href="/web-community/admin/posts.jsp?boardNo=107" class="text-decoration-none  <%=boardNo==107 ? "bg-dark text-white" : "text-dark"%>" data-board-no="107">임시저장함</a></span>
 							</li>
 						</ul>
 					</div>
-		
+					
 						<div class="col-9">
-							<form class="border p-3" method="get" action="">
+							<form id="form-posts" class="border p-3" method="get" action="">
 								<table class="table table-sm" id="table-posts">
 									<colgroup>
 										<col width="5%">
@@ -114,10 +128,10 @@
 									
 										for (PostListDto post : postList) {
 									%>
-										<tr id="post-no-table">
+										<tr>
 											<td><input type="checkbox" name="no" data-post-nos="<%=post.getNo()%>" value="<%=post.getNo()%> "/></td>
 											<td><%=post.getNo() %>
-											<td><a href="detail.jsp?postNo=<%=post.getNo() %>"><%=post.getTitle()%></a></td>
+											<td><a href="detail.jsp?no=<%=post.getNo() %>" class="text-decoration-none text-dark"><%=post.getTitle() %></a></td>
 											<td><%="N".equals(post.getDeleted()) ? "미삭제" : "삭제" %></td>
 											<td><%=post.getName()%></td>
 											<td><%=StringUtils.dateToText(post.getCreatedDate()) %></td>
@@ -162,7 +176,7 @@
 								%>
 								<div class="text-end">
 									<button type="button" id="button-restore" class="btn btn-outline-dark btn-sm">복구</button>
-									<button type="button" id="button-move" class="btn btn-outline-dark btn-sm">이동</button>
+									<button type="button" id="button-open-move" class="btn btn-outline-dark btn-sm">이동</button>
 									<button type="button" id="button-delete" class="btn btn-outline-dark btn-sm">삭제</button>
 								</div>
 							</form>
@@ -177,7 +191,7 @@
 
 <div class="modal" tabindex="-1" id="modal-form-move-posts">
    <div class="modal-dialog">
-      <form class="border p-3 bg-light" action="move.jsp" method="get">
+      <form id="move-post" class="border p-3 bg-light" action="post-move.jsp" method="get">
          <!-- 이동시킬 게시글의 번호를 스크립트로 설정하세요 -->
          <input type="hidden" name="no" value="" />
          <div class="modal-content">
@@ -213,30 +227,103 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
 	$(function() {
-		var $postMoveModal = new bootstrap.Modal("#modal-form-move-posts");
+		let $postMoveModal = new bootstrap.Modal("#modal-form-move-posts");
+		
+		//게시글 복구 - 게시글 미선택시 처리 / 미삭제 상태일 때 선택하는 경우 alert  / 제출 
+		$("#button-restore").click(function() {
+			if ($(":checkbox[name=no]:checked").length === 0) {
+				alert("게시물을 하나 이상 선택해주세요.");
+				return;
+			} else if ($(":checkbox[name=no]:checked").parents('tr').find("td:eq(3)").text() === "미삭제") {
+				$(":checkbox[name=no]:checked").prop("checked", false);
+				alert("미삭제 게시물은 선택할 수 없습니다."); // 체크박스 상태가 미삭제일 경우 나오는 메세지 - 하나 고를때만 적용됨
+			} else {
+			$("#form-posts").attr("action", "restore.jsp").trigger("submit");
+			alert("게시글 복구가 완료되었습니다.")
+		}
+			
+		})
 
-		$("#button-move").click(function() {
-			var $checkedCheckboxes = $(":checkbox[name=no]:checked");
+		
+		$("#button-delete").click(function() {
+			if ($(":checkbox[name=no]:checked").length === 0) {
+				alert("게시물을 하나 이상 선택해주세요.");
+				return;
+			} else {
+			$("#form-posts").attr("action", "remove_post.jsp").trigger("submit");
+			alert("게시글 삭제가 완료되었습니다.")
+		}
+		
+		})
+		// 전체체크박스값이 변경될 때 개별 체크박스의 상태도 동일하게 적용시키기. 
+		$("#checkbox-all").change(function() {
+			let $allChecked = $(this).prop('checked');
+			$(":checkbox[name=no]").prop("checked", $allChecked);
+			toggleSelectedCheckbox();
+		
+		})
+
+		
+		$(":checkbox[name=no]").change(function() {
+			toggleCheckboxAll();
+			toggleSelectedCheckbox();
+		})
+		// 개별 체크박스의 체크갯수가 체크박스의 총 갯수와 같으면, 전체체크박스의 체크상태와 동일하게 설정 
+		function toggleCheckboxAll() {
+			let $checkboxLength = $(":checkbox[name=no]").length;
+			let $checkedCheckboxLength = $(":checkbox[name=no]:checked").length;
+			$("#checkbox-all").prop('checked', $checkboxLength ===$checkedCheckboxLength)
+			
+		}
+		// 체크된 게 없을 때 복구/삭제/이동 작업 버튼을 disabled 처리
+		function toggleSelectedCheckbox() {
+			let $buttonRestore = $("#button-restore");
+			let $buttonDelete = $("#button-delete");
+			let $buttonMove = $("#button-open-move");
+			let $checkedCheckboxLength =  $(":checkbox[name=no]:checked").length;
+			if ($checkedCheckboxLength === 0) {
+				$buttonRestore.addClass("disabled");
+				$buttonDelete.addClass("disabled");
+				$buttonMove.addClass("disabled");
+			} else {
+				$buttonRestore.removeClass("disabled");
+				$buttonDelete.removeClass("disabled");
+				$buttonMove.removeClass("disabled");
+			}
+		}
+	
+		
+		// 모달창 , 이동하기 - boardNo, no 값 설정
+		$("#button-open-move").click(function() {
+			let $checkedCheckboxes = $(":checkbox[name=no]:checked");
 			if ($checkedCheckboxes.length === 0 || $checkedCheckboxes.length > 1) {
-				alert("게시물을 하나만 선택해주세요.");
+				alert("게시물을 하나만 선택하세요");
 				return;
 			}
-			// 클릭한 게시판 번호에 효과주기
-			var boardNo = $("#board-list a.bg-dark").attr("data-board-no")
+			// select의 boardNo값 설정
+			let boardNo = $("#board-list a.bg-dark").attr("data-board-no")
 			$("#modal-form-move-posts [name=boardNo]").val(boardNo);
 			
-			var no = $checkedCheckboxes.attr("data-post-nos");
-			$("#modal-form-move-posts [name=no]").val(no);
-				
+			
+			// hidden 필드에 no값 설정
+			let no = $(":checkbox[name=no]").attr("data-post-nos");
+			$(":hidden[name=no]").val(no);
+			
 			$postMoveModal.show();			
-				
+
+			})				
+			
+			
 		})
 		
-		// 이동 성공시 -> alert("게시판 이동이 완료되었습니다.");
-		// 같은 게시판으로 이동하는 거 막기
+		
+				
+		
+		
+	
 		
 
-	})
+	
 	
 
 </script>

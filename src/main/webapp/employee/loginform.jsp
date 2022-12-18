@@ -36,6 +36,12 @@
 		<strong> 로그인한 사용자만 이용가능합니다.</strong>
 	</div>
 <%
+	} else if ("admin".equals(error)) {
+%>
+	<div class="alert alert-danger">
+		<strong> 관리자 전용 페이지입니다.</strong>
+	</div>
+<%
 	}
 %>
 	</div>
@@ -68,11 +74,13 @@
 			let no= $(":input[name=no]").val();
 			if (no === '') {
 				alert("직원번호는 필수입력값입니다.");
+				$(":input[name=no]").focus();
 				return false;
 			}
 			let userPassword  = $(":input[name=password]").val();
 			if (userPassword  === '') {
 				alert("비밀번호는 필수입력값입니다.");
+				$(":input[name=password]").focus();
 				return false;
 			}
 			
