@@ -57,7 +57,7 @@
 	param.put("end", pagination.getEnd());
 	
 	List<PostListDto> postList = postDao.getAllPosts(param);
-		
+	
 %>
 
 
@@ -134,9 +134,26 @@
 										for (PostListDto post : postList) {
 									%>
 										<tr>
-											<td><input type="checkbox" name="no" data-post-nos="<%=post.getNo()%>" value="<%=post.getNo()%> "/></td>
+											<td>
+												<input type="checkbox" name="no" data-post-nos="<%=post.getNo()%>" value="<%=post.getNo()%> " /></td>
 											<td><%=post.getNo() %>
-											<td><a href="detail.jsp?no=<%=post.getNo() %>" class="text-decoration-none text-dark"><%=post.getTitle() %></a></td>
+											<td>
+<%
+											if (post.getNo() == post.getOriginalNo()){
+%>
+												<a href="detail.jsp?no=<%=post.getNo() %>" class="text-decoration-none text-dark">
+													<%=post.getTitle() %>
+												</a>
+<%											
+											} else {
+%>	
+												<span class="text-muted small">
+													<%=post.getNo() != post.getOriginalNo() ? "<i class='ms-3 bi bi-arrow-return-right'></i>" : "" %> <%=post.getTitle() %>
+												</span>
+<%											
+											}
+%>
+											</td>
 											<td><%="N".equals(post.getDeleted()) ? "미삭제" : "삭제" %>
 											<%="Y".equals(post.getImportant()) ? "[중요] " : ""  %></td>
 											<td><%=post.getName()%></td>
@@ -246,11 +263,11 @@
 		}
 			
 		})
-
-		
+	
+		// 게시글 완전 삭제	
 		$("#button-delete").click(function() {
 			if ($(":checkbox[name=no]:checked").length === 0) {
-				alert("게시물을 하나 이상 선택해주세요.");
+				alert("게시글을 하나 이상 선택해주세요.");
 				return;
 			} if(confirm("게시글을 삭제하시겠습니까?")) {
 				$("#form-posts").attr("action", "remove_post.jsp").trigger("submit");

@@ -33,6 +33,6 @@
 	<sqlMap resource="META-INF/ibatis/mappers/posts.xml" />
 	<sqlMap resource="META-INF/ibatis/mappers/questions.xml" />
 	<sqlMap resource="META-INF/ibatis/mappers/suggestions.xml" />
-
+	
 
 </sqlMapConfig>

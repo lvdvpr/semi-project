@@ -11,23 +11,32 @@
 			POST_DELETED as deleted,
 			POST_IMPORTANT as important,
 			EMP_NAME as name,
-			POST_CREATED_DATE as createdDate
+			POST_CREATED_DATE as createdDate,
+			POST_ORIGINAL_NO as originalNo
 		from
 			(select
-				ROW_NUMBER() OVER(ORDER BY POST_NO DESC) AS row_numbers,
-				A.POST_NO, A.POST_TITLE, A.POST_DELETED, A.POST_IMPORTANT,
+				
+				ROW_NUMBER() OVER(order by  nvl(post_original_no, post_no ) asc) AS row_numbers,
+				A.POST_NO, A.POST_TITLE, A.POST_DELETED, A.POST_IMPORTANT, nvl(a.post_original_no, a.post_no) POST_ORIGINAL_NO,
 				B.EMP_NAME,
 				A.POST_CREATED_DATE
-				from
+			from
 					comm_posts A, comm_employees B
 			where a.post_deleted in ('D','N')and a.post_writer_no = b.emp_no 
+			
 		
-	<dynamic>
-	<isNotNull property="boardNo">and A.post_board_no = #boardNo# </isNotNull>
-	</dynamic>
+				<dynamic>
+					<isNotNull property="boardNo">and A.post_board_no = #boardNo# </isNotNull>
+				</dynamic>
+			
 			)
 			where row_numbers between #begin# and #end# 
+			
+	
+	
 		</select>
+		
+		
 		<!-- 관리자 게시물 상세 조회 -->
 		<select id="getDetailPostByNo" parameterClass="int" resultClass="com.community.dto.AdminPostDto">
 			select	
@@ -58,6 +67,41 @@
 		    	e.emp_position_no = o.position_no
 	    	AND
 	    		P.POST_NO = #value#
+		</select>
+		
+		<!-- 관리자 게시물 답변 상세 조회 - List // 삭제된 답변은 조회 안되도록 처리--> 
+		<select id="getDetailPostsAnswersByOriginalNo" parameterClass="int" resultClass="com.community.dto.AdminPostDto">
+		select	
+				P.POST_NO as no,
+				P.POST_BOARD_NO as boardNo,
+				P.POST_WRITER_NO as writerNo,
+				P.POST_IMPORTANT as important,  
+				P.POST_TITLE as title,
+				P.POST_SUGGESTION_COUNT as suggestionCount,
+				P.POST_READ_COUNT as readCount,
+				P.POST_ORIGINAL_NO as originalNo, 
+				P.POST_COMMENT_COUNT as commentCount,
+				P.POST_CONTENT as postContent,
+				P.POST_DELETED as postDeleted,
+				P.POST_CREATED_DATE as createdDate,
+				P.POST_ORIGINAL_NO as originalNo,
+				E.emp_no as empNo,
+				E.EMP_NAME as name ,
+				D.DEPARTMENT_NAME as departmentName,
+				O.POSITION_NAME as positionName
+				
+			FROM
+				COMM_POSTS P, COMM_EMPLOYEES E, COMM_DEPARTMENTS D, COMM_POSITIONS O
+			WHERE
+				 P.POST_WRITER_NO = E.EMP_NO
+			AND 
+				 D.DEPARTMENT_NO = E.EMP_DEPT_NO
+		    AND 
+		    	e.emp_position_no = o.position_no
+	    	AND
+	    		P.POST_ORIGINAL_NO = #value#
+    		AND
+    			P.POST_DELETED = 'N'
 		</select>
 	
 	<!-- 관리자 게시물 리스트 전체 행 조회 - 페이징 용도 -->
@@ -96,6 +140,7 @@
 	where
 		post_no = #value#
 	</select>
+	
 	
 	<!-- 답변 게시물 삽입 -->
 	<insert id="insertAnswer" parameterClass="com.community.vo.Post">

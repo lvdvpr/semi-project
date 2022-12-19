@@ -10,6 +10,14 @@ public class PostListDto {
 	private String important;
 	private String name;
 	private Date createdDate;
+	private int originalNo;
+	
+	public int getOriginalNo() {
+		return originalNo;
+	}
+	public void setOriginalNo(int originalNo) {
+		this.originalNo = originalNo;
+	}
 	public int getNo() {
 		return no;
 	}

@@ -13,17 +13,14 @@
 	AdminPostDao postDao  = AdminPostDao.getInstance();
 	AdminPostDto detailPost = postDao.getDetailPostByNo(no);
 	Post post =detailPost.getPost();
+	int boardNo = post.getBoardNo(); // 재요청 url 전송 시 사용할 게시판 번호
 	
-	// 로그인한 사원과 작성자가 다른 경우 삭제 불가능
-	if (loginEmployee.getNo()!=post.getWriterNo()) {
-		response.sendRedirect("detail.jsp?no="+no+"&error=delete");
-		return;
-	}
-	
+	// 게시글의 삭제 상태를 'D'로 변경한다.
 	post.setDeleted("D");
 	postDao.updatePost(post);
 	
-	response.sendRedirect("posts.jsp");
+	// 삭제 작업 완료 후 게시물 리스트로 이동한다.
+	response.sendRedirect("posts.jsp?boardNo="+boardNo);
 	
 	
 %>
