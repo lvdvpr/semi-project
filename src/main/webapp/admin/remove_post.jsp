@@ -9,6 +9,8 @@
 
 
 	// no를 여러 개 전달받아서 배열에 저장한다.
+	int currentPage = StringUtils.stringToInt(request.getParameter("page"));
+	int boardNo = StringUtils.stringToInt(request.getParameter("boardNo"));
 	String[] noarr = request.getParameterValues("no");
 	AdminPostDao postDao = AdminPostDao.getInstance();
 	// 반복문을 통해 전달받은 no값을 꺼내고, 삭제 상태를 Y로 변경한다.
@@ -24,6 +26,6 @@
 		
 	}
 	
-	response.sendRedirect("posts.jsp");
+	response.sendRedirect("posts.jsp?page="+currentPage+"&boardNo="+boardNo);
 	
 	%>

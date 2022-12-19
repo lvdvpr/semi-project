@@ -7,6 +7,7 @@ public class PostListDto {
 	private int no;
 	private String title;
 	private String deleted;
+	private String important;
 	private String name;
 	private Date createdDate;
 	public int getNo() {
@@ -38,6 +39,12 @@ public class PostListDto {
 	}
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+	public String getImportant() {
+		return important;
+	}
+	public void setImportant(String important) {
+		this.important = important;
 	}
 	
 	

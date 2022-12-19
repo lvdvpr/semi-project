@@ -9,12 +9,13 @@
 			POST_NO as no,
 			POST_TITLE as title,
 			POST_DELETED as deleted,
+			POST_IMPORTANT as important,
 			EMP_NAME as name,
 			POST_CREATED_DATE as createdDate
 		from
 			(select
 				ROW_NUMBER() OVER(ORDER BY POST_NO DESC) AS row_numbers,
-				A.POST_NO, A.POST_TITLE, A.POST_DELETED,
+				A.POST_NO, A.POST_TITLE, A.POST_DELETED, A.POST_IMPORTANT,
 				B.EMP_NAME,
 				A.POST_CREATED_DATE
 				from
