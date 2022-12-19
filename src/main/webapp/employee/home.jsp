@@ -1,7 +1,7 @@
+<%@page import="com.community.dao.NoticeDao"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="com.community.vo.Employee"%>
-<%@page import="com.community.dao.NoticeDao"%>
 <%@page import="com.community.dao.CommentDao"%>
 <%@page import="com.community.vo.Post"%>
 <%@page import="com.community.dao.PostDao"%>

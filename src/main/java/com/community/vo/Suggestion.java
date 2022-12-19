@@ -3,8 +3,10 @@ package com.community.vo;
 public class Suggestion {
 
 	private int suggestionPostNo;
+	private int postNo;
 	private int empNo;
 
+	
 	public int getPostNo() {
 		return postNo;
 	}

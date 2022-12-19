@@ -1,3 +1,4 @@
+<%@page import="com.community.dao.NoticeDao"%>
 <%@page import="com.community.dto.MyNoticeDto"%>
 <%@page import="com.community.vo.Notice"%>
 <%@page import="java.util.List"%>
@@ -5,7 +6,6 @@
 <%@page import="com.community.util.Pagination"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
-<%@page import="com.community.dao.NoticeDao"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.vo.Employee"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
