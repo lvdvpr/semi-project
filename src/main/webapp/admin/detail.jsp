@@ -49,6 +49,7 @@
 <%
 	
 	int no = StringUtils.stringToInt(request.getParameter("no"));
+	String read = request.getParameter("read");
 	Employee loginEmployee = (Employee)session.getAttribute("LOGIN_EMPLOYEE");
 	// 로그인한 사용자만 접근 가능
 	if (loginEmployee==null) {
@@ -60,9 +61,11 @@
 	AdminPostDao postDao = AdminPostDao.getInstance();
 	AdminPostDto detailPost = postDao.getDetailPostByNo(no);
 	Post post = detailPost.getPost();
+	if ("Y".equals(read)) {
 	// 조회 수 증가시키기
 	post.setReadCount(post.getReadCount()+1);
 	postDao.updatePost(post);
+	}
 	// 열람 정보 추가하기
 	AdminReadingDao readingDao = AdminReadingDao.getInstance();
 	Reading reading = new Reading();
@@ -138,7 +141,7 @@
 		<div class="d-flex justify-content-between">
 		
 						<span>
-							<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs " >삭제</a>
+							<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs" id="delete-comment" >삭제</a>
 							<a href="post-modify.jsp?no=<%=no %>" class="btn btn-warning btn-xs " data-bs-toggle="modal" data-bs-target="#modal-form-modify">수정</a>
 						</span>
 						<span>
@@ -164,7 +167,7 @@
 %>
 		<div class="d-flex justify-content-between">
 						<span>
-							<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs" >삭제</a>
+							<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs" id="delete-comment2" >삭제</a>
 							<a href="post-modify.jsp?no=<%=no %>" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-modify">수정</a>
 						</span>
 						<span>
@@ -460,8 +463,17 @@
 			}
 		})
 		
-		$("a[href="delete_detail_post.jsp?no=<%=no %>"]").click(function() {
-			if (confirm("게시글을 삭제하시겠습니까?")) {
+		$("delete-comment").click(function() {
+			if (confirm("댓글을 삭제하시겠습니까?")) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		})
+		
+		$("delete-comment2").click(function() {
+			if (confirm("댓글을 삭제하시겠습니까?")) {
 				return true;
 			}
 			else {
