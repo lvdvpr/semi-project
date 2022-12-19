@@ -14,7 +14,15 @@ public class MyCommentDto {
 	private int postNo;			// 게시글 번호
 	private int boardNo;		// 게시판 번호
 	private String boardName;	// 게시판 이름
+	private String moveName;	// 게시판 이름 (영어)
 	
+	
+	public String getMoveName() {
+		return moveName;
+	}
+	public void setMoveName(String moveName) {
+		this.moveName = moveName;
+	}
 	public int getNo() {
 		return no;
 	}
@@ -80,7 +88,8 @@ public class MyCommentDto {
 	public String toString() {
 		return "MyCommentDto [no=" + no + ", empNo=" + empNo + ", content=" + content + ", deleted=" + deleted
 				+ ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + ", deletedDate=" + deletedDate
-				+ ", postNo=" + postNo + ", boardNo=" + boardNo + ", boardName=" + boardName + "]";
+				+ ", postNo=" + postNo + ", boardNo=" + boardNo + ", boardName=" + boardName + ", moveName=" + moveName
+				+ "]";
 	}
 	
 }

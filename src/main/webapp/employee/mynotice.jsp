@@ -42,7 +42,7 @@
 	
 	// 해당 loginEmployee.getNo() 사람에게 온 알람의 갯수 조회
 	int totalRows = noticeDao.getTotalNoticeRows(loginEmployee.getNo());
-	
+	System.out.println(totalRows);
 	Pagination pagination = new Pagination(currentPage, totalRows, rows);
 	
 	Map<String, Object> param = new HashMap<>();
@@ -90,7 +90,7 @@
 								<input	type="hidden" name="page" value="<%=currentPage %>" />
 							</div>
 						</div>
-						<table class="table table-sm border-top">
+						<table class="table table-sm border-top" id="table-notice-list">
 							<colgroup>
 								<col width="10%">
 								<col width="20%">
@@ -127,13 +127,13 @@
 									<td class="border-bottom-0"><%=myDto.getReadingStatus().equals("Y") ? "읽음" : "안읽음" %></td>
 									<td class="border-bottom-0"><%=StringUtils.dateToText(myDto.getUpdatedDate()) %></td>
 									<td class="border-bottom-0 pt-2">
-										<a id="btn-check" href="noticecheck.jsp?noticeNo=<%=myDto.getNo() %>" class="btn btn-outline-secondary btn-xs">확인</a> 
+										<button data-notice-no="<%=myDto.getNo() %>" class="btn btn-outline-secondary btn-xs <%="Y".equals(myDto.getReadingStatus()) ? "disabled" : ""%>">확인</button> 
 										<a href="noticedelete.jsp?noticeNo=<%=myDto.getNo() %>" class="btn btn-outline-secondary btn-xs">삭제</a>
 									</td>
 								</tr>
 								<tr>
 									<td colspan="6" class="small ps-5 py-2">
-										<a href="../board/<%=myDto.getBoardName() %>/detail.jsp?no=<%=myDto.getPostNo() %>"><%=myDto.getPostNo() %>번 게시글</a>에 <strong><%=myDto.getSendEmpName() %></strong>님이 댓글을 달았습니다.
+										<a href="../board/<%=myDto.getMoveName() %>/detail.jsp?no=<%=myDto.getPostNo() %>"><%=myDto.getPostNo() %>번 게시글</a>에 <strong><%=myDto.getSendEmpName() %></strong>님이 댓글을 달았습니다.
 									</td>
 								</tr>
 <%
@@ -192,6 +192,28 @@ $(".pagination a").click(function(event){
 	$("#form-notice").trigger("submit")
 });
 
+$("#btn-check").click(function(event) {
+	event.preventDefault();
+	var pageNo = $(this).attr("data-page-no");
+	$("[name=page]").val(pageNo);
+	$("#form-notice").trigger("submit")
+})
+
+
+$("#table-notice-list .btn[data-notice-no]").click(function() {
+	var noticeNo = $(this).attr("data-notice-no");
+	var $btn = $(this);
+	
+	var $tr = $(this).closest("tr");
+	$.getJSON("noticecheck.jsp", {noticeNo: noticeNo}, function(notice) {
+		/*
+			notice - {no:10022, readingStatus:'Y', updatedDate:'2022년 12월 19일'}
+		*/
+		$tr.find("td:eq(3)").text(notice.readingStatus === "Y" ? "읽음" : "안읽음");
+		$tr.find("td:eq(4)").text(notice.updatedDate);
+		$btn.addClass("disabled");
+	})
+});
 </script>
 </body>
 </html>

@@ -56,7 +56,8 @@
 				p.post_read_count				as readCount,
 				p.post_suggestion_count			as suggestionCount,
 				p.post_content					as content,
-				e.emp_name						as writerName
+				e.emp_name						as writerName,
+				b.board_move_name				as moveName
 			from
 				comm_posts p, comm_employees e, comm_boards b
 			where
@@ -92,7 +93,8 @@
 				c.comment_deleted_date		as deletedDate,
 				c.comment_post_no			as postNo,
 				p.post_board_no				as boardNo,
-				b.board_name				as boardName
+				b.board_name				as boardName,
+				b.board_move_name			as moveName
 			from
 				comm_post_comments c, comm_posts p, comm_boards b
 			where
@@ -120,7 +122,8 @@
 				n.notice_updated_date		as updatedDate,
 				n.notice_deleted_date		as deletedDate,
 				p.post_board_no				as boardNo,
-				b.board_name				as boardName
+				b.board_name				as boardName,
+				b.board_move_name			as moveName
 			from
 				comm_post_notices n, comm_employees e, comm_posts p, comm_boards b
 			where
@@ -168,6 +171,32 @@
 		where
 			comment_emp_no = #value# and comment_deleted = 'N' 
 	</select>
+	<select id="getNoticeByNo" parameterClass="int" resultClass="com.community.dto.MyNoticeDto">
+		select
+			n.notice_no					as no,
+			n.notice_post_no			as postNo,
+			n.notice_send_emp_no		as sendEmpNo,
+			e.emp_name					as sendEmpName,
+			n.notice_receive_emp_no		as receiveEmpNo,
+			n.notice_content			as content,
+			n.notice_reading_status		as readingStatus,
+			n.notice_deleted			as deleted,
+			n.notice_created_date		as createdDate,
+			n.notice_updated_date		as updatedDate,
+			n.notice_deleted_date		as deletedDate,
+			p.post_board_no				as boardNo,
+			b.board_name				as boardName,
+			b.board_move_name			as moveName
+		from
+			comm_post_notices n, comm_employees e, comm_posts p, comm_boards b
+		where
+			n.notice_send_emp_no = e.emp_no
+			and p.post_no = n.notice_post_no
+			and p.post_board_no = b.board_no
+			and n.notice_no = #value#
+			
+	</select>
+	
 	<select id="getTotalNoticeRows" parameterClass="int" resultClass="int">
 		select
 			count(*)
@@ -175,8 +204,17 @@
 			comm_post_notices
 		where
 			notice_receive_emp_no = #value#
-		and notice_reading_status = 'N' and notice_deleted = 'N'	
+		and notice_deleted = 'N'
 	</select>
+	<select id="getTotalNoticeRowsByEmpNo" parameterClass="int" resultClass="int">
+		select
+			count(*)
+		from
+			comm_post_notices
+		where
+			notice_receive_emp_no = #value#
+			and notice_deleted = 'N' and notice_reading_status = 'N'
+	</select> 
 	<select id="getEmployeeDtoByNo" parameterClass="int" resultClass="com.community.dto.EmployeeDto">
 		select
 			e.emp_no			as empNo,

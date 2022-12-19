@@ -95,7 +95,7 @@
 							<div class="mb-1 text-muted text-end">
 								<span><span class="me-4"><%=StringUtils.dateToText(comment.getCreatedDate()) %></span> <a href="commentdelete.jsp?commentNo=<%=comment.getNo() %>" class="text-danger"><i class="bi bi-trash-fill"></i></a></span>
 							</div>
-							<p class="card-text"><a href="../board/<%=comment.getBoardName() %>/detail.jsp?no=<%=comment.getPostNo() %>"><%=comment.getContent() %></a></p>
+							<p class="card-text"><a href="../board/<%=comment.getMoveName() %>/detail.jsp?no=<%=comment.getPostNo() %>"><%=comment.getContent() %></a></p>
 						</div>
 						</form>
 <%

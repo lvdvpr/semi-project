@@ -17,7 +17,14 @@ public class MyNoticeDto {
 	private Date deletedDate;		// 알림삭제일
 	private int boardNo;			// 게시판 번호
 	private String boardName;		// 게시판 이름
+	private String moveName;		// 이동을 위한 게시판 이름(영어)
 	
+	public String getMoveName() {
+		return moveName;
+	}
+	public void setMoveName(String moveName) {
+		this.moveName = moveName;
+	}
 	public String getBoardName() {
 		return boardName;
 	}
@@ -103,7 +110,7 @@ public class MyNoticeDto {
 				+ sendEmpName + ", receiveEmpNo=" + receiveEmpNo + ", content=" + content + ", readingStatus="
 				+ readingStatus + ", deleted=" + deleted + ", createdDate=" + createdDate + ", updatedDate="
 				+ updatedDate + ", deletedDate=" + deletedDate + ", boardNo=" + boardNo + ", boardName=" + boardName
-				+ "]";
+				+ ", moveName=" + moveName + "]";
 	}
 	
 }

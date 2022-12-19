@@ -45,7 +45,7 @@
 	int totalcommentRows = commentDao.getTotalCommentRowsByEmpNo(empNo);
 	
 	NoticeDao noticeDao = new NoticeDao();
-	int totalNoticeRows = noticeDao.getTotalNoticeRows(empNo);
+	int totalNoticeRows = noticeDao.getTotalNoticeRowsByEmpNo(empNo);
 	
 %>
 	<div class="row mb-3">
