@@ -1,3 +1,4 @@
+<%@page import="com.community.dao.QuestionDao"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="com.community.dao.ReadingsDao"%>
@@ -9,7 +10,6 @@
 <%@page import="com.community.dao.CommentDao"%>
 <%@page import="com.community.dto.QnaDto"%>
 <%@page import="java.util.List"%>
-<%@page import="com.community.dao.QuestionDao"%>
 <%@page import="com.community.vo.Question"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
