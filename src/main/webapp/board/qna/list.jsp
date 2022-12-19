@@ -67,7 +67,7 @@
 	param.put("begin", pagination.getBegin());
 	param.put("end", pagination.getEnd());
 
-	List<QnaDto> questionList = questionDao.getAllPost(param);
+	List<QnaDto> questionList = questionDao.getAllPosts(param);
 
 %>				
 				<div class="card-body">

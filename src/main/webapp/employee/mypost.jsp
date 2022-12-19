@@ -143,34 +143,8 @@
 %>
 								<tr>
 									<td><%=myDto.getNo() %></td>
-<%
-		if(myDto.getBoardName().equals("notice")){
-%>
-									<td><%=myDto.getBoardName().equals("notice") ? "공지사항" : "" %></td>
-<%
-		} else if(myDto.getBoardName().equals("file")){
-%>
-									<td><%=myDto.getBoardName().equals("file") ? "파일게시판" : "" %></td>
-<%
-		} else if(myDto.getBoardName().equals("gallery")){
-%>
-									<td><%=myDto.getBoardName().equals("gallery") ? "갤러리" : "" %></td>
-<%
-		} else if(myDto.getBoardName().equals("free")){
-%>
-									<td><%=myDto.getBoardName().equals("free") ? "자유게시판" : "" %></td>
-<%
-		} else if(myDto.getBoardName().equals("qna")){
-%>
-									<td><%=myDto.getBoardName().equals("qna") ? "질문게시판" : "" %></td>
-<%
-		} else if(myDto.getBoardName().equals("temp")){
-%>
-									<td><%=myDto.getBoardName().equals("temp") ? "임시게시판" : "" %></td>
-<%
-		}
-%>
-									<td><a href="../board/<%=myDto.getBoardName() %>/detail.jsp?no=<%=myDto.getNo() %>" class="text-decoration-none text-dark"><%=myDto.getTitle() %></a></td>
+									<td><%=myDto.getBoardName() %></td>
+									<td><a href="../board/<%=myDto.getMoveName() %>/detail.jsp?no=<%=myDto.getNo() %>" class="text-decoration-none text-dark"><%=myDto.getTitle() %></a></td>
 									<td><%=myDto.getWriterName() %></td>
 									<td><%=StringUtils.dateToText(myDto.getCreatedDate()) %></td>
 									<td><%=myDto.getReadCount() %></td>

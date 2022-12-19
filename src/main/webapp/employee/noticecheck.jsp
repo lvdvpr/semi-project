@@ -1,9 +1,11 @@
+<%@page import="java.util.List"%>
+<%@page import="com.community.vo.Notice"%>
 <%@page import="com.community.dto.MyNoticeDto"%>
 <%@page import="com.google.gson.GsonBuilder"%>
 <%@page import="com.google.gson.Gson"%>
 <%@page import="com.community.dao.NoticeDao"%>
 <%@page import="com.community.util.StringUtils"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@ page language="java" contentType="text/plain; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%
 
 	// 알람번호 요청파라미터 정보를 조회한다.
@@ -13,5 +15,12 @@
 	NoticeDao noticeDao = new NoticeDao();
 	noticeDao.updateNoticeByNoticeNo(noticeNo);
 	
-	response.sendRedirect("mynotice.jsp");
+	// 알람번호를 전달받아서 해당 게시글 정보 리스트를 반환한다.
+	List<MyNoticeDto> myNoticeDto = noticeDao.getNoticeByNo(noticeNo); 
+	
+	/*
+		{no:10022, readingStatus:'Y', updatedDate:'2022년 12월 19일'}
+	*/
+	String jsonText = "";
+	out.write(jsonText);
 %>
