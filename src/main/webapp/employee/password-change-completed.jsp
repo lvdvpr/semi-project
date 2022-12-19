@@ -42,35 +42,14 @@
 		<div class="col-9">
 			<div class="row mb-3">
 				<div class="col-12">
-					<p>비밀번호를 변경하세요.</p>
-		<%
-			String error = request.getParameter("error");
-		
-			if("fail".equals(error)) { 
-		%>			
-					<div class="alert alert-danger">
-						<strong>비밀번호 변경 실패</strong> 비밀번호가 일치하지 않거나 유효한 비밀번호가 아닙니다.
+					<div class="row mb-3">
+						<div class="col">
+							<div class="border p-3 bg-light">
+								<h2 class="mb-4">비밀번호 변경 완료</h2>
+								<p class="mb-1">비밀번호 변경이 완료되었습니다.</p>
+							</div>
+						</div>
 					</div>
-		<%
-			}
-		%>			
-					<form class="border p-3 bg-light" method="post" action="password-change.jsp">
-						<div class="mb-3">
-							<label class="form-label">이전 비밀번호</label>
-							<input type="password" class="form-control" name="prevPassword" />
-						</div>
-						<div class="mb-3">
-							<label class="form-label">새 비밀번호</label>
-							<input type="password" class="form-control" name="password" />
-						</div>
-						<div class="mb-3">
-							<label class="form-label">새 비밀번호 확인</label>
-							<input type="password" class="form-control" name="password2" />
-						</div>
-						<div class="text-end">
-							<button type="submit" class="btn btn-primary btn-sm">비밀번호 변경</button>
-						</div>
-					</form>
 				</div>
 			</div>
 		</div>

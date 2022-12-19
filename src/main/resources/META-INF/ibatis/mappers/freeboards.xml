@@ -11,90 +11,118 @@
 		(comm_posts_seq.nextval, #boardNo#, #title#, #writerNo#, #content#, #important#)
 	</insert>
 	
-	<select id="getPosts" parameterClass="map" resultClass="com.community.vo.FreeBoard">
+	<select id="getPosts" parameterClass="map" resultClass="com.community.dto.PostDto">
 		select 
-			post_no as no,
-			post_board_no as boardNo,
-			post_title as title,
-			post_writer_no as writerNo,
-			post_content as content,
-			post_important as important,
-			post_read_count as readCount,
-			post_suggestion_count as suggestionCount,
-			post_comment_count as commentCount,
-			post_deleted as deleted,
-			post_created_date as createdDate,
-			post_updated_date as updatedDate,
-			post_deleted_date as deletedDate
+			a.post_no 					as postNo,
+			a.post_board_no 			as postBoardNo,
+			a.post_title 				as postTitle,
+			a.post_writer_no 			as postWriterNo,
+			a.post_content 				as postContent,
+			a.post_important 			as postImportant,
+			a.post_read_count 			as postReadCount,
+			a.post_suggestion_count 	as postSuggestionCount,
+			a.post_comment_count 		as postCommentCount,
+			a.post_deleted 				as postDeleted,
+			a.post_created_date 		as postCreatedDate,
+			a.post_updated_date 		as postUpdatedDate,
+			a.post_deleted_date 		as postDeletedDate,
+			b.emp_no                    as empNo,
+			b.emp_name					as empName
 		from
 		   (select
 		        row_number() over (order by post_no desc) row_numbers,
-		        post_no,
-				post_board_no,
-				post_title,
-				post_writer_no,
-				post_content,
-				post_important,
-				post_read_count,
-				post_suggestion_count,
-				post_comment_count,
-				post_deleted,
-				post_created_date,
-				post_updated_date,
-				post_deleted_date
+		        a.post_no,
+				a.post_board_no,
+				a.post_title,
+				a.post_writer_no,
+				a.post_content,
+				a.post_important,
+				a.post_read_count,
+				a.post_suggestion_count,
+				a.post_comment_count,
+				a.post_deleted,
+				a.post_created_date,
+				a.post_updated_date,
+				a.post_deleted_date,
+				b.emp_no,
+				b.emp_name
 		   from
-		   		comm_posts
+		   		comm_posts a, comm_employees b
 		   where		    
-		        post_deleted = 'N'
+		        a.post_deleted = 'N'
+		   and 	
+		   		a.post_board_no = 105    
 		   <dynamic>    
 				<isNotNull property="opt">
 					<isEqual property="opt" compareValue="title">
-						and post_title like '%' || #keyword# || '%'
+						and 	
+							a.post_title like '%' || #keyword# || '%'
 					</isEqual>
 					<isEqual property="opt" compareValue="content">
-						and post_content like '%' || #keyword# || '%'
+						and 
+							a.post_content like '%' || #keyword# || '%'
+					</isEqual>
+					<isEqual property="opt" compareValue="writer">
+						and 
+							b.emp_name like '%' || #keyword# || '%'
 					</isEqual>
 				</isNotNull>
 			</dynamic>	
-		   ) 
+		 	and 
+				a.post_writer_no = b.emp_no 	 
+		   ) a, comm_employees b
 		where
-			row_numbers between #begin# and #end#        
+				row_numbers between #begin# and #end#       
+		and 
+				a.post_writer_no = b.emp_no	
+		order by
+			a.post_no desc
 	</select>
 	
 	<select id="getTotalRows" parameterClass="map" resultClass="int">
 		select
 			count(*)
 		from	
-			comm_posts	
+			comm_posts a, comm_employees b
 		where
-			post_deleted = 'N'	
+			a.post_deleted = 'N'	
 		<dynamic>    
 			<isNotNull property="opt">
 				<isEqual property="opt" compareValue="title">
-					and post_title like '%' || #keyword# || '%'
+					and 	
+						a.post_title like '%' || #keyword# || '%'
 				</isEqual>
 				<isEqual property="opt" compareValue="content">
-					and post_content like '%' || #keyword# || '%'
+					and 
+						a.post_content like '%' || #keyword# || '%'
+				</isEqual>
+				<isEqual property="opt" compareValue="writer">
+					and 
+						b.emp_name like '%' || #keyword# || '%'
 				</isEqual>
 			</isNotNull>
-		</dynamic>	
+		</dynamic>
+		and
+			a.post_writer_no = b.emp_no	
+		and 	
+		   	a.post_board_no = 105    
 	</select>
 	
 	  <select id="getPostByNo" parameterClass="int" resultClass="com.community.vo.FreeBoard">
       select 
-         post_no as no,
-         post_board_no as boardNo,
-         post_title as title,
-         post_writer_no as writerNo,
-         post_content as content,
-         post_important as important,
-         post_read_count as readCount,
-         post_suggestion_count as suggestionCount,
-         post_comment_count as commentCount,
-         post_deleted as deleted,
-         post_created_date as createdDate,
-         post_updated_date as updatedDate,
-         post_deleted_date as deletedDate
+         post_no 					as no,
+         post_board_no 				as boardNo,
+         post_title 				as title,
+         post_writer_no 			as writerNo,
+         post_content 				as content,
+         post_important 			as important,
+         post_read_count 			as readCount,
+         post_suggestion_count 		as suggestionCount,
+         post_comment_count 		as commentCount,
+         post_deleted 				as deleted,
+         post_created_date 			as createdDate,
+         post_updated_date 			as updatedDate,
+         post_deleted_date 			as deletedDate
       from
          comm_posts
       where
@@ -103,22 +131,22 @@
 	
 	<select id="getPostDtoByNo" parameterClass="int" resultClass="com.community.dto.PostDto">
 		select 
-		    A.POST_NO as postNo, 
-		    A.POST_BOARD_NO as postBoardNo,
-		    A.POST_TITLE as postTitle, 
-		    A.POST_READ_COUNT as postReadCount, 
-		    A.POST_CONTENT as postContent, 
-		    A.POST_DELETED as postDeleted,
-		    A.POST_CREATED_DATE as postCreatedDate, 
-		    A.POST_SUGGESTION_COUNT as postSuggestionCount, 
-		    A.POST_COMMENT_COUNT as postCommentCount,
-		    A.POST_IMPORTANT as postImportant,
-		    B.EMP_NO as empNo,
-		    B.EMP_NAME as empName,
-		    C.POSITION_NO as positionNo,
-		    C.POSITION_NAME as positionName, 
-		    D.DEPARTMENT_NO as departmentNo,
-		    D.DEPARTMENT_NAME as departmentName
+		    A.POST_NO 					as postNo, 
+		    A.POST_BOARD_NO 			as postBoardNo,
+		    A.POST_TITLE 				as postTitle, 
+		    A.POST_READ_COUNT 			as postReadCount, 
+		    A.POST_CONTENT 				as postContent, 
+		    A.POST_DELETED 				as postDeleted,
+		    A.POST_CREATED_DATE 		as postCreatedDate, 
+		    A.POST_SUGGESTION_COUNT 	as postSuggestionCount, 
+		    A.POST_COMMENT_COUNT 		as postCommentCount,
+		    A.POST_IMPORTANT 			as postImportant,
+		    B.EMP_NO 					as empNo,
+		    B.EMP_NAME 					as empName,
+		    C.POSITION_NO 				as positionNo,
+		    C.POSITION_NAME 			as positionName, 
+		    D.DEPARTMENT_NO 			as departmentNo,
+		    D.DEPARTMENT_NAME 			as departmentName
 		from 
 		    COMM_POSTS A, COMM_EMPLOYEES B, COMM_POSITIONS C, COMM_DEPARTMENTS D
 		where 
@@ -142,7 +170,9 @@
 			    POST_SUGGESTION_COUNT = #suggestionCount#, 
 			    POST_COMMENT_COUNT = #commentCount#,
 			    POST_IMPORTANT = #important#,
-			    POST_DELETED = #deleted#
+			    POST_DELETED = #deleted#,
+			    POST_UPDATED_DATE = SYSDATE,
+			    POST_DELETED_DATE = SYSDATE
 			where
 				post_no = #no#		
 	 </update>
