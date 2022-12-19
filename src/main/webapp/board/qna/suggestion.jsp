@@ -14,6 +14,7 @@
 
 	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
 	
+	// 하나의 postNo를 여러 empNo가 추천할 수 있기 때문에, postNo와 empNo를 동시에 조회해준다. 
 	Map<String, Integer> param = new HashMap<>();
 	param.put("postNo", postNo);
 	param.put("empNo", employee.getNo());
@@ -22,12 +23,11 @@
 	Suggestion suggestions = suggestionDao.selectSuggestion(param);
 	
 	if (suggestions != null) {
-		response.sendRedirect("detail.jsp?no=" + postNo + "error=invalid");
+		response.sendRedirect("detail.jsp?no=" + postNo + "&error=deny");
 		return;
 	}
 	
-	
-	QuestionDao questionDao = new QuestionDao();
+	QuestionDao questionDao = QuestionDao.getInstance();
 
 	// comm_post_suggestion 테이블에 등록
 	Suggestion suggestion = new Suggestion();

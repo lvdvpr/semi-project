@@ -29,6 +29,7 @@ public class Fileshares {
 	}
 
 	public void setFilePostNo(int filePostNo) {
+		
 		this.filePostNo = filePostNo;
 	}
 

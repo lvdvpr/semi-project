@@ -8,7 +8,7 @@ import com.community.util.SqlMapper;
 import com.community.vo.Gallery;
 
 public class GalleryDao {
-
+	
 	private static GalleryDao instance = new GalleryDao();
 	private GalleryDao() {}
 	public static GalleryDao getInstance() {
@@ -22,8 +22,8 @@ public class GalleryDao {
 	}
 	
 	// 전체 게시물 수 반환
-	public int getTotalRows() {
-		return (int) SqlMapper.selectOne("galleries.getTotalRows");
+	public int getTotalRows(Map<String, Object> param) {
+		return (int) SqlMapper.selectOne("galleries.getTotalRows", param);
 	}
 	
 	// 게시물 등록
@@ -32,12 +32,27 @@ public class GalleryDao {
 	}
 	
 	// postNo로 조회되는 게시물 반환
-	public Gallery getPostByNo(int postNo) {
-		return (Gallery) SqlMapper.selectOne("galleries.getPostByNo", postNo);
+	public Gallery getPostByNo(int no) {
+		return (Gallery) SqlMapper.selectOne("galleries.getPostByNo", no);
 	}
 	
 	// 게시물 삭제
 	public void deletedPost(Gallery gallery) {
 		SqlMapper.update("galleries.deletedPost", gallery);
+	}
+	
+	// postNo에 따른 상세정보 반환 - Dto
+	public GalleryDto getGalleryDtoByNo(int no) {
+		return (GalleryDto) SqlMapper.selectOne("galleries.getGalleryDtoByNo", no);
+	}
+	
+	// 파일 번호 반환을 위한 게시글 번호 조회
+	public int getSequence(Gallery gallery) {
+		return (int) SqlMapper.selectOne("galleries.getSequence", gallery);
+	}
+	
+	// 갤러리 수정
+	public void updatedPost(Gallery gallery) {
+		SqlMapper.update("galleries.updatedPost", gallery);
 	}
 }

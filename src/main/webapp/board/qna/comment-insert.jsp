@@ -9,8 +9,13 @@
 
 <%
 	// 게시글 번호, 내용, 직원번호
-	int no = StringUtils.stringToInt(request.getParameter("postNo"));
+	int no = StringUtils.stringToInt(request.getParameter("no"));
 	String commentContent = request.getParameter("content");
+	
+	if (commentContent.isEmpty()) {
+		response.sendRedirect("detail.jsp?no=" + no + "&error=invalid");
+		return;
+	}
 	
 	// empNo를 가지고 오는 session객체
 	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
@@ -26,11 +31,12 @@
 	commentDao.insertComment(comment);
 	
 	// 게시물 추천수 +1 증가
-	QuestionDao questionDao = new QuestionDao();
+	QuestionDao questionDao = QuestionDao.getInstance();
 	Question question = questionDao.getNoPost(no);
 	
 	question.setCommentCount(question.getCommentCount() +1);
 	questionDao.updatePost(question);
 	
 	response.sendRedirect("detail.jsp?no=" + no);
+	
 %>

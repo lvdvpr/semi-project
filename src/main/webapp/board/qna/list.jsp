@@ -26,13 +26,24 @@
 <div class="container my-3">
 	<div class="row mb-3">
 		<div class="col">
-			<h1 class="heading">묻고 답하기</h1>	
+			<h1 class="heading">묻고 답하기</h1>
+<%
+	String errorCode = request.getParameter("error");
+	
+	if ("deny".equals(errorCode)) {
+%>
+	<div class="alert alert-danger" role="alert">
+ 		 <strong>다른 사람이 등록한 게시글은 삭제할 수 없습니다</strong>
+	</div>
+<%
+	}
+%>
 		</div>
 	</div>
 	<div class="row mb-3">
 		<div class="col-3">
 			<div class="card">
-				<div class="card-header">전체 게시판 목록</div>
+				<div class="card-header">전체 게시판 목록</div>				
 				<div class="card-body">
 					<div class="d-grid gap-2">
 						<button class="btn btn-dark btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-posts">질문 등록</button>
@@ -53,7 +64,7 @@
 	String keyword = StringUtils.nullToValue(request.getParameter("keyword"), "");
 	String opt = StringUtils.nullToValue(request.getParameter("opt"), "title");
 	
-	QuestionDao questionDao = new QuestionDao();
+	QuestionDao questionDao = QuestionDao.getInstance();
 	
 	Map<String, Object> param = new HashMap<>();
 	param.put("keyword", keyword);
@@ -85,7 +96,7 @@
 							<div>
 								<select class="form-select form-select-xs" name="opt">
 									<option value="title" <%="title".equals(opt) ? "selected" : "" %> id="title" > 제목</option>
-									<option value="empName" <%="empName".equals(opt) ? "selected" : "" %> id="empName" > 작성자</option>
+									<option value="content" <%="content".equals(opt) ? "selected" : "" %> id="content" > 내용</option>
 								</select>
 								<input type="text" class="form-control form-control-xs w-150" name="keyword" value="<%=keyword %>">
 								<button type="button" class="btn btn-outline-secondary btn-xs" id="btn-search">검색</button>
@@ -119,23 +130,14 @@
 		int postOriginNo = questions.getOriginalNo();
 		
 	if (postNo != postOriginNo) {
-%>								<!-- 질문글 -->
+%>								<!-- 답글 -->
 								<tr>
 									<td>
-<%
-	if (employee != null && employee.getNo() == questions.getWriterNo()) {
-%>
 										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" />
-<%
-	} else {
-%>
-										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" disabled="disabled"/>
-<%
-	}
-%>
 									</td>
 									<td><%=questions.getNo() %></td>
-									<td class="ps-4"><a href="detail.jsp?no=<%=questions.getNo() %>" class="text-decoration-none text-dark"><i class="bi bi-arrow-return-right"></i><%=questions.getTitle() %></a></td>
+									<td class="ps-4"><span class="text-muted">
+									<i class="bi bi-arrow-return-right"></i><%=questions.getTitle() %><!-- </a>  --></span></td>
 									<td><%=questions.getName() %></td>
 									<td><%=StringUtils.dateToText(questions.getCreatedDate()) %></td>
 									<td><%=questions.getReadCount() %></td>
@@ -144,21 +146,11 @@
 <%
 	} else if (postNo == postOriginNo) {
 %>								
-								<!-- 답글 -->
+								<!-- 질문글 -->
 							<tbody>							
 								<tr>
 									<td>
-<%
-		if (employee != null && employee.getNo() == questions.getWriterNo()) {
-%>
 										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" />
-<%
-		} else {
-%>
-										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" disabled="disabled"/>
-<%
-		}
-%>
 									</td>
 									<td><%=questions.getNo() %></td>
 									<td><a href="detail.jsp?no=<%=questions.getNo() %>" class="text-decoration-none text-dark">
@@ -251,7 +243,7 @@
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control form-control-sm" readonly="readonly" value="홍길동" name="emp-name">
+							<input type="text" class="form-control form-control-sm" readonly="readonly" value="<%=employee.getName() %>" name="emp-name">
 						</div>
 					</div>
 					<div class="row mb-2">
@@ -315,7 +307,7 @@
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control form-control-sm" readonly="readonly" value="홍길동" name="emp-name">
+							<input type="text" class="form-control form-control-sm" readonly="readonly" value="<%=employee.getName() %>" name="emp-name">
 						</div>
 					</div>
 					<div class="row mb-2">
@@ -450,15 +442,10 @@ $(function() {
 			var postNo = $(el).val();
 			var inputPostNo = "<input type='hidden' name='postNo' value='"+postNo+"'>";
 			
-			// 여기
-			//var inputWriterNo = "<input type='hidden' name='writerNo' value='"+writerNo+"'>";
-			
 			$form.append(inputPostNo);
-			//$form.append(inputWriterNo);
 		}
 		$form.trigger('submit');
 	})
-
 })
 </script>
 </body>

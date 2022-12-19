@@ -4,7 +4,15 @@ public class Suggestion {
 
 	private int suggestionPostNo;
 	private int empNo;
-	
+
+	public int getPostNo() {
+		return postNo;
+	}
+
+	public void setPostNo(int postNo) {
+		this.postNo = postNo;
+	}
+
 	public Suggestion() {};
 	
 	public int getSuggestionPostNo() {

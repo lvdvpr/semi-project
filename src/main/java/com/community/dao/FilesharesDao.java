@@ -11,7 +11,7 @@ public class FilesharesDao {
 		return instance;
 	}
 	
-	public void insertFile(Fileshares file) {
-		SqlMapper.insert("fileshares.insertFile", file);
+	public void insertFile(Fileshares fileShares) {
+		SqlMapper.insert("fileshares.insertFile", fileShares);
 	}
 }

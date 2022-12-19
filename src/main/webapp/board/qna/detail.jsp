@@ -1,3 +1,5 @@
+<%@page import="java.util.Map"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="com.community.dao.ReadingsDao"%>
 <%@page import="com.community.vo.Reading"%>
 <%@page import="com.community.vo.Employee"%>
@@ -27,21 +29,33 @@
 	<jsp:param name="menu" value="board"/>
 </jsp:include>
 <div class="container my-3">
-	<div class="row mb-3">
+	<div class="row mb-1">
 		<div class="col">
-			<h1 class="heading">게시글 상세정보</h1>
 <%
 	// 중복 추천 알림창
 	String errorCode = request.getParameter("error");
 	
 	if("deny".equals(errorCode)) {
 %>
-	<div class="alter alert-danger">
-		<strong>추천 실패</strong> 이미 추천하셨습니다
+	<div class="alert alert-danger" role="alert">
+ 		 <strong>이미 추천한 게시물입니다.</strong>
+	</div>
+<%
+	} else if ("invalid".equals(errorCode)) {
+%>
+	<div class="alert alert-danger" role="alert">
+ 		 <strong>댓글 내용을 적어주세요</strong>
 	</div>
 <%
 	}
-%>
+%>	
+		</div>
+	</div>
+</div>
+<div class="container my-3">
+	<div class="row mb-3">
+		<div class="col">
+			<h1 class="heading">게시글 상세정보</h1>
 
 		</div>
 	</div>
@@ -56,22 +70,20 @@
 				</colgroup>
 
 <%	
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+
 	int postNo = StringUtils.stringToInt(request.getParameter("no"));
 	
 	// postNo로 조회한 게시물 상세정보 반환
-	QuestionDao questionDao = new QuestionDao();
+	QuestionDao questionDao = QuestionDao.getInstance();
 	QnaDto qnaDto = questionDao.getPostByNo(postNo);
 	
-	// 게시물 readCount +1 증가
+	// 게시물 readCount +1 증가 - 오류
 	Question question = qnaDto.getQuestion();
-	question.setReadCount(question.getReadCount() +1);
-	
+	question.setReadCount(question.getReadCount() +1);	
 	questionDao.updatePost(question);
 	
-	// 게시글 열람 정보에 필요한 empNo를 위한 로그인 session객체
-	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
-	
-	// 게시글 열람 정보
+	// 게시글 열람 정보 - 한번 들어가니까 두 번째 들어갈 때 무결성 제약조건 뜸
 	/*
 	Reading reading = new Reading();
 	ReadingsDao readingsDao = ReadingsDao.getInstance();
@@ -115,29 +127,78 @@
 					</tr>
 				</tbody>					
 			</table>
-			<div class="d-flex justify-content-between">		
+         <!-- 답변글 끝 -->			
+			<div>
+<%
+	if (employee != null && employee.getNo() == qnaDto.getWriterNo()) {
+%>								
 				<span>
 					<a href="delete.jsp?postNo=<%=postNo %>" class="btn btn-danger btn-xs">삭제</a>
 					<a href="modifyform.jsp?postNo=<%=postNo %>" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">수정</a>
 				</span>
-				<span>
+<%
+	} 
+	
+	if (employee != null && employee.getNo() != qnaDto.getWriterNo()) {
+%>				
+				<span class="float-end">
 					<a href="suggestion.jsp?postNo=<%=postNo %>" class="btn btn-outline-primary btn-xs">추천</a>					
 					<button class="btn btn-outline-primary btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-post-answer" >답변</button>
-				</span>
+				</span>	
+<%
+	}
+%>						
 			</div>
 		</div>
-	</div>
+	</div>	
+<%
+	List<QnaDto> qnaDtoList = questionDao.detailAnswer(postNo);
+	
+	for (QnaDto qnaAnswerList : qnaDtoList) {
+		 int no = qnaAnswerList.getNo();
+		
+		if (postNo != no) {
+		
+%>			
+<!-- 답변글 시작 -->
+         <table class="table table-sm table-bordered">
+            <colgroup>
+               <col width="15%">
+               <col width="35%">
+               <col width="15%">
+               <col width="35%">
+            </colgroup>
+            <tbody>
+               <tr>
+                  <th class="text-center bg-light">작성자</th>
+                  <td><%=qnaAnswerList.getName() %> (<%=qnaAnswerList.getPositionName() %>)</td>
+                  <th class="text-center bg-light">등록일</th>
+                  <td><%=StringUtils.dateToText(qnaAnswerList.getCreatedDate()) %></td>
+               </tr>
+               <tr>
+                  <th class="text-center bg-light">내용</th>
+                  <td colspan="3">
+                     <p class="fw-bold mb-1"><%=qnaAnswerList.getTitle() %></p>
+                     <p><%=qnaAnswerList.getContent() %></p>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+<%
+		}
+	}
+%>	
 	<div class="row mb-3">
 		<div class="col-12 mb-1">
 			<form method="post" action="comment-insert.jsp">
 				<!-- 게시글의 글 번호을 value에 설정하세요 -->
-				<input type="hidden" name="postNo" value="<%=qnaDto.getNo() %>"/>
+				<input type="hidden" name="no" value="<%=qnaDto.getNo() %>"/>
 				<div class="row mb-3">
 					<div class="col-sm-11">
 						<input type="text" class="form-control form-control-sm" name="content" placeholder="댓글을 남겨주세요">
 					</div>
 					<div class="col-sm-1 text-end" style="margin-top: 2px;">
-						<button type="submit" class="btn btn-secondary btn-xs">댓글</button>
+						<button type="submit" class="btn btn-secondary btn-xs" >댓글</button>
 					</div>
 				</div>
 			</form>
@@ -268,7 +329,7 @@
 						<input type="hidden" name="writerNo" value="">
 						<label class="col-sm-2 col-form-label col-form-label-sm" >작성자</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control form-control-sm" readonly="readonly" value="<%=qnaDto.getName() %>" name="name">
+							<input type="text" class="form-control form-control-sm" readonly="readonly" value="<%=employee.getName() %>" name="name">
 						</div>
 					</div>
 							

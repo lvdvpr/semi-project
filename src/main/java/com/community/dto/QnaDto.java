@@ -30,8 +30,12 @@ public class QnaDto {
 	private String departmentName; 		// comm_departments 테이블
 	private String positionName;		// comm_departments 테이블
 	
+	public QnaDto() {}
+	
 	public Question getQuestion() {
+		
 		Question question = new Question();
+		
 		question.setNo(no);
 		question.setBoardNo(boardNo);
 		question.setTitle(title);
@@ -89,8 +93,6 @@ public class QnaDto {
 	public void setDepartmentNo(int departmentNo) {
 		this.departmentNo = departmentNo;
 	}
-	
-	public QnaDto() {};
 	
 	public int getDeptNo() {
 		return deptNo;

@@ -7,6 +7,12 @@ import com.community.util.SqlMapper;
 import com.community.vo.Question;
 
 public class QuestionDao {
+	
+	private static QuestionDao instance = new QuestionDao();
+	private QuestionDao() {}
+	public static QuestionDao getInstance() {
+		return instance;
+	}
 
 	@SuppressWarnings("unchecked") 
 	public List<QnaDto> getAllPosts(Map<String, Object> param) {
@@ -32,6 +38,11 @@ public class QuestionDao {
 	public void insertPostAnswer(Question question) {
 		SqlMapper.insert("questions.insertPostAnswer", question);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<QnaDto> detailAnswer(int postNo) {
+		return (List<QnaDto>) SqlMapper.selectList("questions.detailAnswer", postNo);
+	}
 
 	
 	// 게시판 번호 no와 일치하는 객체 하나(게시글)를 가져온다. - 상세정보, Question 객체
@@ -42,5 +53,9 @@ public class QuestionDao {
 	// 게시판 상세정보 삭제/수정
 	public void updatePost(Question question) {
 		SqlMapper.update("questions.updatePost", question);
+	}
+	
+	public void deletedPost(Question question) {
+		SqlMapper.update("questions.deletedPost", question);
 	}
 }
