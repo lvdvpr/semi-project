@@ -14,8 +14,8 @@ public class QuestionDao {
 		return instance;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<QnaDto> getAllPost(Map<String, Object> param) {
+	@SuppressWarnings("unchecked") 
+	public List<QnaDto> getAllPosts(Map<String, Object> param) {
 		return (List<QnaDto>) SqlMapper.selectList("questions.getAllPosts", param);
 	}
 	

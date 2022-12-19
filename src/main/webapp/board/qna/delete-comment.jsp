@@ -7,7 +7,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <!DOCTYPE html>
 <% 
-	// 댓글 삭제 구현
+	// 댓글 삭제 구현 
 	int no = StringUtils.stringToInt(request.getParameter("no"));
 	int commentNo = StringUtils.stringToInt(request.getParameter("cno"));
 	

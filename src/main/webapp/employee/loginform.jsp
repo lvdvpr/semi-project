@@ -27,13 +27,13 @@
 	if ("fail".equals(error)) {
 %>
 	<div class="alert alert-danger">
-		<strong>아이디 혹은 비밀번호가 일치하지 않습니다.</strong> 
+		<strong>로그인 실패</strong> 아이디 혹은 비밀번호가 올바르지 않습니다.
 	</div>
 <%
 	} else if ("deny".equals(error)) {
 %>
 	<div class="alert alert-danger">
-		<strong> 로그인한 사용자만 이용가능합니다.</strong>
+		<strong>요청 거부</strong> 해당 요청은 로그인 후 이용가능 합니다.
 	</div>
 <%
 	}
@@ -67,11 +67,13 @@
 			let no= $(":input[name=no]").val();
 			if (no === '') {
 				alert("직원번호는 필수입력값입니다.");
+				$(":input[name=no]").focus();
 				return false;
 			}
-			let userPassword  = $(":input[name=password]").val();
-			if (userPassword  === '') {
+			let empPassword  = $(":input[name=password]").val();
+			if (empPassword  === '') {
 				alert("비밀번호는 필수입력값입니다.");
+				$(":input[name=password]").focus();
 				return false;
 			}
 			

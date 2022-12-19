@@ -11,7 +11,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
-<head>
+<head> 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -78,7 +78,7 @@
 	param.put("begin", pagination.getBegin());
 	param.put("end", pagination.getEnd());
 
-	List<QnaDto> questionList = questionDao.getAllPost(param);
+	List<QnaDto> questionList = questionDao.getAllPosts(param);
 
 %>				
 				<div class="card-body">
