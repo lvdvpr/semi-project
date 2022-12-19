@@ -141,7 +141,7 @@
 <%
 											if (post.getNo() == post.getOriginalNo()){
 %>
-												<a href="detail.jsp?no=<%=post.getNo() %>" class="text-decoration-none text-dark">
+												<a href="detail.jsp?no=<%=post.getNo() %>&read=Y" class="text-decoration-none text-dark">
 													<%=post.getTitle() %>
 												</a>
 <%											
