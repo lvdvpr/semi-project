@@ -6,22 +6,25 @@ import com.community.vo.FreeBoard;
 
 public class PostDto {
 
-	private int postNo;
-	private int postBoardNo;
-	private String postTitle;
-	private int postReadCount;
-	private String postContent;
-	private Date postCreatedDate;
-	private int postSuggestionCount;
-	private int postCommentCount;
-	private int empNo;
-	private String empName;
-	private int positionNo;
-	private String positionName;
-	private int departmentNo;
-	private String departmentName;
-	private String postDeleted;
-	private String postImportant;
+	private int postNo;           	    // comm_posts 테이블
+	private int postBoardNo;			// comm_posts 테이블
+	private String postTitle;			// comm_posts 테이블
+	private int postWriterNo;			// comm_posts 테이블
+	private String postContent;			// comm_posts 테이블
+	private String postImportant;		// comm_posts 테이블
+	private int postReadCount;			// comm_posts 테이블
+	private int postSuggestionCount;	// comm_posts 테이블
+	private int postCommentCount;		// comm_posts 테이블
+	private String postDeleted;			// comm_posts 테이블
+	private Date postCreatedDate;		// comm_posts 테이블
+	private Date postUpdatedDate;		// comm_posts 테이블
+	private Date postDeletedDate; 		// comm_posts 테이블
+	private int empNo;					// comm_employees 테이블
+	private String empName;				// comm_employees 테이블
+	private int positionNo;				// comm_employees 테이블
+	private String positionName;		// comm_positions 테이블
+	private int departmentNo;			// comm_departments 테이블
+	private String departmentName;		// comm_departments 테이블
 	
 	
 	public PostDto () {
@@ -30,18 +33,21 @@ public class PostDto {
 
 	public FreeBoard getFreeBoard() {
 		FreeBoard freeBoard = new FreeBoard();
-		freeBoard.setNo(postNo);  // FreeBoard에 dto값 넣기
+		freeBoard.setNo(postNo);  		 // FreeBoard에 dto값 넣기
 		freeBoard.setBoardNo(postBoardNo);
 		freeBoard.setTitle(postTitle);
+		freeBoard.setWriterNo(postWriterNo);
 		freeBoard.setContent(postContent);
+		freeBoard.setImportant(postImportant);
 		freeBoard.setReadCount(postReadCount);
 		freeBoard.setSuggestionCount(postSuggestionCount);
 		freeBoard.setCommentCount(postCommentCount);
 		freeBoard.setDeleted(postDeleted);
-		freeBoard.setImportant(postImportant);
+		freeBoard.setCreatedDate(postCreatedDate);
+		freeBoard.setUpdatedDate(postUpdatedDate);
+		freeBoard.setDeletedDate(postDeletedDate);
 		
-		
-		return freeBoard; // dto값 넣은 freeBoard 리턴
+		return freeBoard; 				// dto값 넣은 freeBoard 반환하기
 	}
 
 	public int getPostNo() {
@@ -51,11 +57,11 @@ public class PostDto {
 	public void setPostNo(int postNo) {
 		this.postNo = postNo;
 	}
-	
+
 	public int getPostBoardNo() {
 		return postBoardNo;
 	}
-	
+
 	public void setPostBoardNo(int postBoardNo) {
 		this.postBoardNo = postBoardNo;
 	}
@@ -68,12 +74,12 @@ public class PostDto {
 		this.postTitle = postTitle;
 	}
 
-	public int getPostReadCount() {
-		return postReadCount;
+	public int getPostWriterNo() {
+		return postWriterNo;
 	}
 
-	public void setPostReadCount(int postReadCount) {
-		this.postReadCount = postReadCount;
+	public void setPostWriterNo(int postWriterNo) {
+		this.postWriterNo = postWriterNo;
 	}
 
 	public String getPostContent() {
@@ -84,19 +90,20 @@ public class PostDto {
 		this.postContent = postContent;
 	}
 
-	public String getPostDeleted() {
-		return postDeleted;
-	}
-	
-	public void setPostDeleted(String postDeleted) {
-		this.postDeleted = postDeleted;
-	}
-	public Date getPostCreatedDate() {
-		return postCreatedDate;
+	public String getPostImportant() {
+		return postImportant;
 	}
 
-	public void setPostCreatedDate(Date postCreatedDate) {
-		this.postCreatedDate = postCreatedDate;
+	public void setPostImportant(String postImportant) {
+		this.postImportant = postImportant;
+	}
+
+	public int getPostReadCount() {
+		return postReadCount;
+	}
+
+	public void setPostReadCount(int postReadCount) {
+		this.postReadCount = postReadCount;
 	}
 
 	public int getPostSuggestionCount() {
@@ -114,11 +121,43 @@ public class PostDto {
 	public void setPostCommentCount(int postCommentCount) {
 		this.postCommentCount = postCommentCount;
 	}
+
+	public String getPostDeleted() {
+		return postDeleted;
+	}
+
+	public void setPostDeleted(String postDeleted) {
+		this.postDeleted = postDeleted;
+	}
+
+	public Date getPostCreatedDate() {
+		return postCreatedDate;
+	}
+
+	public void setPostCreatedDate(Date postCreatedDate) {
+		this.postCreatedDate = postCreatedDate;
+	}
 	
+	public Date getPostUpdatedDate() {
+		return postUpdatedDate;
+	}
+	
+	public void setPostUpdatedDate(Date postUpdatedDate) {
+		this.postUpdatedDate = postUpdatedDate;
+	}
+	
+	public Date getPostDeletedDate() {
+		return postDeletedDate;
+	}
+	
+	public void setPostDeletedDate(Date postDeletedDate) {
+		this.postDeletedDate = postDeletedDate;
+	}
+
 	public int getEmpNo() {
 		return empNo;
 	}
-	
+
 	public void setEmpNo(int empNo) {
 		this.empNo = empNo;
 	}
@@ -162,13 +201,6 @@ public class PostDto {
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
-	
-	public String getPostImportant() {
-		return postImportant;
-	}
-	
-	public void setPostImportant(String postImportant) {
-		this.postImportant = postImportant;
-	}
+
 	
 }

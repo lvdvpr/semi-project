@@ -20,8 +20,8 @@ public class FreeDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<FreeBoard> getPosts(Map<String,Object> param) {
-		return (List<FreeBoard>) SqlMapper.selectList("freeboards.getPosts", param);
+	public List<PostDto> getPosts(Map<String,Object> param) {
+		return (List<PostDto>) SqlMapper.selectList("freeboards.getPosts", param);
 	}
 	
 	public int getTotalRows(Map<String,Object> param) {

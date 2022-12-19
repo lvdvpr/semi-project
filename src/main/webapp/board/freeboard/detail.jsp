@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.dto.CommentDto"%>
 <%@page import="com.community.vo.Comment"%>
 <%@page import="java.util.List"%>
@@ -30,6 +31,20 @@
 	</div>
 	
 	<%
+		String error = request.getParameter("error");
+	
+		if ("suggest".equals(error)) {
+	%>
+		<div class="alert alert-danger">
+			<strong>이미 추천된 게시글입니다.</strong> 
+		</div>
+	<%
+		} 
+	%>	
+	
+	<%
+		Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+		
 		int postNo = StringUtils.stringToInt(request.getParameter("no"));
 	
 		FreeDao freeDao = FreeDao.getInstance();
@@ -64,7 +79,7 @@
 					</tr>
 					<tr>
 						<th class="text-center bg-light">작성자</th>
-						<td>홍길동 (<%=postDto.getPositionName() %>)</td>
+						<td><%=postDto.getEmpName() %> (<%=postDto.getPositionName() %>)</td>
 						<th class="text-center bg-light">소속부서</th>
 						<td><%=postDto.getDepartmentName() %></td>
 					</tr>
@@ -86,8 +101,7 @@
 					<a href="modify.jsp?postNo=<%=postDto.getPostNo() %>" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">수정</a>
 				</span>
 				<span>
-					<a href="addSuggestion.jsp?postNo=<%=postNo %>&empno=<%=postDto.getEmpNo() %>" class="btn btn-outline-primary btn-xs">추천</a>
-					<button class="btn btn-outline-primary btn-xs">답변</button>
+					<a href="addSuggestion.jsp?postNo=<%=postNo %>&empNo=<%=postDto.getEmpNo() %>" class="btn btn-outline-primary btn-xs">추천</a>
 				</span>
 			</div>
 		</div>
@@ -98,7 +112,6 @@
 			<form method="post" action="addComment.jsp">
 				<!-- 게시글의 글 번호을 value에 설정하세요 -->
 				<input type="hidden" name="postNo" value="<%=postNo %>"/>
-				<input type="hidden" name="empNo" value="<%=postDto.getEmpNo() %>"/>  
 				<div class="row mb-3">
 					<div class="col-sm-11">
 						<input type="text" class="form-control form-control-sm" name="content" placeholder="댓글을 남겨주세요">
@@ -169,7 +182,7 @@
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control form-control-sm" readonly="readonly" name="writer" value="홍길동">
+							<input type="text" class="form-control form-control-sm" readonly="readonly" name="writer" value="<%=employee.getName()%>">
 						</div>
 					</div>
 					<div class="row mb-2">

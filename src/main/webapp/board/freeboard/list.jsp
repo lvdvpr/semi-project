@@ -1,3 +1,5 @@
+<%@page import="com.community.vo.Employee"%>
+<%@page import="com.community.dto.PostDto"%>
 <%@page import="com.community.util.Pagination"%>
 <%@page import="com.community.vo.FreeBoard"%>
 <%@page import="java.util.HashMap"%>
@@ -41,6 +43,8 @@
 		</div>
 		
 		<%
+			Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+		
 			int rows = StringUtils.stringToInt(request.getParameter("rows"), 10);
 			int currentPage = StringUtils.stringToInt(request.getParameter("page"), 1); 
 			String keyword = StringUtils.nullToValue(request.getParameter("keyword"), "");
@@ -61,7 +65,7 @@
 			param.put("begin", pagination.getBegin());
 			param.put("end", pagination.getEnd());
 					
-			List<FreeBoard> postList = freeDao.getPosts(param);
+			List<PostDto> postList = freeDao.getPosts(param);
 		%>
 		
 		<div class="col-9"> 
@@ -83,6 +87,7 @@
 								<select class="form-select form-select-xs" name="opt">
 									<option value="title" <%="title".equals(opt) ? "selected" : "" %>> 제목</option>
 									<option value="content" <%="content".equals(opt) ? "selected" : "" %>> 내용</option>
+									<option value="writer" <%="writer".equals(opt) ? "selected" : "" %>> 작성자</option>
 								</select>
 								<input type="text" class="form-control form-control-xs w-150" name="keyword" value="<%=keyword %>">
 								<button type="button" class="btn btn-outline-secondary btn-xs" id="btn-search">검색</button>
@@ -92,21 +97,21 @@
 							<colgroup>
 								<col width="3%">
 								<col width="9%">
-								<col width="7%">
 								<col width="*">
 								<col width="10%">
 								<col width="12%">
+								<col width="7%">
 								<col width="7%">
 							</colgroup>
 							<thead>
 								<tr class="bg-light">
 									<th><input type="checkbox" id="checkbox-all-toggle"></th>
 									<th>번호</th>
-									<th><i class="bi bi-paperclip"></i></th>
 									<th>제목</th>
 									<th>작성자</th>
 									<th>등록일</th>
 									<th>조회</th>
+									<th>추천</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -116,16 +121,16 @@
 						<tr><td class="text-center" colspan="7"> 게시글 정보가 없습니다. </td></tr>
 					<%		
 						} else {
-							for (FreeBoard post : postList) {
+							for (PostDto post : postList) {
 					%>
 						<tr>
-							<td><input type="checkbox" name="postNo" value="<%=post.getNo() %>"/></td>
-							<td><%=post.getNo() %></td>
-							<td><a href="download"><i class="bi bi-paperclip"></i></a></td>
-							<td><a href="detail.jsp?no=<%=post.getNo() %>" class="text-decoration-none text-dark"><%=post.getTitle() %></a></td>
-							<td><%=post.getWriterNo() %></td>
-							<td><%=StringUtils.dateToText(post.getCreatedDate()) %></td>
-							<td><%=post.getReadCount() %></td>
+							<td><input type="checkbox" name="postNo" value="<%=post.getPostNo() %>"/></td>
+							<td><%=post.getPostNo() %></td>
+							<td><a href="detail.jsp?no=<%=post.getPostNo() %>" class="text-decoration-none text-dark"><%=post.getPostTitle() %></a></td>
+							<td><%=post.getEmpName() %></td>
+							<td><%=StringUtils.dateToText(post.getPostCreatedDate()) %></td>
+							<td><%=post.getPostReadCount() %></td>
+							<td><%=post.getPostSuggestionCount() %></td>
 						</tr>
 					<%			
 							}
@@ -198,7 +203,7 @@
 								<option value="102"> 공지사항</option>
 								<option value="103"> 파일게시판</option>
 								<option value="104"> 갤러리</option>
-								<option value="105"> 자유게시판</option>
+								<option value="105" selected="selected"> 자유게시판</option>
 								<option value="106"> 묻고답하기</option>
 								<option value="107"> 임시저장함</option>
 							</select>
@@ -213,7 +218,7 @@
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control form-control-sm" readonly="readonly" value="홍길동">
+							<input type="text" class="form-control form-control-sm" readonly="readonly" value="<%=employee.getName()%>">
 						</div>
 					</div>
 					<div class="row mb-2">
@@ -232,24 +237,6 @@
 						<label class="col-sm-2 col-form-label col-form-label-sm">내용</label>
 						<div class="col-sm-10">
 							<textarea rows="5" class="form-control" name="content"></textarea>
-						</div>
-					</div>
-					<div class="row mb-2">
-						<label class="col-sm-2 col-form-label col-form-label-sm">첨부파일</label>
-						<div class="col-sm-9 mb-1">
-							<input type="file" class="form-control form-control-sm" name="attachedFile1">
-						</div>
-						<div class="col-sm-1">
-							<button type="button" class="btn btn-sm"><i class="bi bi-plus-circle"></i></button>
-						</div>
-					</div>
-					<div class="row mb-2">
-						<label class="col-sm-2 col-form-label col-form-label-sm">첨부파일</label>
-						<div class="col-sm-9 mb-1">
-							<input type="file" class="form-control form-control-sm" name="attachedFile2">
-						</div>
-						<div class="col-sm-1">
-							<button type="button" class="btn btn-sm"><i class="bi bi-plus-circle"></i></button>
 						</div>
 					</div>
 					<div class="modal-footer">
