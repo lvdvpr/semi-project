@@ -46,13 +46,18 @@
 		Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
 		
 		int postNo = StringUtils.stringToInt(request.getParameter("no"));
-	
+		String read = request.getParameter("read");
+
 		FreeDao freeDao = FreeDao.getInstance();
 		PostDto postDto = freeDao.getPostDtoByNo(postNo);
 		
 		FreeBoard freeBoard = postDto.getFreeBoard();
-		freeBoard.setReadCount(freeBoard.getReadCount() + 1);
-		freeDao.updatePost(freeBoard);
+		
+		if ("Y".equals(read)) {
+			postDto.setPostReadCount(postDto.getPostReadCount() + 1);
+			freeBoard.setReadCount(postDto.getPostReadCount());
+			freeDao.updatePost(freeBoard);
+		}
 	%>
 	
 	<div class="row mb-3">
@@ -109,7 +114,7 @@
 	
 	<div class="row mb-3">
 		<div class="col-12 mb-1">
-			<form method="post" action="addComment.jsp">
+			<form method="post" action="addComment.jsp" onsubmit="return checkForm();">
 				<!-- 게시글의 글 번호을 value에 설정하세요 -->
 				<input type="hidden" name="postNo" value="<%=postNo %>"/>
 				<div class="row mb-3">
@@ -212,7 +217,17 @@
 	</form>
 	</div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript"> 
+	function checkForm() {
+		var commentContent = document.querySelector("[name=content]");
+		
+		if (commentContent.value === "") {
+			alert("댓글이 입력되지 않았습니다.");
+			commentContent.focus();
+			return false;
+		}
+		return true;
+	} 
+</script>
 </body>
 </html>

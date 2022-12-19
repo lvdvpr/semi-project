@@ -1,3 +1,5 @@
+<%@page import="com.community.vo.Notice"%>
+<%@page import="com.community.dao.AdminNoticeDao"%>
 <%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.vo.Suggestion"%>
 <%@page import="com.community.dao.SuggestionDao"%>
@@ -27,8 +29,21 @@
 	}
 	
 	freeBoard.setSuggestionCount(freeBoard.getSuggestionCount() + 1);
-	
 	freeDao.updatePost(freeBoard);
 	
+	
+	/*
+	// 알림 보내기 추가
+	AdminNoticeDao noticeDao = AdminNoticeDao.getInstance();
+	Notice notice = new Notice();
+	notice.setPostNo(postNo);
+	notice.setSendEmpNo(employee.getNo());
+	notice.setReceiveEmpNo(freeBoard.getWriterNo());
+	notice.setContent("[추천] " + postNo + "번 글을 추천하였습니다.");
+	
+	noticeDao.insertNotice(notice);               
+	*/
 	response.sendRedirect("detail.jsp?no=" + postNo);
+	
+	
 %>

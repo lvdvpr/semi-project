@@ -52,9 +52,20 @@
 						<strong>비밀번호 변경 실패</strong> 비밀번호가 일치하지 않거나 유효한 비밀번호가 아닙니다.
 					</div>
 		<%
+			} 
+		%>		
+		
+		<% 
+			if ("fail2".equals(error)) {
+		%>
+				<div class="alert alert-danger">
+				<strong>비밀번호 변경 실패</strong> 이전 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.
+				</div>
+		<% 		
 			}
 		%>			
-					<form class="border p-3 bg-light" method="post" action="password-change.jsp">
+		
+					<form class="border p-3 bg-light" method="post" action="password-change.jsp" onsubmit="return checkForm();">
 						<div class="mb-3">
 							<label class="form-label">이전 비밀번호</label>
 							<input type="password" class="form-control" name="prevPassword" />
@@ -76,7 +87,35 @@
 		</div>
 	</div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+	function checkForm() {
+		var prevPasswordField = document.querySelector("[name=prevPassword]");
+		var passwordField = document.querySelector("[name=password]");
+		var passwordField2 = document.querySelector("[name=password2]");
+		
+		if (prevPasswordField.value === "") {
+			alert("이전 비밀번호는 필수입력값입니다.");
+			prevPasswordField.focus();
+			return false;
+		}
+		if (passwordField.value === "") {
+			alert("새 비밀번호는 필수입력값입니다.");
+			passwordField.focus();
+			return false;
+		}
+		if (passwordField2.value === "") {
+			alert("새 비밀번호 확인은 필수입력값입니다.");
+			passwordField2.focus();
+			return false;
+		}
+		if (passwordField.value != passwordField2.value) {
+			alert("새 비밀번호가 동일하지 않습니다.");
+			passwordField.focus();
+			passwordField2.focus();
+			return false;
+		} 	
+		return true;
+	}
+</script>
 </body>
 </html>

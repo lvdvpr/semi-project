@@ -12,6 +12,7 @@
 	
 	String prevPassword = request.getParameter("prevPassword");
 	String password = request.getParameter("password");
+	String password2 = request.getParameter("password2");
 	
 	EmployeeDao employeeDao = EmployeeDao.getInstance();
 	
@@ -19,6 +20,11 @@
 	
 	if(!employee.getPassword().equals(prevPassword)) {
 		response.sendRedirect("passwordform.jsp?error=fail");
+		return;
+	}
+	
+	if(prevPassword.equals(password)) {
+		response.sendRedirect("passwordform.jsp?error=fail2");
 		return;
 	}
 	
