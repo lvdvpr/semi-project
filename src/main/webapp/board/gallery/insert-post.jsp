@@ -9,44 +9,51 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <!DOCTYPE html>
 <%
-	// boardNo, title, empName, important, content, file, writerNo
+	// 이미지하나 이상 경고 뜨고 난 이후에 게시물은 등록됨 나중에 error 코드 처리하기
 	
-	MultipartRequest mr = new MultipartRequest(request, "C:\\aa\\images");
-
-	int boardNo = StringUtils.stringToInt(mr.getParameter("boardNo"));
-	String title = mr.getParameter("title");
-	String important = mr.getParameter("important");
-	String content = mr.getParameter("content");
-	
-	// writerNo를 꺼내기 위한 session 객체
-	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
-	int writerNo = employee.getNo();
-	
-	GalleryDao galleryDao = GalleryDao.getInstance();
-//	int sequence = galleryDao.getSequence();	
-	
-	Gallery gallery = new Gallery();
-//	gallery.setNo(sequence);
-	gallery.setBoardNo(boardNo);
-	gallery.setTitle(title);
-	gallery.setImportant(important);
-	gallery.setContent(content);
-	gallery.setWriterNo(writerNo);
-	
-	galleryDao.insertGalleryPost(gallery);
-	
-	// 파일 첨부하기
-	
+	MultipartRequest mr = new MultipartRequest(request, "C:\\APP\\web-workspace\\web-community\\src\\main\\webapp\\resources\\images");
 	String[] filenames = mr.getFilenames("fileName");
-	for (String filename : filenames) {
-		Fileshares fileShares = new Fileshares();
-//		fileShares.setFilePostNo(sequence);
-		fileShares.setFileName(filename);
-		// ㅑㅜ
+	
+	
+	if (filenames == null) {
+		response.sendRedirect("list.jsp?error=invalid");
+		return;
 	}
+
+		int boardNo = StringUtils.stringToInt(mr.getParameter("boardNo"));
+		String title = mr.getParameter("title");
+		String important = mr.getParameter("important");
+		String content = mr.getParameter("content");
+		
+		// writerNo를 꺼내기 위한 session 객체
+		Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+		
+		GalleryDao galleryDao = GalleryDao.getInstance();
+		
+		Gallery gallery = new Gallery();
+		gallery.setBoardNo(boardNo);
+		gallery.setTitle(title);
+		gallery.setImportant(important);
+		gallery.setContent(content);
+		gallery.setWriterNo(employee.getNo());
+		
+		galleryDao.insertGalleryPost(gallery);
 	
-	// fileNo 어떻게 받는지...? 게시글 등록 동시에 생성되는데...
+		int sequence = galleryDao.getSequence(gallery);
+		
+		// 파일 첨부하기
+		for (String filename : filenames) {
+			Fileshares fileShares = new Fileshares();
+			fileShares.setFilePostNo(sequence);
+			fileShares.setFileName(filename);	
+		
+		FilesharesDao fileSharesDao = FilesharesDao.getInstance();
+		fileSharesDao.insertFile(fileShares);
+		
+		}
+		
+		response.sendRedirect("list.jsp");
 	
-	response.sendRedirect("list.jsp");
+	
 	
 %>

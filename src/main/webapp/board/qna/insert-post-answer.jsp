@@ -11,6 +11,7 @@
 	int originalNo = StringUtils.stringToInt(request.getParameter("originalNo"));
 	String important = request.getParameter("important");
 	
+	
 	// writerNo 가져오는 session객체
 	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
 	
@@ -23,7 +24,7 @@
 	question.setImportant(important);
 	question.setWriterNo(employee.getNo());
 	
-	QuestionDao questionDao = new QuestionDao();
+	QuestionDao questionDao = QuestionDao.getInstance();
 	
 	questionDao.insertPostAnswer(question);
 	

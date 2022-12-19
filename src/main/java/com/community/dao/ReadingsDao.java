@@ -15,4 +15,8 @@ public class ReadingsDao {
 	public void insertPostReadings(Reading reading) {
 		SqlMapper.update("postReadings.insertPostReadings", reading);
 	}
+	
+	public Reading selectReading(int empNo) {
+		return (Reading) SqlMapper.selectOne("postReadings.selectReading", empNo);
+	}
 }

@@ -15,14 +15,19 @@
 	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
 	int deleteUserNo = employee.getNo();
 	
-	QuestionDao questionDao = new QuestionDao();
+	QuestionDao questionDao = QuestionDao.getInstance();
 
 	for (String postNoStr : postNoArray) {
 			int no = Integer.parseInt(postNoStr);
 			Question question = questionDao.getNoPost(no);
 				
-			question.setDeleted("D");
-			questionDao.updatePost(question);
+		if (question.getWriterNo() == deleteUserNo)	{
+				question.setDeleted("D");
+				questionDao.deletedPost(question);
+			} else if (question.getWriterNo() != deleteUserNo) { 
+				response.sendRedirect("list.jsp?error=deny");
+				return;			
+			}	
 		}
 
 	response.sendRedirect("list.jsp");

@@ -18,13 +18,12 @@
 	commentDao.updateComment(comment);
 	
 	// 댓글 수 -1 감소시키기
-	QuestionDao questionDao = new QuestionDao();
+	QuestionDao questionDao = QuestionDao.getInstance();
 	Question question = questionDao.getNoPost(no);
 	
 	question.setCommentCount(question.getCommentCount() -1);
 	questionDao.updatePost(question);
 
 	response.sendRedirect("detail.jsp?no=" + no);
-	
 	
 %>

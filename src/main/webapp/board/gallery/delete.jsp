@@ -1,3 +1,4 @@
+<%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.vo.Gallery"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dao.GalleryDao"%>
@@ -6,13 +7,17 @@
 <%
 	String[] postNoArry = request.getParameterValues("postNo");
 
+	//세션에서 가져온 로그인된 사용자 번호
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+	int deleteUserNo = employee.getNo();
+
+	GalleryDao galleryDao = GalleryDao.getInstance();
+
 	for (String postNoAr : postNoArry) {
 		int no = Integer.parseInt(postNoAr);
-		GalleryDao galleryDao = GalleryDao.getInstance();
 		Gallery gallery = galleryDao.getPostByNo(no);
 		
 		gallery.setDeleted("D");
-		gallery.setNo(no);
 		galleryDao.deletedPost(gallery);
 	}
 

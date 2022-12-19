@@ -7,8 +7,7 @@
 		INSERT INTO COMM_POST_FILES
 		    (FILE_NO, FILE_NAME, FILE_POST_NO)
 		VALUES
-		    (COMM_FILES_SEQ.nextval, #fileName#, (SELECT POST_NO as postNo
-													FROM COMM_POSTS)
+		    (COMM_FILES_SEQ.nextval, #fileName#, #filePostNo#)
 	</insert>
 </sqlMap>
 

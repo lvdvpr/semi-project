@@ -28,6 +28,18 @@
 		<div class="col">
 			<h1 class="heading">갤러리</h1>
 <%
+	// 파일 하나 이상 등록
+	String errorCode = request.getParameter("error");
+	
+	if("invalid".equals(errorCode)) {
+%>
+	<div class="alert alert-danger" role="alert">
+ 		 <strong>파일을 하나이상 등록하세요</strong>
+	</div>
+<%
+	}	
+%>			
+<%
 	int currentPage = StringUtils.stringToInt(request.getParameter("page"), 1);
 	int rows = StringUtils.stringToInt(request.getParameter("rows"), 10);
 	String opt = StringUtils.nullToValue(request.getParameter("opt"), "title");
@@ -38,7 +50,7 @@
 	param.put("opt", opt);
 	
 	GalleryDao galleryDao = GalleryDao.getInstance();
-	int totalRows = galleryDao.getTotalRows();
+	int totalRows = galleryDao.getTotalRows(param);
 	
 	Pagination pagination = new Pagination(currentPage, totalRows, rows);
 	param.put("begin", pagination.getBegin());
@@ -68,7 +80,7 @@
 				<div class="card-body">
 					<form id="post-list-submit"class="mb-3" method="get" action="list.jsp">
 					<input type="hidden" name="page" value="<%=currentPage %>">
-<!-- 여기 -->					<input type="hidden" name="checkboxPostNo">
+<!-- 여기					<input type="hidden" name="checkboxPostNo">  -->
  						<div class="mb-2 d-flex justify-content-between">
 							<div>
 								<select class="form-select form-select-xs" name="rows">
@@ -79,8 +91,8 @@
 							</div>
 							<div>
 								<select class="form-select form-select-xs" name="opt">
-									<option value="title <%="title".equals(opt) ? "selected" : "" %>" id="title"> 제목</option>
-									<option value="empName" <%="empName".equals(opt) ? "selected" : "" %>id="empName"> 작성자</option>
+									<option value="title" <%="title".equals(opt) ? "selected" : "" %> id="title"> 제목</option>
+									<option value="content" <%="content".equals(opt) ? "selected" : "" %> id="content"> 내용</option>
 								</select>
 								<input type="text" class="form-control form-control-xs w-150" name="keyword" value="<%=keyword %>">
 								<button type="button" class="btn btn-outline-secondary btn-xs" id="search-form">검색</button>
@@ -126,8 +138,8 @@
 		}
 %>								
 									<td><%=galleryDto.getNo() %></td>
-									<td><a href="download"><i class="bi bi-paperclip"></i></a></td>
-									<td><a href="detail.jsp?no<%=galleryDto.getNo() %>" class="text-decoration-none text-dark"><%=galleryDto.getTitle() %></a></td>
+									<td><a href="/web-community/download?no=<%=galleryDto.getNo() %>&filename=<%=galleryDto.getFileName() %>"><i class="bi bi-paperclip"></i></a></td>
+									<td><a href="detail.jsp?no=<%=galleryDto.getNo() %>" class="text-decoration-none text-dark"><%=galleryDto.getTitle() %></a></td>
 									<td><%=galleryDto.getName() %></td>
 									<td><%=StringUtils.dateToText(galleryDto.getCreatedDate()) %></td>
 									<td><%=galleryDto.getReadCount() %></td>
@@ -173,7 +185,7 @@
 %>					
 					<div class="text-end">
 						<button class="btn btn-dark btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">등록</button>
-						<button id="delete-button" class="btn btn-outline-dark btn-xs">삭제</button>
+						<button class="btn btn-outline-dark btn-xs" id="deleted-post">삭제</button>
 					</div>
 				</div>
 			</div>
@@ -189,7 +201,7 @@
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
-				<form class="border p-3 bg-light" method="post" action="insert-post.jsp">
+				<form class="border p-3 bg-light" method="post" action="insert-post.jsp" enctype="multipart/form-data">
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">게시판 이름</label>
 						<div class="col-sm-5">
@@ -212,7 +224,7 @@
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control form-control-sm" name="empName" readonly="readonly" value="홍길동">
+							<input type="text" class="form-control form-control-sm" name="empName" readonly="readonly" value="<%=employee.getName() %>">
 						</div>
 					</div>
 					<div class="row mb-2">
@@ -233,27 +245,18 @@
 							<textarea rows="5" class="form-control" name="content"></textarea>
 						</div>
 					</div>
-					<div class="row mb-2">
-						<label class="col-sm-2 col-form-label col-form-label-sm">첨부파일</label>
+					<div class="row mb-2" id="plus-file-div">
+						<label id="file-enroll-button" class="col-sm-2 col-form-label col-form-label-sm">첨부파일</label>
 						<div class="col-sm-9 mb-1">
 							<input type="file" class="form-control form-control-sm" name="fileName">
 						</div>
 						<div class="col-sm-1">
-							<button type="button" class="btn btn-sm"><i class="bi bi-plus-circle"></i></button>
+							<button type="button" class="btn btn-sm"><i id="plus-file-name" class="bi bi-plus-circle"></i></button>
 						</div>
 					</div>
-		  	<!-- 	<div class="row mb-2">
-						<label class="col-sm-2 col-form-label col-form-label-sm">첨부파일</label>
-						<div class="col-sm-9 mb-1">
-							<input type="file" class="form-control form-control-sm" name="file">
-						</div>
-						<div class="col-sm-1">
-							<button type="button" class="btn btn-sm"><i class="bi bi-plus-circle"></i></button>
-						</div>
-					</div> -->
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal">닫기</button>
-				<button type="submit" class="btn btn-primary btn-xs">등록</button>
+				<button type="submit" class="btn btn-primary btn-xs" id="submit-button">등록</button>
 			</div>
 				</form>
 			</div>
@@ -261,9 +264,7 @@
 	</div>
 </div>
 <!-- (여기) checkboxCheck하면 postNo넘어가게 구현 -->
-<form id="form-tag" method="get" action="delete.jsp">
-	<input type="hidden" name="postNo">
-</form>
+<form id="form-delete" method="get" action="delete.jsp"></form>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -324,18 +325,17 @@ $(function() {
 		$(":input[name=important]").val($checkImportant);
 	})
 	
-	// 삭제하기 구현
-	$("#delete-button").click(function() {
+	// 삭제하기 구현 - 오류
+	$("#deleted-post").click(function() {
 		
-		let $deletedCheckboxs = $(":input[name=postCheckbox]:checked").val();
-		if($deletedCheckboxs.lengh == 0) {
+		let $deletedCheckboxs = $(":checkbox[name=postCheckbox]:checked");
+		if ($deletedCheckboxs.length == 0) {
 			alert("지정된 게시글이 없습니다");
 			return;
 		}
 		
-		let postNo = $deletedCheckboxs.val();
-		let $form = ("#form-tag");
-		for (var indect = 0; index <$deletedCheckboxs.length; index++) {
+		var $form = $("#form-delete");
+		for (var index = 0; index < $deletedCheckboxs.length; index++) {
 			var el = $deletedCheckboxs[index];
 			var postNo = $(el).val();
 			var inputPostNo = "<input type='hidden' name='postNo' value='"+postNo+"'>";

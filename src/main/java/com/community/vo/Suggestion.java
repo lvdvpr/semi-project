@@ -6,6 +6,8 @@ public class Suggestion {
   private int suggestionPostNo;
 	private int empNo;
 
+	public Suggestion() {};
+
 	public int getPostNo() {
 		return postNo;
 	}
@@ -13,9 +15,6 @@ public class Suggestion {
 	public void setPostNo(int postNo) {
 		this.postNo = postNo;
 	}
-
-	
-	public Suggestion() {};
 	
 	public int getSuggestionPostNo() {
 		return suggestionPostNo;

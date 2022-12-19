@@ -1,3 +1,9 @@
+<%@page import="com.community.vo.Employee"%>
+<%@page import="com.community.dto.CommentDto"%>
+<%@page import="java.util.List"%>
+<%@page import="com.community.dao.CommentDao"%>
+<%@page import="com.community.vo.Comment"%>
+<%@page import="com.community.dto.GalleryDto"%>
 <%@page import="com.community.vo.Gallery"%>
 <%@page import="com.community.util.StringUtils"%>
 <%@page import="com.community.dao.GalleryDao"%>
@@ -18,16 +24,45 @@
 	<jsp:param name="menu" value="board"/>
 </jsp:include>
 <div class="container my-3">
+	<div class="row mb-1">
+		<div class="col">
+<%
+	String errorCode = request.getParameter("error");
+
+	if("deny".equals(errorCode)) {
+%>
+	<div class="alert alert-danger" role="alert">
+			 <strong>이미 추천한 게시물입니다.</strong>
+	</div>
+<%
+	} else if ("invalid".equals(errorCode)) {
+%>
+	<div class="alert alert-danger" role="alert">
+		<strong>댓글 내용을 적어주세요</strong>
+	</div>
+<%
+	}	
+%>	
+		</div>	
+	</div>
+</div>	
+<div class="container my-3">
 	<div class="row mb-3">
 		<div class="col">
 			<h1 class="heading">게시글 상세정보</h1>
 <%
-	int postNo = StringUtils.stringToInt(request.getParameter("no"));
+	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
+	
+	int no = StringUtils.stringToInt(request.getParameter("no"));
+	String read = request.getParameter("read");
 
 	GalleryDao galleryDao = GalleryDao.getInstance();
-	// GalleryDto galleryDto
-	// no 로 employee랑 file 테이블 조인된 거 가져오게 구현
+	GalleryDto galleryDto = galleryDao.getGalleryDtoByNo(no);
 	
+	// 조회수
+	Gallery gallery = galleryDao.getPostByNo(no);
+	gallery.setReadCount(gallery.getReadCount() +1);
+	galleryDao.updatedPost(gallery);
 %>			
 		</div>
 	</div>
@@ -43,62 +78,70 @@
 				<tbody>
 					<tr>
 						<th class="text-center bg-light">번호</th>
-						<td>10000</td>
+						<td><%=galleryDto.getNo() %></td>
 						<th class="text-center bg-light">등록일</th>
-						<td>2022년 12월 10일</td>
+						<td><%=StringUtils.dateToText(galleryDto.getCreatedDate()) %></td>
 					</tr>
 					<tr>
 						<th class="text-center bg-light">제목</th>
-						<td>연습입니다.</td>
+						<td><%=galleryDto.getTitle() %></td>
 						<th class="text-center bg-light">추천수</th>
-						<td>10</td>
+						<td><%=galleryDto.getSuggestionCount() %></td>
 					</tr>
 					<tr>
 						<th class="text-center bg-light">작성자</th>
-						<td>홍길동 (차장)</td>
+						<td><%=galleryDto.getName() %> (<%=galleryDto.getPositionName() %>)</td>
 						<th class="text-center bg-light">소속부서</th>
-						<td>개발1팀</td>
+						<td><%=galleryDto.getDepartmentName() %></td>
 					</tr>
 					<tr>
 						<th class="text-center bg-light">조회수</th>
-						<td>10</td>
+						<td><%=galleryDto.getReadCount() %></td>
 						<th class="text-center bg-light">댓글 수</th>
-						<td>10</td>
+						<td><%=galleryDto.getCommentCount() %></td>
 					</tr>
 					<tr>
 						<th class="text-center bg-light">내용</th>
-						<td colspan="3">사진 설명입니다.</td>
+						<td colspan="3"><%=galleryDto.getContent() %></td>
 					</tr>
 					<tr>
 						<td colspan="4">
-							<div class="row p-2 g-2">
-								<div class="col-4"><img src="../resources/images/sample.jpeg" class="img-thumbnail border-0"/></div>
-								<div class="col-4"><img src="../resources/images/sample.jpeg" class="img-thumbnail border-0"/></div>
-								<div class="col-4"><img src="../resources/images/sample.jpeg" class="img-thumbnail border-0"/></div>
-								<div class="col-4"><img src="../resources/images/sample.jpeg" class="img-thumbnail border-0"/></div>
-								<div class="col-4"><img src="../resources/images/sample.jpeg" class="img-thumbnail border-0"/></div>
-								<div class="col-4"><img src="../resources/images/sample.jpeg" class="img-thumbnail border-0"/></div>
+							<div class="row p-2 g-2">		
+							<!-- 이미지 -->	
+								<div class="col-4"><img src="../../resources/images/<%=galleryDto.getFileName() %>" class="img-thumbnail border-0"/></div>
 							</div>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-			<div class="d-flex justify-content-between">
+			<div>
+<%
+	if (employee != null && employee.getNo() == galleryDto.getWriterNo()) {
+%>			
 				<span>
-					<a href="" class="btn btn-danger btn-xs">삭제</a>
-					<a href="" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">수정</a>
+					<a href="delete.jsp?postNo=<%=galleryDto.getNo() %>" class="btn btn-danger btn-xs">삭제</a>
+					<a href="modifyform.jsp?no=<%=galleryDto.getNo() %>" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">수정</a>
 				</span>
-				<span>
-					<a href="" class="btn btn-outline-primary btn-xs">추천</a>
+<%
+	}
+
+	if (employee != null && employee.getNo() != galleryDto.getWriterNo()) {
+%>	
+			
+				<span class="float-end">
+					<a href="suggestion.jsp?no=<%=galleryDto.getNo() %>" class="btn btn-outline-primary btn-xs">추천</a>
 				</span>
+<%
+	}
+%>								
 			</div>
 		</div>
 	</div>
 	<div class="row mb-3">
 		<div class="col-12 mb-1">
-			<form method="post" action="">
+			<form method="post" action="insert-comment.jsp">
 				<!-- 게시글의 글 번호을 value에 설정하세요 -->
-				<input type="hidden" name="postNo" value="1000"/>
+				<input type="hidden" name="postNo" value="<%=galleryDto.getNo() %>"/>
 				<div class="row mb-3">
 					<div class="col-sm-11">
 						<input type="text" class="form-control form-control-sm" name="content" placeholder="댓글을 남겨주세요">
@@ -109,57 +152,49 @@
 				</div>
 			</form>
 		</div>
-		<div class="col-12">
+<%
+
+	CommentDao commentDao = new CommentDao();
+	List<CommentDto> commentList = commentDao.getCommentsByPostNo(no);
+	
+	for (CommentDto commentDto : commentList) {
+		int commentEmpNo = commentDto.getEmpNo();
+ 		
+%>		
+		<div class="col-12" >
 			<div class="card">
 				<!-- 댓글 반복 시작 -->
 				<div class="card-body py-1 px-3 small border-bottom">
 					<div class="mb-1 d-flex justify-content-between text-muted">
-						<span>홍길동</span>
-						<span><span class="me-4">2022년 12월 10일</span> <a href="" class="text-danger"><i class="bi bi-trash-fill"></i></a></span>
+				 	<span><%=commentDto.getEmpName() %></span>
+					<span><span class="me-4"><%=StringUtils.dateToText(commentDto.getCommentCreatedDate()) %></span> 
+						<a href="delete-comment.jsp?no=<%=no %>&cno=<%=commentDto.getCommentNo() %>" class="text-danger">				
+						<i class="bi bi-trash-fill"></i></a></span>			
 					</div>
-					<p class="card-text">내용</p>
-				</div>
-				<!-- 댓글 반복 끝 -->
-				<div class="card-body py-1 px-3 small border-bottom">
-					<div class="mb-1 d-flex justify-content-between text-muted">
-						<span>홍길동</span>
-						<span><span class="me-4">2022년 12월 10일</span> <a href="" class="text-danger"><i class="bi bi-trash-fill"></i></a></span>
-					</div>
-					<p class="card-text">내용</p>
-				</div>
-				<div class="card-body py-1 px-3 small border-bottom">
-					<div class="mb-1 d-flex justify-content-between text-muted">
-						<span>홍길동</span>
-						<span><span class="me-4">2022년 12월 10일</span> <a href="" class="text-danger"><i class="bi bi-trash-fill"></i></a></span>
-					</div>
-					<p class="card-text">내용</p>
-				</div>
-				<div class="card-body py-1 px-3 small border-bottom">
-					<div class="mb-1 d-flex justify-content-between text-muted">
-						<span>홍길동</span>
-						<span><span class="me-4">2022년 12월 10일</span> <a href="" class="text-danger"><i class="bi bi-trash-fill"></i></a></span>
-					</div>
-					<p class="card-text">내용</p>
-				</div>
-			</div>				
+					<p class="card-text"><%=commentDto.getCommentContent() %></p>
+				</div>				
+			</div>
 		</div>
+<%
+	}
+%>
 	</div>
 </div>
 <div class="modal" tabindex="-1" id="modal-form-posts">
 	<div class="modal-dialog modal-lg">
-	<form class="border p-3 bg-light" method="post" action="modify.jsp">
+	<form class="border p-3 bg-light" method="post" action="modifyform.jsp">
 		<!-- 게시글의 글 번호을 value에 설정하세요 -->
-		<input type="hidden" name="postNo" value="1000"/>
+		<input type="hidden" name="postNo" value="<%=galleryDto.getNo() %>"/>
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">게시글 등록폼</h5>
+				<h5 class="modal-title">게시글 수정폼</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">게시판 이름</label>
 						<div class="col-sm-5">
-							<select class="form-select form-select-sm">
+							<select class="form-select form-select-sm" name="boardNo">
 								<option value="102"> 공지사항</option>
 								<option value="103"> 파일게시판</option>
 								<option value="104" selected="selected"> 갤러리</option>
@@ -172,23 +207,23 @@
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">제목</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control form-control-sm" placeholder="제목">
+							<input type="text" class="form-control form-control-sm" placeholder="제목" name="title" value="<%=galleryDto.getTitle() %>">
 						</div>
 					</div>
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control form-control-sm" readonly="readonly" value="홍길동">
+							<input type="text" class="form-control form-control-sm" readonly="readonly" value="<%=galleryDto.getName() %>" name="empName">
 						</div>
 					</div>
 					<div class="row mb-2">
 						<div class="col-sm-8 offset-sm-2">
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="" value="N" checked>
+								<input class="form-check-input" type="radio" name="important" value="N" checked>
 								<label class="form-check-label">일반</label>
 							</div>
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="" value="Y" >
+								<input class="form-check-input" type="radio" name="important" value="Y" >
 								<label class="form-check-label">중요</label>
 							</div>
 						</div>
@@ -196,7 +231,7 @@
 					<div class="row mb-2">
 						<label class="col-sm-2 col-form-label col-form-label-sm">내용</label>
 						<div class="col-sm-10">
-							<textarea rows="5" class="form-control">내용을 수정하세요</textarea>
+							<textarea rows="5" class="form-control" name="content"><%=galleryDto.getContent() %></textarea>
 						</div>
 					</div>
 			</div>
@@ -210,5 +245,23 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	
+	// 게시글 일반/중요 구현
+	$(":input[name=important]").click(function() {
+		
+		$(":input[name=important]").change(function() {
+			
+			$(":input[value='N']").prop("checked", "");
+			
+			var $important = $(this).val();
+			$(":input[name=important]").val($important);
+		})
+
+	})
+	
+})
+</script>
 </body>
 </html>

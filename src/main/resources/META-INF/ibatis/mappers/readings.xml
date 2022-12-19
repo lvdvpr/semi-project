@@ -7,6 +7,15 @@
 		INSERT INTO COMM_POST_READINGS
 			(READING_POST_NO, READING_EMP_NO)
 		VALUES
-			(#readingPostNo#, #readingEmpNo)
+			(#postNo#, #empNo#)
 	</insert>
+	<select id="selectReading" parameterClass="map" resultClass="com.community.vo.Reading">
+		select
+			READING_POST_NO as postNo,
+			READING_EMP_NO as empNo
+		from
+			comm_post_readings
+		where
+			and READING_EMP_NO = #empNo#
+	</select>
 </sqlMap>

@@ -1,6 +1,7 @@
 package com.community.dto;
 
 import java.util.Date;
+import com.community.vo.Gallery;
 
 public class GalleryDto {
 
@@ -31,6 +32,28 @@ public class GalleryDto {
 	private String positionName;		// comm_position 테이블
 	
 	public GalleryDto() {}
+	
+	public Gallery getGallery() {
+		
+		Gallery gallery = new Gallery();
+		
+		gallery.setNo(no);
+		gallery.setBoardNo(boardNo);
+		gallery.setTitle(title);
+		gallery.setWriterNo(writerNo);
+		gallery.setContent(content);
+		gallery.setImportant(important);
+		gallery.setReadCount(readCount);
+		gallery.setSuggestionCount(suggestionCount);
+		gallery.setCommentCount(commentCount);
+		gallery.setDeleted(deleted);
+		gallery.setCreatedDate(createdDate);
+		gallery.setUpdatedDate(updatedDate);
+		gallery.setDeletedDate(deletedDate);
+		gallery.setOriginalNo(originalNo);
+		
+		return gallery;
+	}
 
 	public void setNo(int no) {
 		this.no = no;

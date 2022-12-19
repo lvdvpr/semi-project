@@ -35,7 +35,7 @@
 		and 
 			c.comment_post_no = #value#	
 		order by
-			c.comment_no asc			
+			c.comment_no desc			
 	</select>
 
 	
@@ -50,7 +50,6 @@
 			comment_updated_date as updatedDate,
 			comment_deleted_date as deletedDate,
 			comment_post_no as postNo
-
 		from 
 			comm_post_comments
 		where
@@ -74,7 +73,7 @@
 			comment_content = #content#,
 			comment_deleted = #deleted#,
 			comment_updated_date = sysdate,
-			comment_deleted_date = #deletedDate#,
+			comment_deleted_date = sysdate,
 			comment_post_no = #postNo#	
 		where	
 			comment_no = #no#
