@@ -126,7 +126,7 @@
 						<tr>
 							<td><input type="checkbox" name="postNo" value="<%=post.getPostNo() %>"/></td>
 							<td><%=post.getPostNo() %></td>
-							<td><a href="detail.jsp?no=<%=post.getPostNo() %>" class="text-decoration-none text-dark"><%=post.getPostTitle() %></a></td>
+							<td><a href="detail.jsp?no=<%=post.getPostNo() %>&read=Y" class="text-decoration-none text-dark"><%=post.getPostTitle() %></a></td>
 							<td><%=post.getEmpName() %></td>
 							<td><%=StringUtils.dateToText(post.getPostCreatedDate()) %></td>
 							<td><%=post.getPostReadCount() %></td>
