@@ -31,12 +31,12 @@
 <%
 	Employee loginEmployee = (Employee)session.getAttribute("LOGIN_EMPLOYEE");
 	if (loginEmployee==null) {
-		response.sendRedirect("/web-community/employee/loginform.jsp?error=admin");
+		response.sendRedirect("/web-community/employee/loginform.jsp?error=deny");
 		return;
 	}
 //  관리자 외  페이지 접근 불가능
 	if ("사용자".equals(loginEmployee.getType())) {
-		response.sendRedirect("/web-community/employee/loginform.jsp?error=admin");
+		response.sendRedirect("/web-community/employee/loginform.jsp?error=deny");
 		return;
 	}
 
@@ -99,13 +99,15 @@
 					</div>
 					
 						<div class="col-9">
-							<form id="form-posts" class="border p-3" method="get" action="">
+							<form id="form-posts" class="border p-3" method="get" action="remove_post.jsp">
+								<input type="hidden" name="page" value="<%=currentPage %>" />
+								<input type="hidden" name="boardNo" value="<%=boardNo %>" />
 								<table class="table table-sm" id="table-posts">
 									<colgroup>
 										<col width="5%">
 										<col width="10%">
 										<col width="*">
-										<col width="10%">
+										<col width="15%">
 										<col width="10%">
 										<col width="18%">
 									</colgroup>
@@ -135,7 +137,8 @@
 											<td><input type="checkbox" name="no" data-post-nos="<%=post.getNo()%>" value="<%=post.getNo()%> "/></td>
 											<td><%=post.getNo() %>
 											<td><a href="detail.jsp?no=<%=post.getNo() %>" class="text-decoration-none text-dark"><%=post.getTitle() %></a></td>
-											<td><%="N".equals(post.getDeleted()) ? "미삭제" : "삭제" %></td>
+											<td><%="N".equals(post.getDeleted()) ? "미삭제" : "삭제" %>
+											<%="Y".equals(post.getImportant()) ? "[중요] " : ""  %></td>
 											<td><%=post.getName()%></td>
 											<td><%=StringUtils.dateToText(post.getCreatedDate()) %></td>
 										</tr>
@@ -237,10 +240,7 @@
 			if ($(":checkbox[name=no]:checked").length === 0) {
 				alert("게시물을 하나 이상 선택해주세요.");
 				return;
-			} else if ($(":checkbox[name=no]:checked").parents('tr').find("td:eq(3)").text() === "미삭제") {
-				$(":checkbox[name=no]:checked").prop("checked", false);
-				alert("미삭제 게시물은 선택할 수 없습니다."); // 체크박스 상태가 미삭제일 경우 나오는 메세지 - 하나 고를때만 적용됨
-			} else {
+			} else  {
 			$("#form-posts").attr("action", "restore.jsp").trigger("submit");
 			alert("게시글 복구가 완료되었습니다.")
 		}
@@ -252,12 +252,13 @@
 			if ($(":checkbox[name=no]:checked").length === 0) {
 				alert("게시물을 하나 이상 선택해주세요.");
 				return;
+			} if(confirm("게시글을 삭제하시겠습니까?")) {
+				$("#form-posts").attr("action", "remove_post.jsp").trigger("submit");
+				alert("게시글 삭제가 완료되었습니다.")
 			} else {
-			$("#form-posts").attr("action", "remove_post.jsp").trigger("submit");
-			alert("게시글 삭제가 완료되었습니다.")
-		}
-		
-		})
+				return false;
+				}
+			})
 		// 전체체크박스값이 변경될 때 개별 체크박스의 상태도 동일하게 적용시키기. 
 		$("#checkbox-all").change(function() {
 			let $allChecked = $(this).prop('checked');

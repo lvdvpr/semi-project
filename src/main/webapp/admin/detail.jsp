@@ -72,7 +72,7 @@
 	try {
 		readingDao.insertReading(reading);
 	} catch (Exception e) {
-		loginEmployee.equals(null);
+		
 	}
 
 	%>

@@ -11,7 +11,6 @@
 	Employee loginEmployee = (Employee)session.getAttribute("LOGIN_EMPLOYEE");
 	
 	int no = StringUtils.stringToInt(request.getParameter("no"));
-	
 	int boardNo = StringUtils.stringToInt(request.getParameter("boardNo"));
 	String title = request.getParameter("title");
 	String important = request.getParameter("important");
@@ -33,5 +32,5 @@
 	postDao.updatePost(post);
 	
 	// 재요청 URL 전송
-	response.sendRedirect("posts.jsp?boardNo="+boardNo);
+	response.sendRedirect("posts.jsp?&boardNo="+boardNo);
 %>
