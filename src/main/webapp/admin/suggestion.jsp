@@ -23,7 +23,7 @@
 	// 추천 정보 저장
 	AdminSuggestionDao suggestionDao = AdminSuggestionDao.getInstance();
 	Suggestion suggestion = new Suggestion();
-	suggestion.setPostNo(no);
+	suggestion.setSuggestionPostNo(no);
 	suggestion.setEmpNo(employee.getNo());
 	// 중복 추천 방지
 	try {
