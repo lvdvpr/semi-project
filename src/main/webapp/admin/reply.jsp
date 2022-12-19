@@ -23,7 +23,7 @@
 	answerPost.setBoardNo(boardNo);
 	answerPost.setTitle(title);
 	answerPost.setContent(content);
-	answerPost.setOriginalNo(originalNo);
+	answerPost.setOriginalNo(originalNo); // 전달받은 게시글 번호를 원글 번호에 저장함 . (원글번호와 original번호가 일치하면 질문글 / 일치하지 않으면 답변글)
 	answerPost.setImportant(important);
 	answerPost.setWriterNo(writerNo);
 	
@@ -32,7 +32,7 @@
 	
 
 	
-	response.sendRedirect("posts.jsp?boardNo="+boardNo);
+	response.sendRedirect("detail.jsp?no="+originalNo);
 	
 			
 	

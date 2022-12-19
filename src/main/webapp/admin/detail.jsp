@@ -116,36 +116,105 @@
 					</tr>
 				</tbody>
 			</table>
-<% // 자신이 쓴 글은 추천/답변 불가 (disabled 설정)
-	if (loginEmployee.getNo()==detailPost.getWriterNo()) {
+			
+			
+<% 
+	if (loginEmployee!= null ) {
+		if (loginEmployee.getNo()!=detailPost.getWriterNo()&&detailPost.getBoardNo()!=106) {	 // 일반 게시판이면서 타인이 쓴 글 -- 추천만 가능
 %>
 			<div class="d-flex justify-content-between">
-				<span>
-					<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs" >삭제</a>
-					<a href="post-modify.jsp?no=<%=no %>" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-modify">수정</a>
-				</span>
-				<span>
-					<a href="suggestion.jsp?no=<%=no%>" class="btn btn-outline-primary btn-xs disabled">추천</a>
-					<button class="btn btn-outline-primary btn-xs disabled" data-bs-toggle="modal" data-bs-target="#modal-form-posts">답변</button>
-				</span>
-			</div>
-
-<%
-	} else { // 다른 사람이 쓴 글이면 수정/삭제 불가
-%>
-
-<div class="d-flex justify-content-between">
 				<span>
 					<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs disabled" >삭제</a>
 					<a href="post-modify.jsp?no=<%=no %>" class="btn btn-warning btn-xs disabled" data-bs-toggle="modal" data-bs-target="#modal-form-modify">수정</a>
 				</span>
 				<span>
 					<a href="suggestion.jsp?no=<%=no%>" class="btn btn-outline-primary btn-xs ">추천</a>
-					<button class="btn btn-outline-primary btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">답변</button>
+					
 				</span>
 			</div>
 <%
+	} else if (loginEmployee.getNo()==detailPost.getWriterNo()&&detailPost.getBoardNo()!=106) { // 일반 게시판이면서 자신이 쓴 글 - 추천 불가 / 수정,삭제 가능
+%>
+		<div class="d-flex justify-content-between">
+		
+						<span>
+							<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs " >삭제</a>
+							<a href="post-modify.jsp?no=<%=no %>" class="btn btn-warning btn-xs " data-bs-toggle="modal" data-bs-target="#modal-form-modify">수정</a>
+						</span>
+						<span>
+							<a href="suggestion.jsp?no=<%=no%>" class="btn btn-outline-primary btn-xs disabled">추천</a>
+							
+						</span>
+					</div>
+<%
+	} else if (loginEmployee.getNo()!=detailPost.getWriterNo()&&detailPost.getBoardNo()==106) { // 묻고답하기 게시판이면서 타인이 쓴 글 - 추천/답변만 가능
+%>
+		<div class="d-flex justify-content-between">
+						<span>
+							<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs disabled" >삭제</a>
+							<a href="post-modify.jsp?no=<%=no %>" class="btn btn-warning btn-xs disabled" data-bs-toggle="modal" data-bs-target="#modal-form-modify">수정</a>
+						</span>
+						<span>
+							<a href="suggestion.jsp?no=<%=no%>" class="btn btn-outline-primary btn-xs ">추천</a>
+							<button class="btn btn-outline-primary btn-xs " data-bs-toggle="modal" data-bs-target="#modal-form-posts">답변</button>
+						</span>
+					</div>
+<%
+	} else if (loginEmployee.getNo()==detailPost.getWriterNo()&&detailPost.getBoardNo()==106) { // 묻고답하기 게시판이면서 자기가 쓴 글 - 삭제/수정만 가능
+%>
+		<div class="d-flex justify-content-between">
+						<span>
+							<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs" >삭제</a>
+							<a href="post-modify.jsp?no=<%=no %>" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-modify">수정</a>
+						</span>
+						<span>
+							<a href="suggestion.jsp?no=<%=no%>" class="btn btn-outline-primary btn-xs disabled">추천</a>
+							<button class="btn btn-outline-primary btn-xs disabled " data-bs-toggle="modal" data-bs-target="#modal-form-posts">답변</button>
+						</span>
+					</div>
+
+<%
+		}
 	}
+%>
+	
+<!-- 답변글 시작 -->
+
+<%
+	List<AdminPostDto> answers = postDao.getDetailPostsAnswersByOriginalNo(no);
+	if (detailPost.getOriginalNo()!=null) {
+		for (AdminPostDto dto : answers) {
+			int answerNo = dto.getNo();
+			if (no != answerNo) {
+%>
+         <table class="table table-sm table-bordered">
+            <colgroup>
+               <col width="15%">
+               <col width="35%">
+               <col width="15%">
+               <col width="35%">
+            </colgroup>
+            <tbody>
+               <tr>
+                  <th class="text-center bg-light">작성자</th>
+                  <td><%=dto.getName() %> (<%=dto.getPositionName() %>)</td>
+                  <th class="text-center bg-light">등록일</th>
+                  <td><%=StringUtils.dateToText(dto.getCreatedDate())%></td>
+               </tr>
+               <tr>
+                  <th class="text-center bg-light">내용</th>
+                  <td colspan="3">
+                     <p class="fw-bold mb-1"><%=dto.getTitle() %></p>
+                     <p><%=dto.getPostContent()%></p>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+         <!-- 답변글 끝 -->
+<%
+			}
+		}	
+	}	
 %>
 		</div>
 	</div>
@@ -208,7 +277,7 @@
 						<div class="col-sm-5">
 							<select class="form-select form-select-sm" name="boardNo" >
 <%
-	// comm_boards에서 모든 게시판 이름 조회
+	// comm_boards에서 모든 게시판 이름 조회 
 	
 	BoardDao boardDao = BoardDao.getInstance();
 	List<Board> boardList = boardDao.getAllBoards();
@@ -329,6 +398,7 @@
 	</form>
 	</div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script>
@@ -380,8 +450,18 @@
 			$(":radio[name=important]").val($checkedImportant);
 		})
 		
+		// 댓글 삭제시 null 처리
 		$("a.text-danger").click(function() {
 			if (confirm("댓글을 삭제하시겠습니까?")) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		})
+		
+		$("a[href="delete_detail_post.jsp?no=<%=no %>"]").click(function() {
+			if (confirm("게시글을 삭제하시겠습니까?")) {
 				return true;
 			}
 			else {

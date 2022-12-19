@@ -37,6 +37,11 @@ public class AdminPostDao {
 	public AdminPostDto getDetailPostByNo(int no) {
 		return (AdminPostDto)SqlMapper.selectOne("posts.getDetailPostByNo", no);
 	}
+	// [관리자] 상세 페이지에서 답변 게시물 리스트 조회
+	@SuppressWarnings("unchecked")
+	public List<AdminPostDto> getDetailPostsAnswersByOriginalNo(int originalNo){
+		return(List<AdminPostDto>)SqlMapper.selectList("posts.getDetailPostsAnswersByOriginalNo", originalNo);
+	}
 	// [관리자] post객체획득
 	public Post getPostByNo(int no) {
 		return (Post)SqlMapper.selectOne("posts.getPostByNo", no);

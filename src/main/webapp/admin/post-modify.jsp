@@ -32,5 +32,5 @@
 	postDao.updatePost(post);
 	
 	// 재요청 URL 전송
-	response.sendRedirect("posts.jsp?&boardNo="+boardNo);
+	response.sendRedirect("detail.jsp?&no="+no);
 %>
