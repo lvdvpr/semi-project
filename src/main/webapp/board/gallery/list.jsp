@@ -82,7 +82,7 @@
 		</div>
 		<div class="col-9">
 			<div class="card">
-				<div class="card-header">파일 목록</div>
+				<div class="card-header">갤러리</div>
 				<div class="card-body">
 					<form id="post-list-submit"class="mb-3" method="get" action="list.jsp">
 					<input type="hidden" name="page" value="<%=currentPage %>">
@@ -331,7 +331,7 @@ $(function() {
 		$(":input[name=important]").val($checkImportant);
 	})
 	
-	// 삭제하기 구현 - 오류
+	// 삭제하기 구현
 	$("#deleted-post").click(function() {
 		
 		let $deletedCheckboxs = $(":checkbox[name=postCheckbox]:checked");
@@ -351,7 +351,9 @@ $(function() {
 		
 		$form.trigger('submit');
 		
-	})
+	})	
+		
+})
 </script>
 </body>
 </html>
