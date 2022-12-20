@@ -37,8 +37,14 @@
  		 <strong>파일을 하나이상 등록하세요</strong>
 	</div>
 <%
-	}	
-%>			
+	} else if ("none".equals(errorCode)) {
+%>
+	<div class="alert alert-danger" role="alert">
+ 		 <strong>제목과 내용을 입력하세요</strong>
+	</div>
+<%
+	}
+%>				
 <%
 	int currentPage = StringUtils.stringToInt(request.getParameter("page"), 1);
 	int rows = StringUtils.stringToInt(request.getParameter("rows"), 10);
@@ -251,7 +257,7 @@
 							<input type="file" class="form-control form-control-sm" name="fileName">
 						</div>
 						<div class="col-sm-1">
-							<button type="button" class="btn btn-sm"><i id="plus-file-name" class="bi bi-plus-circle"></i></button>
+							<button type="button" class="btn btn-sm"><i id="plus-filename" class="bi bi-plus-circle"></i></button>
 						</div>
 					</div>
 			<div class="modal-footer">
@@ -346,8 +352,6 @@ $(function() {
 		$form.trigger('submit');
 		
 	})
-	
-})
 </script>
 </body>
 </html>

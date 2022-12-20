@@ -36,8 +36,14 @@
  		 <strong>다른 사람이 등록한 게시글은 삭제할 수 없습니다</strong>
 	</div>
 <%
-	}
+	} else if ("none".equals(errorCode)) {
 %>
+		<div class="alert alert-danger" role="alert">
+	 		 <strong>제목과 내용을 입력하세요</strong>
+		</div>
+	<%
+		}
+	%>
 		</div>
 	</div>
 	<div class="row mb-3">

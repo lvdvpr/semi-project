@@ -11,6 +11,11 @@
 	String content = request.getParameter("content");
 	int originalNo = StringUtils.stringToInt(request.getParameter("originalNo"));
 	String important = request.getParameter("important");
+	
+	if (title.isEmpty() || content.isEmpty()) {
+		response.sendRedirect("list.jsp?error=none");
+		return;
+	}
 
 	// writertNo 가져오는 session 객체
 	Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
