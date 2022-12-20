@@ -147,9 +147,10 @@
 <%											
 											} else {
 %>	
-												<span class="text-muted small">
+												<a href="detail.jsp?no=<%=post.getNo() %>&read=Y" class="text-decoration-none text-dark">
+												<!-- >span class="text-muted small"-->
 													<%=post.getNo() != post.getOriginalNo() ? "<i class='ms-3 bi bi-arrow-return-right'></i>" : "" %> <%=post.getTitle() %>
-												</span>
+												<!-- /span> --></a>
 <%											
 											}
 %>
