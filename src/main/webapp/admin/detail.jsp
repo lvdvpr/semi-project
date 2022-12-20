@@ -123,7 +123,7 @@
 			
 <% 
 	if (loginEmployee!= null ) {
-		if (loginEmployee.getNo()!=detailPost.getWriterNo()&&detailPost.getBoardNo()!=106) {	 // 일반 게시판이면서 타인이 쓴 글 -- 추천만 가능
+		if (loginEmployee.getNo()!=detailPost.getWriterNo()) {	 // 타인이 쓴 글 -- 추천,답변만 가능
 %>
 			<div class="d-flex justify-content-between">
 				<span>
@@ -132,11 +132,11 @@
 				</span>
 				<span>
 					<a href="suggestion.jsp?no=<%=no%>" class="btn btn-outline-primary btn-xs ">추천</a>
-					
+					<button class="btn btn-outline-primary btn-xs  " data-bs-toggle="modal" data-bs-target="#modal-form-posts">답변</button>
 				</span>
 			</div>
 <%
-	} else if (loginEmployee.getNo()==detailPost.getWriterNo()&&detailPost.getBoardNo()!=106) { // 일반 게시판이면서 자신이 쓴 글 - 추천 불가 / 수정,삭제 가능
+	} else if (loginEmployee.getNo()==detailPost.getWriterNo()) { // 자신이 쓴 글 - 추천,답변 불가 / 수정,삭제 가능
 %>
 		<div class="d-flex justify-content-between">
 		
@@ -146,36 +146,9 @@
 						</span>
 						<span>
 							<a href="suggestion.jsp?no=<%=no%>" class="btn btn-outline-primary btn-xs disabled">추천</a>
-							
-						</span>
-					</div>
-<%
-	} else if (loginEmployee.getNo()!=detailPost.getWriterNo()&&detailPost.getBoardNo()==106) { // 묻고답하기 게시판이면서 타인이 쓴 글 - 추천/답변만 가능
-%>
-		<div class="d-flex justify-content-between">
-						<span>
-							<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs disabled" >삭제</a>
-							<a href="post-modify.jsp?no=<%=no %>" class="btn btn-warning btn-xs disabled" data-bs-toggle="modal" data-bs-target="#modal-form-modify">수정</a>
-						</span>
-						<span>
-							<a href="suggestion.jsp?no=<%=no%>" class="btn btn-outline-primary btn-xs ">추천</a>
-							<button class="btn btn-outline-primary btn-xs " data-bs-toggle="modal" data-bs-target="#modal-form-posts">답변</button>
-						</span>
-					</div>
-<%
-	} else if (loginEmployee.getNo()==detailPost.getWriterNo()&&detailPost.getBoardNo()==106) { // 묻고답하기 게시판이면서 자기가 쓴 글 - 삭제/수정만 가능
-%>
-		<div class="d-flex justify-content-between">
-						<span>
-							<a href="delete_detail_post.jsp?no=<%=no %>" class="btn btn-danger btn-xs" id="delete-comment2" >삭제</a>
-							<a href="post-modify.jsp?no=<%=no %>" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-modify">수정</a>
-						</span>
-						<span>
-							<a href="suggestion.jsp?no=<%=no%>" class="btn btn-outline-primary btn-xs disabled">추천</a>
 							<button class="btn btn-outline-primary btn-xs disabled " data-bs-toggle="modal" data-bs-target="#modal-form-posts">답변</button>
 						</span>
 					</div>
-
 <%
 		}
 	}
@@ -185,7 +158,7 @@
 
 <%
 	List<AdminPostDto> answers = postDao.getDetailPostsAnswersByOriginalNo(no);
-	if (detailPost.getOriginalNo()!=null) {
+//	if (detailPost.getOriginalNo()!=null) {
 		for (AdminPostDto dto : answers) {
 			int answerNo = dto.getNo();
 			if (no != answerNo) {
@@ -217,7 +190,7 @@
 <%
 			}
 		}	
-	}	
+//	}	
 %>
 		</div>
 	</div>
@@ -463,8 +436,8 @@
 			}
 		})
 		
-		$("delete-comment").click(function() {
-			if (confirm("댓글을 삭제하시겠습니까?")) {
+		$("#delete-comment").click(function() {
+			if (confirm("게시글을 삭제하시겠습니까?")) {
 				return true;
 			}
 			else {
@@ -472,8 +445,8 @@
 			}
 		})
 		
-		$("delete-comment2").click(function() {
-			if (confirm("댓글을 삭제하시겠습니까?")) {
+		$("#delete-comment2").click(function() {
+			if (confirm("게시글을 삭제하시겠습니까?")) {
 				return true;
 			}
 			else {

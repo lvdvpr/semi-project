@@ -102,6 +102,7 @@
 	    		P.POST_ORIGINAL_NO = #value#
     		AND
     			P.POST_DELETED = 'N'
+   			
 		</select>
 	
 	<!-- 관리자 게시물 리스트 전체 행 조회 - 페이징 용도 -->
