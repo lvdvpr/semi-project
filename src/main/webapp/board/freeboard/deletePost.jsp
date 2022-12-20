@@ -13,8 +13,9 @@
 		response.sendRedirect("list.jsp");
 		return;
 	}
-	
+
 	FreeDao freeDao = FreeDao.getInstance();
+	
 	for (String value : values) {
 		int postNo = StringUtils.stringToInt(value);
 		FreeBoard freeBoard = freeDao.getPostByNo(postNo);

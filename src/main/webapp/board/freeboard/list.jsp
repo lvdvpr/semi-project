@@ -35,7 +35,7 @@
 				<div class="card-header">전체 게시판 목록</div>
 				<div class="card-body">
 					<div class="d-grid gap-2">
-						<button class="btn btn-dark btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-posts">파일 등록</button>
+						<button class="btn btn-dark btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#modal-form-posts">게시글 등록</button>
 					</div>
 					<jsp:include page="../../common/tree.jsp" />
 				</div>
@@ -124,7 +124,20 @@
 							for (PostDto post : postList) {
 					%>
 						<tr>
+					<% 
+						if (employee != null && post.getPostWriterNo() == employee.getNo()) {  
+					%>
 							<td><input type="checkbox" name="postNo" value="<%=post.getPostNo() %>"/></td>
+					<%
+						}
+					%>	
+					<% 
+						if (employee != null && post.getPostWriterNo() != employee.getNo()) {  
+					%>
+							<td><input type="checkbox" disabled name="postNo" value="<%=post.getPostNo() %>"/></td>
+					<%
+						}
+					%>		
 							<td><%=post.getPostNo() %></td>
 							<td><a href="detail.jsp?no=<%=post.getPostNo() %>&read=Y" class="text-decoration-none text-dark"><%=post.getPostTitle() %></a></td>
 							<td><%=post.getEmpName() %></td>
@@ -263,7 +276,7 @@ $(function(){
 		var keyword = $("[name=keyword]").val();
 		if (keyword == "") {
 			alert("검색어를 입력하세요.");
-			return false;
+	//		return false;   전체 페이지 나오도록 구현하고 싶어서 주석처리함.
 		}
 		$("[name=page]").val(1);
 		$("#form-board").attr("action", "list.jsp").trigger("submit");
@@ -290,6 +303,7 @@ $(function(){
 		
 		$(":input[name=postNo]").prop('checked', allCheck);
 	})
+	
 	
 })
 </script>

@@ -18,6 +18,7 @@
 	
 	freeBoard.setNo(postNo);
 	freeBoard.setBoardNo(boardNo);
+	freeBoard.setWriterNo(employee.getNo());
 	freeBoard.setTitle(title);
 	freeBoard.setImportant(important);
 	freeBoard.setContent(content);
