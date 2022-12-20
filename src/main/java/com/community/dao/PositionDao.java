@@ -12,6 +12,10 @@ import com.community.vo.Position;
 	  return (List<Position>) SqlMapper.selectList("getAllPositions"); 
 	 } 
   
+  public void insertPosition(Position position) {
+	  SqlMapper.insert("insertPosition", position);
+  }
+  
   public void updatePosition(Position position) {
 	  SqlMapper.update("updatePosition",position);
   }

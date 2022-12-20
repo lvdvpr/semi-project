@@ -14,6 +14,12 @@
 			position_no asc
 	</select>
 	
+	<insert id="insertPosition" parameterClass="com.community.vo.Position">
+		insert into comm_positions
+			(position_no, position_name, position_seq)
+		values
+			(comm_positions_seq.nextval, #name#, #seq#)
+	</insert>
 	<update id="updatePosition" parameterClass="com.community.vo.Position">
 		update
 			comm_positions

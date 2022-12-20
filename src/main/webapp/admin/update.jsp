@@ -1,10 +1,8 @@
-
 <%@page import="com.community.vo.Employee"%>
 <%@page import="com.community.dao.EmployeeDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
-<!DOCTYPE html>
 <%
-	// modifyform.jsp에 폼입력값 조회
+	// emp-modifyform.jsp에 폼입력값 조회
 	int no = Integer.parseInt(request.getParameter("no"));
 	String password = request.getParameter("password");
 	String name = request.getParameter("name");

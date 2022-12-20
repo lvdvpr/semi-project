@@ -65,26 +65,26 @@
 									<th class="text-end">소속부서</th>
 									<td>
 										<select class="form-select form-select-sm" name="deptNo">
-											<option value="101" <%="101".equals(employee.getDeptNo()) ? "selected" : "" %>> 디자인1팀</option>
-											<option value="102" <%="102".equals(employee.getDeptNo()) ? "selected" : "" %>> 디자인2팀</option>
-											<option value="103" <%="103".equals(employee.getDeptNo()) ? "selected" : "" %>> 퍼블리싱1팀</option>
-											<option value="104" <%="104".equals(employee.getDeptNo()) ? "selected" : "" %>> 퍼블리싱2팀</option>
-											<option value="105" <%="105".equals(employee.getDeptNo()) ? "selected" : "" %>> 개발1팀</option>
-											<option value="106" <%="106".equals(employee.getDeptNo()) ? "selected" : "" %>> 개발2팀</option>
-											<option value="107" <%="107".equals(employee.getDeptNo()) ? "selected" : "" %>> 모바일 개발팀</option>
+											<option value="101" <%= 101 == employee.getDeptNo() ? "selected" : "" %>> 디자인1팀</option>
+											<option value="102" <%= 102 == employee.getDeptNo() ? "selected" : "" %>> 디자인2팀</option>
+											<option value="103" <%= 103 == employee.getDeptNo() ? "selected" : "" %>> 퍼블리싱1팀</option>
+											<option value="104" <%= 104 == employee.getDeptNo() ? "selected" : "" %>> 퍼블리싱2팀</option>
+											<option value="105" <%= 105 == employee.getDeptNo() ? "selected" : "" %>> 개발1팀</option>
+											<option value="106" <%= 106 == employee.getDeptNo() ? "selected" : "" %>> 개발2팀</option>
+											<option value="107" <%= 107 == employee.getDeptNo() ? "selected" : "" %>> 모바일 개발팀</option>
 										</select>
 									</td>
 									<th class="text-end">직위</th>
 									<td>
 										<select class="form-select form-select-sm" name="positionNo">
-											<option value="100" <%="100".equals(employee.getPositionNo()) ? "selected" : "" %>> 대표이사</option>
-											<option value="101" <%="101".equals(employee.getPositionNo()) ? "selected" : "" %>> 전무</option>
-											<option value="102" <%="102".equals(employee.getPositionNo()) ? "selected" : "" %>> 상무</option>
-											<option value="103" <%="103".equals(employee.getPositionNo()) ? "selected" : "" %>> 부장</option>
-											<option value="104" <%="104".equals(employee.getPositionNo()) ? "selected" : "" %>> 차장</option>
-											<option value="105" <%="105".equals(employee.getPositionNo()) ? "selected" : "" %>> 과장</option>
-											<option value="106" <%="106".equals(employee.getPositionNo()) ? "selected" : "" %>> 대리</option>
-											<option value="107" <%="107".equals(employee.getPositionNo()) ? "selected" : "" %>> 사원</option>
+											<option value="100" <%= 100 == employee.getPositionNo() ? "selected" : "" %>> 대표이사</option>
+											<option value="101" <%= 101 == employee.getPositionNo() ? "selected" : "" %>> 전무</option>
+											<option value="102" <%= 102 == employee.getPositionNo() ? "selected" : "" %>> 상무</option>
+											<option value="103" <%= 103 == employee.getPositionNo() ? "selected" : "" %>> 부장</option>
+											<option value="104" <%= 104 == employee.getPositionNo() ? "selected" : "" %>> 차장</option>
+											<option value="105" <%= 105 == employee.getPositionNo() ? "selected" : "" %>> 과장</option>
+											<option value="106" <%= 106 == employee.getPositionNo() ? "selected" : "" %>> 대리</option>
+											<option value="107" <%= 107 == employee.getPositionNo() ? "selected" : "" %>> 사원</option>
 										</select>
 									</td>
 								</tr>
