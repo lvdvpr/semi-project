@@ -237,7 +237,7 @@
 					<div class="row mb-2">
 						<div class="col-sm-8 offset-sm-2">
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio" name="important" value="N" >
+								<input class="form-check-input" type="radio" checked name="important" value="N" >
 								<label class="form-check-label">일반</label>
 							</div>
 							<div class="form-check form-check-inline">
@@ -254,7 +254,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary btn-xs" data-bs-dismiss="modal">닫기</button>
-						<button type="submit" class="btn btn-primary btn-xs">등록</button>
+						<button type="submit" class="btn btn-primary btn-xs" id="modal-form-insert">등록</button>
 					</div>
 				</form>
 			</div>
@@ -304,8 +304,24 @@ $(function(){
 		$(":input[name=postNo]").prop('checked', allCheck);
 	})
 	
+	// 모달창 입력값 누락시 경고창
+	$("#modal-form-insert").click(function() {
+		var modalTitle = $(":input[name=title]").val();
+		var modalContent = $("[name=content]").val();
+		
+		if(modalTitle == "") {
+			alert("제목을 입력하세요");
+			return false;
+			
+		} else if(modalContent == "") {
+			alert("내용을 입력하세요");
+			return false;
+		}
+	})
 	
 })
+
+	
 </script>
 </body>
 </html>
