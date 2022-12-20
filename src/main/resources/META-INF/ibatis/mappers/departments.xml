@@ -13,6 +13,13 @@
 			department_no asc
 	</select>
 	
+	<insert id="insertDepartment" parameterClass="com.community.vo.Department">
+		insert into comm_departments
+			(department_no, department_name)
+		values
+			(comm_departments_seq.nextval, #name#)
+	</insert>
+	
 	<update id="updateDepartment" parameterClass="com.community.vo.Department">
 		update
 			comm_departments

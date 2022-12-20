@@ -12,6 +12,10 @@ public class DepartmentDao {
 		return (List<Department>) SqlMapper.selectList("getAllDepartments");
 	}
 	
+	public void insertDepartment(Department department) {
+		SqlMapper.insert("insertDepartment", department);
+	}
+	
 	public void updateDepartment(Department department) {
 		SqlMapper.update("updateDepartment", department);
 	}
