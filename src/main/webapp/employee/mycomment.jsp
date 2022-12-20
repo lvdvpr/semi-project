@@ -93,7 +93,7 @@
 						<input type="hidden" name="page" value="<%=currentPage %>" />
 						<div class="card-body py-1 px-3 small border-bottom">
 							<div class="mb-1 text-muted text-end">
-								<span><span class="me-4"><%=StringUtils.dateToText(comment.getCreatedDate()) %></span> <a href="commentdelete.jsp?commentNo=<%=comment.getNo() %>" class="text-danger"><i class="bi bi-trash-fill"></i></a></span>
+								<span><span class="me-4"><%=StringUtils.dateToText(comment.getCreatedDate()) %></span> <a href="commentdelete.jsp?commentNo=<%=comment.getNo() %>&page=<%=currentPage %>" class="text-danger"><i class="bi bi-trash-fill"></i></a></span>
 							</div>
 							<p class="card-text"><a href="../board/<%=comment.getMoveName() %>/detail.jsp?no=<%=comment.getPostNo() %>"><%=comment.getContent() %></a></p>
 						</div>

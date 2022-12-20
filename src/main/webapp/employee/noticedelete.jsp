@@ -6,12 +6,16 @@
 	// 게시글 알림 번호(요청 객체)에서 요청파라미터 정보를 조회한다.
 	int noticeNo = StringUtils.stringToInt(request.getParameter("noticeNo"));
 
+	int rows = StringUtils.stringToInt(request.getParameter("rows"), 10);
+	int currentPage = StringUtils.stringToInt(request.getParameter("page"), 1);
+	
+
 	// noticeNo에 해당하는 알림을 삭제한다.
 	// 알림 삭제 여부를 'N"을 'Y'로 변환하는 쿼리를 반환한다.
 	NoticeDao noticeDao = new NoticeDao();
 	noticeDao.deleteNoticeByNoticeNo(noticeNo);
 	
 	// 재요청 URL을 응답으로 보낸다.
-	response.sendRedirect("mynotice.jsp");
+	response.sendRedirect("mynotice.jsp?rows=" + rows + "&page=" + currentPage);
 	
 %>

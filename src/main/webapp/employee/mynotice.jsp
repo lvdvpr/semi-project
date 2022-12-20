@@ -42,7 +42,6 @@
 	
 	// 해당 loginEmployee.getNo() 사람에게 온 알람의 갯수 조회
 	int totalRows = noticeDao.getTotalNoticeRows(loginEmployee.getNo());
-	System.out.println(totalRows);
 	Pagination pagination = new Pagination(currentPage, totalRows, rows);
 	
 	Map<String, Object> param = new HashMap<>();
@@ -128,7 +127,7 @@
 									<td class="border-bottom-0"><%=StringUtils.dateToText(myDto.getUpdatedDate()) %></td>
 									<td class="border-bottom-0 pt-2">
 										<button data-notice-no="<%=myDto.getNo() %>" class="btn btn-outline-secondary btn-xs <%="Y".equals(myDto.getReadingStatus()) ? "disabled" : ""%>">확인</button> 
-										<a href="noticedelete.jsp?noticeNo=<%=myDto.getNo() %>" class="btn btn-outline-secondary btn-xs">삭제</a>
+										<a href="noticedelete.jsp?noticeNo=<%=myDto.getNo() %>&rows=<%=rows %>&page=<%=currentPage %>" class="btn btn-outline-secondary btn-xs">삭제</a>
 									</td>
 								</tr>
 								<tr>
