@@ -22,7 +22,6 @@
 	freeBoard.setTitle(title);
 	freeBoard.setImportant(important);
 	freeBoard.setContent(content);
-	freeBoard.setWriterNo(employee.getNo());
 	
 	freeDao.updatePost(freeBoard);
 	
