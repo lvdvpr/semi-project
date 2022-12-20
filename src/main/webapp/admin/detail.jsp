@@ -435,7 +435,7 @@
 				return false;
 			}
 		})
-		
+		// 게시글 삭제 안내
 		$("#delete-comment").click(function() {
 			if (confirm("게시글을 삭제하시겠습니까?")) {
 				return true;
