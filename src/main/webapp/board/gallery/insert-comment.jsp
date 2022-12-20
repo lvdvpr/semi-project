@@ -1,3 +1,5 @@
+<%@page import="com.community.vo.Notice"%>
+<%@page import="com.community.dao.AdminNoticeDao"%>
 <%@page import="com.community.vo.Gallery"%>
 <%@page import="com.community.dao.GalleryDao"%>
 <%@page import="com.community.vo.Comment"%>
@@ -31,6 +33,16 @@
 	gallery.setCommentCount(gallery.getCommentCount() +1);
 	
 	galleryDao.updatedPost(gallery);
+	
+	// 내게 온 알림
+	AdminNoticeDao noticeDao = AdminNoticeDao.getInstance();
+	Notice notice = new Notice();
+	notice.setPostNo(no);
+	notice.setSendEmpNo(employee.getNo());
+	notice.setReceiveEmpNo(gallery.getWriterNo());
+	notice.setContent("[댓글] " + no + "번 글에 댓글이 등록되었습니다.");
+			
+	noticeDao.insertNotice(notice);
 	
 	response.sendRedirect("detail.jsp?no=" + no);
 %>

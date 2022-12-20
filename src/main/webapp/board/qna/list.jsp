@@ -142,8 +142,7 @@
 										<input type="checkbox" name="postNo" value="<%=questions.getNo() %>" />
 									</td>
 									<td><%=questions.getNo() %></td>
-									<td class="ps-4"><span class="text-muted">
-									<i class="bi bi-arrow-return-right"></i><%=questions.getTitle() %><!-- </a>  --></span></td>
+									<td class="ps-4"><a href="detail.jsp?no=<%=questions.getNo() %>" class="text-decoration-none text-dark"><i class="bi bi-arrow-return-right"></i><%=questions.getTitle() %></a></td>
 									<td><%=questions.getName() %></td>
 									<td><%=StringUtils.dateToText(questions.getCreatedDate()) %></td>
 									<td><%=questions.getReadCount() %></td>
