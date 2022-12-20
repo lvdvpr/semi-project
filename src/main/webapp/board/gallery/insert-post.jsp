@@ -9,21 +9,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <!DOCTYPE html>
 <%
-	// 이미지하나 이상 경고 뜨고 난 이후에 게시물은 등록됨 나중에 error 코드 처리하기
-	
-	MultipartRequest mr = new MultipartRequest(request, "C:\\APP\\web-workspace\\web-community\\src\\main\\webapp\\resources\\images");
-	String[] filenames = mr.getFilenames("fileName");
-	
-	
-	if (filenames == null) {
-		response.sendRedirect("list.jsp?error=invalid");
-		return;
-	}
+		// 이미지하나 이상 경고 뜨고 난 이후에 게시물은 등록됨 나중에 error 코드 처리하기
+		
+		MultipartRequest mr = new MultipartRequest(request, "C:\\APP\\web-workspace\\web-community\\src\\main\\webapp\\resources\\images");
+		String[] filenames = mr.getFilenames("fileName");
+		
+		if (filenames == null) {
+			response.sendRedirect("list.jsp?error=invalid");
+			return;
+		}
 
 		int boardNo = StringUtils.stringToInt(mr.getParameter("boardNo"));
 		String title = mr.getParameter("title");
 		String important = mr.getParameter("important");
 		String content = mr.getParameter("content");
+		
+		if (title.isEmpty() || content.isEmpty()) {
+			response.sendRedirect("list.jsp?error=none");
+			return;
+		}
 		
 		// writerNo를 꺼내기 위한 session 객체
 		Employee employee = (Employee) session.getAttribute("LOGIN_EMPLOYEE");
