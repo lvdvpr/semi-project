@@ -133,6 +133,7 @@
 		select 
 		    A.POST_NO 					as postNo, 
 		    A.POST_BOARD_NO 			as postBoardNo,
+		    A.POST_WRITER_NO			as postWriterNo,
 		    A.POST_TITLE 				as postTitle, 
 		    A.POST_READ_COUNT 			as postReadCount, 
 		    A.POST_CONTENT 				as postContent, 

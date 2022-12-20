@@ -34,7 +34,7 @@
 				</div>
 				<div class="card-body">
 					<div class="list-group">
-						<a href="" class="list-group-item list-group-item-action active">비밀번호 변경하기</a>
+						<a href="passwordform.jsp" class="list-group-item list-group-item-action active">비밀번호 변경하기</a>
 					</div>
 				</div>
 			</div>

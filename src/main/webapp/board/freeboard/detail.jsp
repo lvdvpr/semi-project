@@ -100,14 +100,27 @@
 					</tr>
 				</tbody>
 			</table>
-			<div class="d-flex justify-content-between">
+			<div>
+<%
+	if (employee != null && postDto.getPostWriterNo() == employee.getNo()) {
+%>
 				<span>
 					<a href="deletePost.jsp?postNo=<%=postDto.getPostNo() %>" class="btn btn-danger btn-xs">삭제</a>
-					<a href="modify.jsp?postNo=<%=postDto.getPostNo() %>" class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">수정</a>
+					<button class="btn btn-warning btn-xs" data-bs-toggle="modal" data-bs-target="#modal-form-posts">수정</button>
 				</span>
-				<span>
-					<a href="addSuggestion.jsp?postNo=<%=postNo %>&empNo=<%=postDto.getEmpNo() %>" class="btn btn-outline-primary btn-xs">추천</a>
+<%
+	}
+%>
+
+<%
+	if (employee != null && postDto.getPostWriterNo() != employee.getNo()) {
+%>
+				<span class='float-end'>
+					<a href="addSuggestion.jsp?postNo=<%=postDto.getPostNo() %>&empNo=<%=postDto.getEmpNo() %>" class="btn btn-outline-primary btn-xs">추천</a>
 				</span>
+<%
+	}
+%>
 			</div>
 		</div>
 	</div>
@@ -153,6 +166,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="modal" tabindex="-1" id="modal-form-posts">
 	<div class="modal-dialog modal-lg">
 	<form class="border p-3 bg-light" method="post" action="modify.jsp">
@@ -185,12 +199,6 @@
 						</div>
 					</div>
 					<div class="row mb-2">
-						<label class="col-sm-2 col-form-label col-form-label-sm">작성자</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control form-control-sm" readonly="readonly" name="writer" value="<%=employee.getName()%>">
-						</div>
-					</div>
-					<div class="row mb-2">
 						<div class="col-sm-8 offset-sm-2">
 							<div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" name="important" value="N" <%="N".equals(freeBoard.getImportant()) ? "checked" : "" %>>
@@ -217,6 +225,8 @@
 	</form>
 	</div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <script type="text/javascript"> 
 	function checkForm() {
 		var commentContent = document.querySelector("[name=content]");
