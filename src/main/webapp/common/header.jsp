@@ -6,7 +6,6 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 	<div class="container">
 	<%
-
 	 String menu = request.getParameter("menu");
 	
 	 Employee loginEmployee = (Employee)session.getAttribute("LOGIN_EMPLOYEE"); 
@@ -14,7 +13,14 @@
 	%>
 		<ul class="navbar-nav me-auto">
 			<li class="nav-item"><a class="nav-link <%="home".equals(menu)? "active" : "" %>" href="/web-community/home.jsp">홈</a></li>
+	<%
+		if (loginEmployee != null ) {
+	%>
 			<li class="nav-item"><a class="nav-link <%="board".equals(menu)? "active" : "" %>" href="/web-community/board/home.jsp">게시판</a></li>
+	<%
+		}	
+		if (loginEmployee != null && "관리자".equals(loginEmployee.getType())) {
+	%>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle <%="admin".equals(menu)? "active" : "" %>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 					관리자
@@ -27,6 +33,9 @@
 					<li><a class="dropdown-item" href="/web-community/admin/posts.jsp">게시글관리</a></li>
 				</ul>
 			</li> 
+	<%
+		}
+	%>
 		</ul>
 <% 
 	if (loginEmployee != null) {

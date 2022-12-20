@@ -14,7 +14,14 @@ public class MyPostDto {
 	private int suggestionCount;	// 추천수
 	private String content;			// 게시글 내용
 	private String writerName;		// 작성자
+	private String moveName;		// 게시판 이름 영어로
 	
+	public String getMoveName() {
+		return moveName;
+	}
+	public void setMoveName(String moveName) {
+		this.moveName = moveName;
+	}
 	public int getNo() {
 		return no;
 	}
@@ -80,7 +87,8 @@ public class MyPostDto {
 	public String toString() {
 		return "MyPostDto [no=" + no + ", boardNo=" + boardNo + ", boardName=" + boardName + ", title=" + title
 				+ ", writerNo=" + writerNo + ", createdDate=" + createdDate + ", readCount=" + readCount
-				+ ", suggestionCount=" + suggestionCount + ", content=" + content + ", writerName=" + writerName + "]";
+				+ ", suggestionCount=" + suggestionCount + ", content=" + content + ", writerName=" + writerName
+				+ ", moveName=" + moveName + "]";
 	}
 
 }

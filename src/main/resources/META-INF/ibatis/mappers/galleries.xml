@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" 
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+ 
+<sqlMap namespace="galleries">
+	<!-- 전체 갤러리 조회 // 구현 완료하고 나중에 필요없는 select항목 지우기 주석 확인후, 지우기-->
+	<select id="getAllGallery" parameterClass="map" resultClass="com.community.dto.GalleryDto">			
+		SELECT
+		    P.POST_NO as no,
+		    P.POST_BOARD_NO as boardNo,
+		    P.POST_TITLE as title,
+		    P.POST_WRITER_NO as writerNo,
+		    P.POST_CONTENT as content,
+		    P.POST_IMPORTANT as important,
+		    P.POST_READ_COUNT as readCount,
+		    P.POST_SUGGESTION_COUNT as suggestionCount,
+		    P.POST_COMMENT_COUNT as commentcount,
+		    P.POST_DELETED as deleted,
+		    P.POST_CREATED_DATE as createdDate,
+		    P.POST_UPDATED_DATE as updatedDate,
+		    P.POST_DELETED_DATE as deletedDate,
+		    E.EMP_NO as empNo,
+		    E.EMP_NAME as name,
+		    F.FILE_NAME as fileName
+		FROM (SELECT
+		        row_number() over (order by post_no desc) row_number,
+		        P.POST_NO,
+		        P.POST_BOARD_NO,
+		        P.POST_TITLE,
+		        P.POST_WRITER_NO,
+		        P.POST_CONTENT,
+		        P.POST_IMPORTANT,
+		        P.POST_READ_COUNT,
+		        P.POST_SUGGESTION_COUNT,
+		        P.POST_COMMENT_COUNT,
+		        P.POST_DELETED,
+		        P.POST_CREATED_DATE,
+		        P.POST_UPDATED_DATE,
+		        P.POST_DELETED_DATE,
+		        E.EMP_NO,
+		   		E.EMP_NAME
+		    FROM
+		        COMM_POSTS P, COMM_EMPLOYEES E
+		    WHERE
+		    	POST_DELETED = 'N'
+		        <dynamic>
+		        	<isNotNull property="opt">
+		        		<isEqual property="opt" compareValue="title">
+		        		AND P.POST_TITLE like '%' || #keyword# || '%'
+		        		</isEqual>
+		        		<isEqual property="opt" compareValue="content">
+		        		AND P.POST_TITLE like '%' || #keyword# || '%'
+		        		</isEqual>
+		        	</isNotNull>
+		        </dynamic>
+		        AND 
+		        	POST_BOARD_NO = 104
+		        AND 
+		        	p.post_writer_no = e.emp_no) P, COMM_EMPLOYEES E, COMM_POST_FILES F
+		WHERE
+			row_number between #begin# and #end#
+        AND 
+        	p.post_writer_no = e.emp_no
+        AND
+        	p.post_no = f.file_post_no
+		ORDER BY
+			P.POST_NO DESC
+	</select>
+	
+	<!-- (Dto) detail.jsp 상세정보 조회 -->
+	<select id="getGalleryDtoByNo" parameterClass="int" resultClass="com.community.dto.GalleryDto">
+		SELECT
+		    P.POST_NO as no,
+		    P.POST_BOARD_NO as boardNo,
+		    P.POST_TITLE as title,
+		    P.POST_WRITER_NO as writerNo,
+		    P.POST_CONTENT as content,
+		    P.POST_IMPORTANT as important,
+		    P.POST_READ_COUNT as readCount,
+		    P.POST_SUGGESTION_COUNT as suggestionCount,
+		    P.POST_COMMENT_COUNT as commentcount,
+		    P.POST_DELETED as deleted,
+		    P.POST_CREATED_DATE as createdDate,
+		    P.POST_UPDATED_DATE as updatedDate,
+		    P.POST_DELETED_DATE as deletedDate,
+		    E.EMP_NO as empNo,
+		    E.EMP_NAME as name,
+            F.FILE_NAME as fileName,
+            D.department_name as departmentName,
+            PO.position_name as positionName           
+		FROM 
+			COMM_POSTS P, COMM_EMPLOYEES E, COMM_POST_FILES F, COMM_DEPARTMENTS D, COMM_POSITIONS PO
+        WHERE
+            P.POST_WRITER_NO = E.EMP_NO
+        AND
+            P.POST_NO = F.FILE_POST_NO
+        AND
+            D.DEPARTMENT_NO = E.EMP_DEPT_NO
+        AND
+            PO.POSITION_NO = E.EMP_POSITION_NO
+        AND
+        	P.POST_NO = #value#
+	</select>
+
+	<select id="getTotalRows" parameterClass="map" resultClass="int">
+<!-- 		SELECT
+		 	count(*)
+		FROM
+			comm_posts
+		WHERE
+			post_board_no = 104
+			AND post_deleted = 'N'
+			 <dynamic>
+		        	<isNotNull property="opt">
+		        		<isEqual property="opt" compareValue="title">
+		        		AND POST_TITLE like '%' || #keyword# || '%'
+		        		</isEqual>
+		        		<isEqual property="opt" compareValue="content">
+		        		AND POST_CONTENT like '%' || #keyword# || '%'
+		        		</isEqual>
+		        	</isNotNull>
+		        </dynamic>     -->
+		 SELECT
+   			count(*)
+		FROM
+			comm_posts p, comm_post_files f
+		WHERE
+			post_deleted = 'N'
+			AND post_board_no = 104
+            and p.post_no = f.file_post_no    
+            <dynamic>
+		        	<isNotNull property="opt">
+		        		<isEqual property="opt" compareValue="title">
+		        		AND POST_TITLE like '%' || #keyword# || '%'
+		        		</isEqual>
+		        		<isEqual property="opt" compareValue="content">
+		        		AND POST_CONTENT like '%' || #keyword# || '%'
+		        		</isEqual>
+		        	</isNotNull>
+		        </dynamic>         
+	</select>
+	
+	<insert id="insertGalleryPost" parameterClass="com.community.vo.Gallery">
+		INSERT INTO COMM_POSTS
+   			 (POST_NO, POST_BOARD_NO, POST_TITLE, POST_WRITER_NO, POST_CONTENT, POST_IMPORTANT)
+		VALUES
+  			 (COMM_POSTS_SEQ.nextval, #boardNo#, #title#, #writerNo#, #content#, #important#)
+	</insert>
+	
+	<!-- postNo를 받아서 게시글 조회 -->
+	<select id="getPostByNo" parameterClass="int" resultClass="com.community.vo.Gallery">
+		SELECT
+		    POST_NO as no,
+		    POST_BOARD_NO as boardNo,
+		    POST_TITLE as title,
+		    POST_WRITER_NO as writerNo,
+		    POST_CONTENT as content,
+		    POST_IMPORTANT as important,
+		    POST_READ_COUNT as readCount,
+		    POST_SUGGESTION_COUNT as suggestionCount,
+		    POST_COMMENT_COUNT as commentcount,
+		    POST_DELETED as deleted,
+		    POST_CREATED_DATE as createdDate,
+		    POST_UPDATED_DATE as updatedDate,
+		    POST_DELETED_DATE as deletedDate
+		FROM 
+			COMM_POSTS
+		WHERE
+			POST_NO = #value#
+	</select>
+	
+	<!-- post 수정 -->
+	<update id="updatedPost" parameterClass="com.community.vo.Gallery">
+		UPDATE
+			COMM_POSTS
+		SET
+		    POST_BOARD_NO = #boardNo#,
+		    POST_TITLE = #title#,
+		    POST_WRITER_NO = #writerNo#,
+		    POST_CONTENT = #content#,
+		    POST_IMPORTANT = #important#,
+		    POST_READ_COUNT = #readCount#,
+		    POST_SUGGESTION_COUNT = #suggestionCount#,
+		    POST_COMMENT_COUNT = #commentCount#,
+		    POST_DELETED = #deleted#,
+		    POST_CREATED_DATE = #createdDate#,
+		    POST_UPDATED_DATE = sysdate,
+		    POST_DELETED_DATE = #deletedDate#
+		WHERE
+			POST_NO = #postNo#       
+	</update>
+	
+	<!-- post deleted -->
+	<update id="deletedPost" parameterClass="com.community.vo.Gallery">
+		UPDATE
+			COMM_POSTS
+		SET
+			POST_DELETED = #deleted#,
+			POST_UPDATED_DATE = sysdate,
+		    POST_DELETED_DATE = sysdate
+		WHERE
+			POST_NO = #postNo#    
+	</update>
+	<select id="getSequence" parameterClass="com.community.vo.Gallery" resultClass="int">
+		SELECT
+		    POST_NO
+		FROM
+		    COMM_POSTS
+		WHERE
+		    POST_WRITER_NO = #writerNo#
+		AND
+		    POST_CONTENT = #content#
+		AND
+		    POST_TITLE = #title#
+		AND
+		    POST_BOARD_NO = #boardNo#
+	</select>
+</sqlMap>

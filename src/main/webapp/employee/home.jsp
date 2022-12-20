@@ -1,7 +1,7 @@
+<%@page import="com.community.dao.NoticeDao"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.Map"%>
 <%@page import="com.community.vo.Employee"%>
-<%@page import="com.community.dao.NoticeDao"%>
 <%@page import="com.community.dao.CommentDao"%>
 <%@page import="com.community.vo.Post"%>
 <%@page import="com.community.dao.PostDao"%>
@@ -33,18 +33,19 @@
 		response.sendRedirect("/web-community/employee/loginform.jsp?error=deny");
 		return;
 	}
+	int empNo = loginEmployee.getNo();
 	
 	EmployeeDao employeeDao = EmployeeDao.getInstance();
-	EmployeeDto employeeDto = employeeDao.getEmployeeDtoByNo(loginEmployee.getNo());
+	EmployeeDto employeeDto = employeeDao.getEmployeeDtoByNo(empNo);
 	
 	PostDao postDao = new PostDao();
-	int totalPostRows = postDao.getTotalPostRowsByEmpNo(loginEmployee.getNo());
+	int totalPostRows = postDao.getTotalPostRowsByEmpNo(empNo);
 	
 	CommentDao commentDao = new CommentDao();
-	int totalcommentRows = commentDao.getTotalCommentRowsByEmpNo(loginEmployee.getNo());
+	int totalcommentRows = commentDao.getTotalCommentRowsByEmpNo(empNo);
 	
 	NoticeDao noticeDao = new NoticeDao();
-	int totalNoticeRows = noticeDao.getTotalNoticeRows(loginEmployee.getNo());
+	int totalNoticeRows = noticeDao.getTotalNoticeRowsByEmpNo(empNo);
 	
 %>
 	<div class="row mb-3">
@@ -66,7 +67,7 @@
 				</div>
 				<div class="card-body">
 					<div class="list-group">
-						<a href="" class="list-group-item list-group-item-action">비밀번호 변경하기</a>
+						<a href="passwordform.jsp" class="list-group-item list-group-item-action">비밀번호 변경하기</a>
 					</div>
 				</div>
 			</div>

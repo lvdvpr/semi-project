@@ -3,16 +3,11 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
  
 <sqlMap namespace="fileshares">
-
-	<!-- <select id="getFileShareByNo" parameterClass="int" resultClass="com.community.vo.FileShare">
-		select
-			*
-		from
-			semi_community_posts
-		where
-			post_board_no = 200
-			and post_no = #value#
-	</select>
-	 -->
+	<insert id="insertFile" parameterClass="com.community.vo.Fileshares">
+		INSERT INTO COMM_POST_FILES
+		    (FILE_NO, FILE_NAME, FILE_POST_NO)
+		VALUES
+		    (COMM_FILES_SEQ.nextval, #fileName#, #filePostNo#)
+	</insert>
 </sqlMap>
 
