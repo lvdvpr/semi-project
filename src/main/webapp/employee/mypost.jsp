@@ -150,7 +150,7 @@
 									<td><%=myDto.getReadCount() %></td>
 									<td><%=myDto.getSuggestionCount() %></td>
 									<td>
-										<a id="btn-delete" href="postdelete.jsp?postNo=<%=myDto.getNo() %>" class="btn btn-outline-secondary btn-xs">삭제</a>
+										<a id="btn-delete" href="postdelete.jsp?postNo=<%=myDto.getNo() %>&rows=<%=rows %>&page=<%=currentPage %>&opt=<%=opt %>&keyword=<%=keyword %>" class="btn btn-outline-secondary btn-xs">삭제</a>
 									</td>
 								</tr>
 <%
@@ -212,8 +212,8 @@ $(".pagination a").click(function(event) {
 $("#btn-delete").click(function(event){
 	event.preventDefault();
 	var pageNo = $(this).attr("data-page-no");
-	$("[name=page]").val(pageNo)
-	$("#form-post").trigger("submit")
+	$("[name=page]").val(pageNo);
+	$("#form-post").trigger("submit");
 });
 
 $("#btn-search").click(function() {

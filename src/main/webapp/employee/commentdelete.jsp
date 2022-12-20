@@ -5,6 +5,7 @@
 <%
 
 	int commentNo = StringUtils.stringToInt(request.getParameter("commentNo"));
+	int currentPage = StringUtils.stringToInt(request.getParameter("page"), 1);
 
 	// commentNo에 해당하는 댓글을 삭제한다.
 	// Fact = comm_post_comments의 comment_deleted 테이블의 값을 'Y'로 변경한다.
@@ -12,5 +13,5 @@
 	commentDao.deleteCommentByCommentNo(commentNo);
 	
 	// 재요청 URL을 응답으로 보낸다.
-	response.sendRedirect("mycomment.jsp");
+	response.sendRedirect("mycomment.jsp?page=" +currentPage);
 %>

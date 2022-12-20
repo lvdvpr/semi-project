@@ -8,7 +8,7 @@
 		update
 			comm_posts
 		set
-			post_deleted = 'Y',
+			post_deleted = 'D',
 			post_deleted_date = sysdate
 		where
 			post_no = #value#
@@ -28,7 +28,7 @@
 		set
 			notice_deleted = 'Y',
 			notice_deleted_date = sysdate
-		where
+		where 
 			notice_no = #value#
 	</update>
 	<update id="updateNoticeByNoticeNo" parameterClass="int">
@@ -46,7 +46,7 @@
 		select *
 		from
 			(select
-				row_number() over (order by p.post_created_date asc) row_numbers,
+				row_number() over (order by p.post_created_date desc) row_numbers,
 				p.post_no						as no,
 				p.post_board_no					as boardNo,
 				b.board_name					as boardName,
@@ -83,7 +83,7 @@
 		select *
 		from
 			(select
-				row_number() over (order by c.comment_created_date asc) row_numbers,
+				row_number() over (order by c.comment_created_date desc) row_numbers,
 				c.comment_no				as no,
 				c.comment_emp_no			as empNo,
 				c.comment_content			as content,
@@ -109,7 +109,7 @@
 		select *
 		from
 			(select
-				row_number() over (order by n.notice_created_date asc) row_numbers,
+				row_number() over (order by n.notice_created_date desc) row_numbers,
 				n.notice_no					as no,
 				n.notice_post_no			as postNo,
 				n.notice_send_emp_no		as sendEmpNo,
